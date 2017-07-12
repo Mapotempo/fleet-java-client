@@ -41,7 +41,7 @@ class Analyzer<T> {
     private void analyzeType() throws CoreException {
         // Definition de l'annotationd de l'annotation
         if (mDocumentAnnotation == null) {
-            throw new CoreException("In Class : " + mClazz.getTypeName() + ", annotation DocumentBase is not defined.");
+            throw new CoreException("In Class : " + mClazz.getName() + ", annotation DocumentBase is not defined.");
         }
 
         boolean primary = false;
@@ -57,7 +57,7 @@ class Analyzer<T> {
                 }
 
                 if(mapData.get(baseField.name()) != null) {
-                    throw new CoreException("In Class : " + mClazz.getTypeName() + ", FieldBase : " + baseField.name() + " already defined.");
+                    throw new CoreException("In Class : " + mClazz.getName() + ", FieldBase : " + baseField.name() + " already defined.");
                 } else {
                     mapData.put(baseField.name(), baseField.name());
                 }
@@ -66,7 +66,7 @@ class Analyzer<T> {
 
         // Definition de la clef primaire.
         if(!primary)
-            throw new CoreException("In Class : " + mClazz.getTypeName() + ", no primary key '_id' found.");
+            throw new CoreException("In Class : " + mClazz.getName() + ", no primary key '_id' found.");
     }
 
     public Map<String, Object> getData(T data) throws CoreException

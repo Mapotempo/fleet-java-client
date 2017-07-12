@@ -44,7 +44,7 @@ class Factory<T> {
         try {
             mConstructor = mClazz.getConstructor();
         } catch (NoSuchMethodException e) {
-            System.err.println("In Class : " + mClazz.getTypeName() + ", no default constructor define.");
+            System.err.println("In Class : " + mClazz.getName() + ", no default constructor define.");
             throw new CoreException(e);
         }
     }
