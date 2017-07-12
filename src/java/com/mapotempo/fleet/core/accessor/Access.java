@@ -30,9 +30,9 @@ public class Access<T> {
 
         mClazz = clazz;
 
-        mFactory = new Factory<>(mClazz, mDatabaseHandler);
+        mFactory = new Factory<T>(mClazz, mDatabaseHandler);
 
-        mAnalyzer = new Analyzer<>(mClazz);
+        mAnalyzer = new Analyzer<T>(mClazz);
 
         mDocumentAnnotation = mClazz.getAnnotation(DocumentBase.class);
 
@@ -148,7 +148,7 @@ public class Access<T> {
      **/
     protected List<T> runQuery(Query query) throws CoreException
     {
-        List<T> res = new ArrayList<>();
+        List<T> res = new ArrayList<T>();
         try {
             QueryEnumerator result = query.run();
 

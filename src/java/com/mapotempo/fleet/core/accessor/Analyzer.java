@@ -47,7 +47,7 @@ class Analyzer<T> {
         boolean primary = false;
 
         // Champ en doublon
-        Map<String, String> mapData = new HashMap<>();
+        Map<String, String> mapData = new HashMap<String, String>();
         for (Field field : mClazz.getFields()) {
             FieldBase baseField = field.getAnnotation(FieldBase.class);
             if (baseField != null) {
@@ -69,9 +69,9 @@ class Analyzer<T> {
             throw new CoreException("In Class : " + mClazz.getTypeName() + ", no primary key '_id' found.");
     }
 
-    public Map getData(T data) throws CoreException
+    public Map<String, Object> getData(T data) throws CoreException
     {
-        Map<String, Object> mapData = new HashMap<>();
+        Map<String, Object> mapData = new HashMap<String, Object>();
         for(Field field : mClazz.getFields()) {
             FieldBase baseField = field.getAnnotation(FieldBase.class);
             if (baseField != null) {

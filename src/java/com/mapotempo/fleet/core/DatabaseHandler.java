@@ -118,11 +118,10 @@ public class DatabaseHandler {
     public void printAllData()
     {
         try {
-
             // Let's find the documents that have conflicts so we can resolve them:
             Query query = mDatabase.createAllDocumentsQuery();
             query.setAllDocsMode(Query.AllDocsMode.ALL_DOCS);
-            List<Object> res = new ArrayList<>();
+            List<Object> res = new ArrayList<Object>();
             QueryEnumerator result = query.run();
             for (Iterator<QueryRow> it = result; it.hasNext(); ) {
                 QueryRow row = it.next();
