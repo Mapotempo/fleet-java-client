@@ -1,7 +1,7 @@
 package com.mapotempo.fleet.model.submodel;
 
-import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.SubModelBase;
+import com.mapotempo.fleet.core.DatabaseHandler;
 
 import java.util.Map;
 

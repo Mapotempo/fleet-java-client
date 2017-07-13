@@ -1,9 +1,9 @@
 package com.mapotempo.fleet.core.accessor;
 
 import com.couchbase.lite.*;
+import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.*;
 

@@ -1,12 +1,13 @@
 package com.mapotempo.fleet.core.accessor;
 
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.core.DatabaseHandler;
-import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.FieldBase;
 import com.mapotempo.fleet.core.base.SubModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
+import com.mapotempo.fleet.core.DatabaseHandler;
+import com.mapotempo.fleet.core.base.DocumentBase;
 
+import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -69,7 +70,10 @@ class Factory<T> {
                         // Classic
                         else {
                             // Generate SubModelBase Field
-                            if (value instanceof Map) {
+                            if (value instanceof Array) {
+
+                            }
+                            else if (value instanceof Map) {
                                 if (field.getType().getSuperclass() == SubModelBase.class) {
                                     field.set(instance, field.getType().getConstructor(Map.class, DatabaseHandler.class).newInstance(value, mDatabaseHandler));
                                 }
@@ -79,8 +83,11 @@ class Factory<T> {
                                 field.set(instance, value);
                             }
                             // Else it's a primitive or string field
-                            else {
+                            else if (isBaseType(value.getClass())){
                                 field.set(instance, toObject(field.getType(), value.toString()));
+                            }
+                            else {
+                                System.err.println("Can't affect field : " + field.getName() + " in Class " + mClazz.getName());
                             }
                         }
                     }
@@ -97,6 +104,17 @@ class Factory<T> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private static boolean isBaseType( Class clazz) {
+        if( Boolean.class == clazz || boolean.class == clazz) return true;
+        if( Byte.class == clazz || byte.class == clazz) return true;
+        if( Short.class == clazz || short.class == clazz) return true;
+        if( Integer.class == clazz || int.class == clazz) return true;
+        if( Long.class == clazz || long.class == clazz) return true;
+        if( Float.class == clazz || float.class == clazz) return true;
+        if( Double.class == clazz || double.class == clazz) return true;
+        return false;
     }
 
     /**
