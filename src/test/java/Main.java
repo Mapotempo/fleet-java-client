@@ -98,6 +98,7 @@ class Main {
                       System.out.print("Enter device name : ");
                       String dName = keyboard.nextLine();
                       Device device = new Device(dName);
+                      device.mLocation = new Location(58, 35);
                       deviceAccess.commit(device);
                       break;
                   case DEVICE:

@@ -63,7 +63,6 @@ class Factory<T> {
                         if(baseField.foreign() == true) {
                             Class clazz = field.getType();
                             Access access = new Access(clazz, mDatabaseHandler);
-                            System.out.println(value.toString());
                             Object model = access.get(value.toString());
                             field.set(instance, model);
                         }
@@ -71,10 +70,10 @@ class Factory<T> {
                         else {
                             // Generate SubModelBase Field
                             if (value instanceof Array) {
-
+                                System.err.println("Array no implemented !");
                             }
                             else if (value instanceof Map) {
-                                if (field.getType().getSuperclass() == SubModelBase.class) {
+                                if (field.getType().asSubclass(SubModelBase.class) != null) {
                                     field.set(instance, field.getType().getConstructor(Map.class, DatabaseHandler.class).newInstance(value, mDatabaseHandler));
                                 }
                             }

@@ -2,6 +2,7 @@ package com.mapotempo.fleet.core.accessor;
 
 import com.mapotempo.fleet.core.base.FieldBase;
 import com.mapotempo.fleet.core.base.DocumentBase;
+import com.mapotempo.fleet.core.base.SubModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.lang.reflect.Field;
@@ -75,28 +76,49 @@ class Analyzer<T> {
         for(Field field : mClazz.getFields()) {
             FieldBase baseField = field.getAnnotation(FieldBase.class);
             if (baseField != null) {
-                if(baseField.foreign()) {
-                    try {
-                        Object base = field.get(data);
-                        if(base != null) {
+                try {
+                    Object value = field.get(data);
+                    if(value != null) {
+                        if(baseField.foreign()) {
                             // Creation d'une instance d'analyze pour verifier que la foreign key est bien un type conforme.
-                            Analyzer analyzer = new Analyzer(base.getClass());
-                            mapData.put(baseField.name(), mIdField.get(base));
+                            Analyzer analyzer = new Analyzer(value.getClass());
+                            mapData.put(baseField.name(), mIdField.get(value));
                         }
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        else if(value instanceof SubModelBase) {
+                            SubModelBase base = (SubModelBase)value;
+                            //mapData.putAll(base.toMap());
+                            mapData.put(baseField.name(), base.toMap());
+                        }
+                        else if(IsBaseType(field.getType())){
+                            mapData.put(baseField.name(), value);
+                        }
+                        else {
+                            // NOTHING
+                        }
                     }
-                }
-                else {
-                    try {
-                        mapData.put(baseField.name(), field.get(data));
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
                 }
             }
         }
         mapData.put(mDocumentAnnotation.type_field(), mDocumentAnnotation.type());
         return mapData;
+    }
+
+    /** IsBaseType.
+     * Base type : Boolean/boolean, Byte/byte, Short/short, Integer/int, Long/lon, Float/float, Double/double
+     * @param clazz Clazz to analyze
+     * @return true if clazz is base type
+     */
+    private static boolean IsBaseType(Class clazz) {
+        if( Boolean.class == clazz || boolean.class == clazz) return true;
+        if( Byte.class == clazz || byte.class == clazz) return true;
+        if( Short.class == clazz || short.class == clazz) return true;
+        if( Integer.class == clazz || int.class == clazz) return true;
+        if( Long.class == clazz || long.class == clazz) return true;
+        if( Float.class == clazz || float.class == clazz) return true;
+        if( Double.class == clazz || double.class == clazz) return true;
+        if( String.class == clazz) return true;
+        return false;
     }
 }

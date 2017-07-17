@@ -35,4 +35,18 @@ public class Device extends ModelBase
 
     @FieldBase(name = "location")
     public Location mLocation;
+
+    /**
+     * equals.
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if(obj != null)
+            if(this.mName.equals(((Mission)obj).mName))
+                if(this.mLocation.equals(((Mission)obj).mLocation))
+                    return super.equals(obj);
+        return false;
+    }
 }

@@ -61,7 +61,6 @@ public class Access<T> {
     {
         Map<String, Object> mapData = mAnalyzer.getData(data);
 
-        // TODO UPDATE
         String docId  = (String)mapData.get("_id");
         if(docId == null || docId.isEmpty()) {
             docId = mClazz.getSimpleName() + "_" + UUID.randomUUID().toString();

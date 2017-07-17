@@ -39,4 +39,11 @@ public class ModelBase {
     @FieldBase(name = "_rev")
     public String mRef;
 
+    @Override
+    public boolean equals(Object obj) {
+        // On ne compare pas les references dans cette fonction.
+        if(this.mId.equals(((ModelBase)obj).mId))
+            return true;
+        return false;
+    }
 }

@@ -16,5 +16,7 @@ public abstract class SubModelBase {
         return;
     }
 
-    abstract protected void fromMap(Map map);
+    abstract public void fromMap(Map map);
+
+    abstract public Map<String, String> toMap();
 }
