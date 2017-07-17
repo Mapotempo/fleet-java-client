@@ -28,7 +28,8 @@ class Main {
               if (nextLine.equals("")) {
                   continue;
               }
-              Option option = Option.fromString(nextLine);
+
+              Option option = Option.valueOfInioreCase(nextLine);
 
               switch (option) {
 
@@ -177,37 +178,13 @@ private enum Option {
         return mNameType;
     }
 
-    static public Option fromString(String nameType) {
-        if (nameType.equals(EXIT.toString()))
-            return EXIT;
-        else if (nameType.equals(MISSION.toString()))
-            return MISSION;
-        else if (nameType.equals(UPDATE_MISSION.toString()))
-            return UPDATE_MISSION;
-        else if (nameType.equals(MISSIONS.toString()))
-            return MISSIONS;
-        else if (nameType.equals(DELETE_MISSIONS.toString()))
-            return DELETE_MISSIONS;
-        else if (nameType.equals(MISSIONS_NAME.toString()))
-            return MISSIONS_NAME;
-        else if (nameType.equals(ADD_MISSION.toString()))
-            return ADD_MISSION;
-        else if (nameType.equals(DEVICE.toString()))
-            return DEVICE;
-        else if (nameType.equals(DEVICES.toString()))
-            return DEVICES;
-        else if (nameType.equals(DELETE_DEVICES.toString()))
-            return DELETE_DEVICES;
-        else if (nameType.equals(ADD_DEVICE.toString()))
-            return ADD_DEVICE;
-        else if (nameType.equals(CONNEXION.toString()))
-            return CONNEXION;
-        else if (nameType.equals(ALL.toString()))
-            return ALL;
-        else if (nameType.equals(HELP.toString()))
-            return HELP;
-        else
+
+    static Option valueOfInioreCase(String name) {
+        try {
+            return valueOf(name.toUpperCase());
+        } catch (IllegalArgumentException e) {
             return UNKNOWN;
+        }
     }
 
     static public String help_message()
