@@ -11,6 +11,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -50,17 +51,23 @@ class Factory<T> {
         }
     }
 
+    /**
+     * TODO process Array
+     * @param document document entry
+     * @return an instance of T
+     * @throws CoreException
+     */
     public T getInstance(Document document) throws CoreException {
         try {
             T instance = mConstructor.newInstance();
             mClazz.getAnnotation(DocumentBase.class);
             for(Field field : instance.getClass().getFields()) {
-                FieldBase baseField = field.getAnnotation(FieldBase.class);
-                if (baseField != null) {
-                    Object value = document.getProperty(baseField.name());
+                FieldBase fieldBase = field.getAnnotation(FieldBase.class);
+                if (fieldBase != null) {
+                    Object value = document.getProperty(fieldBase.name());
                     if (value != null) {
                         // Foreigner
-                        if(baseField.foreign() == true) {
+                        if(fieldBase.foreign() == true) {
                             Class clazz = field.getType();
                             Access access = new Access(clazz, mDatabaseHandler);
                             Object model = access.get(value.toString());
@@ -72,6 +79,7 @@ class Factory<T> {
                             if (value instanceof Array) {
                                 System.err.println("Array no implemented !");
                             }
+                            // SubModelBase type
                             else if (value instanceof Map) {
                                 if (field.getType().asSubclass(SubModelBase.class) != null) {
                                     field.set(instance, field.getType().getConstructor(Map.class, DatabaseHandler.class).newInstance(value, mDatabaseHandler));
@@ -81,12 +89,23 @@ class Factory<T> {
                             else if (field.getType().equals(value.getClass())) {
                                 field.set(instance, value);
                             }
-                            // Else it's a primitive or string field
+                            // Enum Type
+                            else if (field.getType().isEnum()) {
+                                Class enumType = field.getType();
+                                field.set(instance, enumType.getMethod("valueOf", String.class).invoke(enumType, value));
+                            }
+                            // Date Type
+                            else if(field.getType().equals(Date.class)){
+                                System.out.println(value);
+                                System.out.println(value.getClass().getSimpleName());
+                                field.set(instance, DateHelper.dateFromString((String)value));
+                            }
+                            // Base or String Type
                             else if (isBaseType(value.getClass())){
                                 field.set(instance, toObject(field.getType(), value.toString()));
                             }
                             else {
-                                System.err.println("Can't affect field : " + field.getName() + " in Class " + mClazz.getName());
+                                throw new CoreException("Can't affect field : " + field.getName() + " in Class " + mClazz.getName());
                             }
                         }
                     }

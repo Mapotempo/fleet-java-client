@@ -1,8 +1,10 @@
 package com.mapotempo.fleet.model;
 
+import com.mapotempo.fleet.core.accessor.DateHelper;
 import com.mapotempo.fleet.core.base.FieldBase;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 
 /**
  * ModelBase.
@@ -17,13 +19,17 @@ public class ModelBase {
             if (baseField != null) {
                 try {
                     res +=  "\n";
-                    if(!baseField.foreign())
-                        res = res + "        " + String.format("%-20s %s" ,baseField.name().toUpperCase(), ": " + field.get(this));
-                    else {
-                        res = res + "        " + String.format("%-20s %s" ,baseField.name().toUpperCase(), ":\n");
+                    if (field.getType().equals(Date.class)) {
+                        Date date = (Date)field.get(this);
+                        res = res + "        " + String.format("%-20s %s" ,baseField.name().toUpperCase(), ": " + DateHelper.displayDate(date));
+                    }
+                    else if(baseField.foreign()) {
+                        res = res + "        " + String.format("%-20s %s", baseField.name().toUpperCase(), ":\n");
                         res = res + "        {\n" + String.format("%-20s", field.get(this));
                         res = res + "\n        }";
                     }
+                    else
+                        res = res + "        " + String.format("%-20s %s" ,baseField.name().toUpperCase(), ": " + field.get(this));
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
                 }

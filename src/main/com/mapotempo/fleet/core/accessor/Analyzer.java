@@ -6,6 +6,7 @@ import com.mapotempo.fleet.core.base.SubModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,16 +80,27 @@ class Analyzer<T> {
                 try {
                     Object value = field.get(data);
                     if(value != null) {
+                        // Is a foreign model
                         if(baseField.foreign()) {
                             // Creation d'une instance d'analyze pour verifier que la foreign key est bien un type conforme.
                             Analyzer analyzer = new Analyzer(value.getClass());
                             mapData.put(baseField.name(), mIdField.get(value));
                         }
+                        // SubModelBase type
                         else if(value instanceof SubModelBase) {
                             SubModelBase base = (SubModelBase)value;
                             //mapData.putAll(base.toMap());
                             mapData.put(baseField.name(), base.toMap());
                         }
+                        // Enum Type
+                        else if(value instanceof Enum) {
+                            mapData.put(baseField.name(), value.toString());
+                        }
+                        // Date Type
+                        else if(value instanceof Date){
+                            mapData.put(baseField.name(), DateHelper.dateToString((Date)value));
+                        }
+                        // Base or String Type
                         else if(IsBaseType(field.getType())){
                             mapData.put(baseField.name(), value);
                         }
