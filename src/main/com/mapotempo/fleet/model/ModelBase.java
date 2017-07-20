@@ -1,6 +1,6 @@
 package com.mapotempo.fleet.model;
 
-import com.mapotempo.fleet.core.accessor.DateHelper;
+import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.core.base.FieldBase;
 
 import java.lang.reflect.Field;
@@ -35,7 +35,6 @@ public class ModelBase {
                 }
             }
         }
-
         return res;
     }
 
@@ -44,6 +43,9 @@ public class ModelBase {
 
     @FieldBase(name = "_rev")
     public String mRef;
+
+    @FieldBase(name = "owner")
+    public String mOwner;
 
     @Override
     public boolean equals(Object obj) {

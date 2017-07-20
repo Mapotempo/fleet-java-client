@@ -6,13 +6,10 @@ import com.mapotempo.fleet.core.base.SubModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
+import com.mapotempo.fleet.core.utils.DateHelper;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
-import java.util.Map;
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * Factory.
@@ -58,63 +55,33 @@ class Factory<T> {
      * @throws CoreException
      */
     public T getInstance(Document document) throws CoreException {
+        Map properties = document.getProperties();
+
         try {
             T instance = mConstructor.newInstance();
             mClazz.getAnnotation(DocumentBase.class);
             for(Field field : instance.getClass().getFields()) {
                 FieldBase fieldBase = field.getAnnotation(FieldBase.class);
                 if (fieldBase != null) {
-                    Object value = document.getProperty(fieldBase.name());
+                    Object value = properties.get(fieldBase.name());
                     if (value != null) {
-                        // Foreigner
-                        if(fieldBase.foreign() == true) {
-                            Class clazz = field.getType();
-                            Access access = new Access(clazz, mDatabaseHandler);
-                            Object model = access.get(value.toString());
-                            field.set(instance, model);
+                        // POUR LES ARRAYS ON RECUPERE LE TYPE DU TEMPLATE POUR LA RECURCIVITE
+                        Class<?> templateType = null;
+                        try {
+                            if(field.getType().asSubclass(List.class) != null) {
+                                ParameterizedType stringListType = (ParameterizedType) field.getGenericType();
+                                templateType = (Class<?>) stringListType.getActualTypeArguments()[0];
+                            }
+                        } catch (ClassCastException e) {
                         }
-                        // Classic
-                        else {
-                            // Generate SubModelBase Field
-                            if (value instanceof Array) {
-                                System.err.println("Array no implemented !");
-                            }
-                            // SubModelBase type
-                            else if (value instanceof Map) {
-                                if (field.getType().asSubclass(SubModelBase.class) != null) {
-                                    field.set(instance, field.getType().getConstructor(Map.class, DatabaseHandler.class).newInstance(value, mDatabaseHandler));
-                                }
-                            }
-                            // When a document property was update the true type was return by couchbase-lite.
-                            else if (field.getType().equals(value.getClass())) {
-                                field.set(instance, value);
-                            }
-                            // Enum Type
-                            else if (field.getType().isEnum()) {
-                                Class enumType = field.getType();
-                                field.set(instance, enumType.getMethod("valueOf", String.class).invoke(enumType, value));
-                            }
-                            // Date Type
-                            else if(field.getType().equals(Date.class)){
-                                System.out.println(value);
-                                System.out.println(value.getClass().getSimpleName());
-                                field.set(instance, DateHelper.dateFromString((String)value));
-                            }
-                            // Base or String Type
-                            else if (isBaseType(value.getClass())){
-                                field.set(instance, toObject(field.getType(), value.toString()));
-                            }
-                            else {
-                                throw new CoreException("Can't affect field : " + field.getName() + " in Class " + mClazz.getName());
-                            }
-                        }
+
+                        Object fieldValue = theMagicFunction(value, field.getType(), templateType);
+                        field.set(instance, fieldValue);
                     }
                 }
             }
             return instance;
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        }catch (InvocationTargetException e) {
             e.printStackTrace();
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -123,6 +90,73 @@ class Factory<T> {
         }
         return null;
     }
+
+    /**
+     * theMagicFunction
+     *
+     * @param value
+     * @param fieldType
+     * @param templateType
+     * @return
+     */
+    private Object theMagicFunction(Object value, Class fieldType, Class templateType)
+    {
+        Object res = null;
+
+        try {
+            // CAS 1 : le champs est un document ID donc on va le chercher dans le bucket
+            if(fieldType.getAnnotation(DocumentBase.class) != null) {
+                Access access = new Access(fieldType, mDatabaseHandler);
+                res = access.get(value.toString());
+            }
+            // CAS 2 : le champ est un Array ET value est un array (ATTENTION UNE LIST NE POURRA PAS CONTENIR UNE AUTRE LIST !!!!!!)
+            else if (value instanceof ArrayList && (fieldType.asSubclass(List.class) != null) && templateType != null) {
+                res = fieldType.getConstructor().newInstance();
+
+                for(Object array_value: (ArrayList)value) {
+                    Object array_res = theMagicFunction(array_value, templateType, null);
+                    ((List)res).add(array_res);
+                }
+            }
+            // CAS 3 : le champ est un SubModelBase ET value est une map
+            else if (value instanceof Map && (fieldType.asSubclass(SubModelBase.class) != null)) {
+                res =  fieldType.getConstructor(Map.class, DatabaseHandler.class)
+                        .newInstance(value, mDatabaseHandler);
+            }
+            // CAS 4 : When a document property was update the true type was return by couchbase-lite.
+            else if (fieldType.equals(value.getClass())) {
+               res = value;
+            }
+            // CAS 5 : le champ est un Enum ET value et une String
+            else if (fieldType.isEnum() && value instanceof String) {
+                res = fieldType.getMethod("valueOf", String.class).invoke(fieldType, value);
+            }
+            // CAS 6 : le champ est une Date et value et une String
+            else if(fieldType.equals(Date.class) && value instanceof String){
+                res = DateHelper.dateFromString(value.toString());
+            }
+            // CAS 7 : Base or String Type
+            else if (isBaseType(value.getClass())){
+                res = toObject(fieldType, value.toString());
+            }
+            else {
+                //throw new CoreException("Can't affect field : " + field.getName() + " in Class " + mClazz.getName());
+            }
+        } catch (CoreException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+
 
     private static boolean isBaseType( Class clazz) {
         if( Boolean.class == clazz || boolean.class == clazz) return true;

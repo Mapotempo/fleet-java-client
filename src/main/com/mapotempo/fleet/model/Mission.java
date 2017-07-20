@@ -4,6 +4,9 @@ import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.FieldBase;
 import com.mapotempo.fleet.model.submodel.Location;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 @DocumentBase(type = "mission")
 public class Mission extends ModelBase {
 
@@ -21,14 +24,20 @@ public class Mission extends ModelBase {
         this.mDevice = device;
     }
 
+    @FieldBase(name = "device", foreign = true)
+    public Device mDevice;
+
     @FieldBase(name = "name")
     public String mName;
 
     @FieldBase(name = "location")
     public Location mLocation;
 
-    @FieldBase(name = "device", foreign = true)
-    public Device mDevice;
+    @FieldBase(name = "date")
+    public Date mDate;
+
+    @FieldBase(name = "delivery_date")
+    public Date mDeliveryDate;
 
     /**
      * equals.

@@ -7,7 +7,7 @@ import com.mapotempo.fleet.model.accessor.DeviceAccess;
 import com.mapotempo.fleet.model.accessor.MissionAccess;
 import com.mapotempo.fleet.model.submodel.Location;
 
-
+import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,6 +41,7 @@ class Main {
                       String mName = keyboard.nextLine();
                       //Device tmp = deviceAccess.get("ea2cef1e-e3d3-4894-b88f-698e636da833");
                       Mission mission = new Mission(mName, new Location(45., 2.), null);
+                      mission.mDate = new Date();
                       missionAccess.commit(mission);
                       break;
                   case UPDATE_MISSION:
@@ -99,7 +100,6 @@ class Main {
                       System.out.print("Enter device name : ");
                       String dName = keyboard.nextLine();
                       Device device = new Device(dName);
-                      device.mLocation = new Location(58, 35);
                       deviceAccess.commit(device);
                       break;
                   case DEVICE:
@@ -152,7 +152,7 @@ private enum Option {
     EXIT("exit", "Close the program"),
     ADD_MISSION("add_mission", "Add a mission"),
     MISSION("mission", "Display a mission"),
-    UPDATE_MISSION("update", "Update specific mission"),
+    UPDATE_MISSION("update_mission", "Update specific mission"),
     MISSIONS("missions", "Display all missions"),
     DELETE_MISSIONS("delete_missions", "Delete all missions"),
     MISSIONS_NAME("missions_name", "Display all missions name"),
