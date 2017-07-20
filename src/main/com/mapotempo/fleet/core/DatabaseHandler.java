@@ -4,6 +4,7 @@ import com.couchbase.lite.*;
 import com.couchbase.lite.auth.Authenticator;
 import com.couchbase.lite.auth.AuthenticatorFactory;
 import com.couchbase.lite.replicator.Replication;
+import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.io.IOException;
@@ -64,9 +65,8 @@ public class DatabaseHandler {
            throw new CoreException(e);
         }
 
-
+        // Pusher and Puller sync
         mPusher = mDatabase.createPushReplication(url);
-
         mPusher.setContinuous(true); // Runs forever in the background
         mPusher.addChangeListener(new Replication.ChangeListener() {
             @Override
@@ -75,7 +75,6 @@ public class DatabaseHandler {
             }
         });
         mPuller = mDatabase.createPullReplication(url);
-
         mPuller.setContinuous(true); // Runs forever in the background
         mPuller.addChangeListener(new Replication.ChangeListener() {
             @Override
@@ -87,12 +86,22 @@ public class DatabaseHandler {
         // USER AUTH
         Authenticator authenticator = AuthenticatorFactory.createBasicAuthenticator(mUser, mPassword);
         mPusher.setAuthenticator(authenticator);
-        //   mPusher.goOffline();
         mPuller.setAuthenticator(authenticator);
-        //   mPuller.goOffline();
 
+        // Subscribing to the 3 next days date.
+        ArrayList<String> channels = new ArrayList<>();
+        channels.add("static:" + DateHelper.dateForChannel(0));
+        channels.add("static:" + DateHelper.dateForChannel(1));
+        channels.add("static:" + DateHelper.dateForChannel(2));
+        mPuller.setChannels(channels);
+
+        // Start synchronisation
         mPusher.start();
         mPuller.start();
+
+        // TODO go offline ?
+        //mPusher.goOffline();
+        //mPuller.goOffline();
     }
 
     public boolean goOnline()
