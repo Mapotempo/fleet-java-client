@@ -1,34 +1,10 @@
-group 'mapotempo-fleet'
+group 'com.mapotempo.fleet'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'maven-publish'
 
 sourceCompatibility = 1.7
-
-compileJava {
-    options.encoding = 'UTF-8'
-    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-}
-
-sourceSets {
-    main {
-        java.srcDirs = [
-                'src/main',
-        ]
-    }
-}
-
-//create a single Jar with all dependencies
-task fatJar(type: Jar) {
-    manifest {
-        attributes 'Implementation-Title': project.name,
-                'Implementation-Version': version,
-                'Main-Class': 'java.fleet.core.Test'
-    }
-    baseName = project.name
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
-}
 
 repositories {
     mavenCentral()
@@ -46,3 +22,24 @@ dependencies {
     testCompile 'com.couchbase.lite:couchbase-lite-java:1.4.0'
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
+
+compileJava {
+    sourceSets {
+        main {
+            java.srcDirs = [
+                    'src/main',
+            ]
+        }
+    }
+    options.encoding = 'UTF-8'
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
