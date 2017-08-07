@@ -4,6 +4,7 @@ import com.couchbase.lite.*;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
+import com.mapotempo.fleet.core.utils.DateHelper;
 
 import java.util.*;
 
@@ -61,22 +62,45 @@ public class Access<T> {
     {
         Map<String, Object> mapData = mAnalyzer.getData(data);
 
+        // ID
         String docId  = (String)mapData.get("_id");
         if(docId == null || docId.isEmpty()) {
             docId = mClazz.getSimpleName() + "_" + UUID.randomUUID().toString();
             mapData.put("_id", docId);
         }
 
+        // Owner
+        String owner  = (String)mapData.get("owner");
+        if(owner == null || owner.isEmpty()) {
+            owner = getDatabaseHandler().getUser();
+            mapData.put("owner", owner);
+        }
+
         Document document = mDatabaseHandler.mDatabase.getDocument(docId);
-        UnsavedRevision update = document.createRevision();
+        Map oldMapData = document.getProperties();
         try {
-            update.setProperties(mapData);
-            update.save();
+            Map mapMerge = new HashMap();
+            if(oldMapData != null)
+                mapMerge.putAll(oldMapData);
+            mapMerge.putAll(mapData);
+            document.putProperties(mapMerge);
             return true;
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             return false;
         }
+        /*UnsavedRevision update = document.createRevision();
+        try {
+            Map mapMerge = new HashMap();
+            mapMerge.putAll(oldMapData);
+            mapMerge.putAll(mapData);
+            update.setProperties(mapMerge);
+            update.save();
+            return true;
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+            return false;
+        }*/
     }
 
     /**

@@ -40,11 +40,11 @@ public class DateHelper {
     // ###################################
     // Date String for SyncGateway channel
     // ###################################
-    private static SimpleDateFormat sdf_for_channel = new SimpleDateFormat("ddMMyyyy");
+    private static SimpleDateFormat sdf_for_channel = new SimpleDateFormat("yyyyMMdd");
 
     public static String dateForChannel(int dayOffset) {
         Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
+            Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(calendar.DATE, dayOffset);
         return sdf_for_channel.format(calendar.getTime());

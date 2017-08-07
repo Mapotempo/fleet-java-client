@@ -4,6 +4,7 @@ import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.core.base.FieldBase;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -43,9 +44,6 @@ public class ModelBase {
 
     @FieldBase(name = "_rev")
     public String mRef;
-
-    @FieldBase(name = "owner")
-    public String mOwner;
 
     @Override
     public boolean equals(Object obj) {

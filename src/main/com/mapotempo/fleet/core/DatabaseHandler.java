@@ -37,27 +37,26 @@ public class DatabaseHandler {
 
     private Replication mPusher, mPuller;
 
-    public DatabaseHandler(String user, String password, String syncGatewayUrl, Context context) throws CoreException {
+    public DatabaseHandler(String user, Context context) throws CoreException {
         this.mUser = user;
-        this.mPassword = password;
         this.mContext = context;
         try {
             this.mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
         } catch (IOException e) {
             throw new CoreException(e);
         }
-        mDbname = user + "_database";
+        mDbname = mUser + "_database";
         try {
             this.mDatabase = mManager.getDatabase(mDbname);
         } catch (CouchbaseLiteException e) {
             throw new CoreException(e);
         }
-
-        initConnexion(syncGatewayUrl);
     }
 
-    private void initConnexion(String syncGatewayUrl) throws CoreException
+    public void setConnexionParam(String password, String syncGatewayUrl) throws CoreException
     {
+        this.mPassword = password;
+
         // CONNEXION
         try{
             url = new URL(syncGatewayUrl);
@@ -79,6 +78,7 @@ public class DatabaseHandler {
         mPuller.addChangeListener(new Replication.ChangeListener() {
             @Override
             public void changed(Replication.ChangeEvent changeEvent) {
+                Replication.ReplicationStatus a = changeEvent.getStatus();
                 System.out.println("puller changed listener");
             }
         });
@@ -90,9 +90,10 @@ public class DatabaseHandler {
 
         // Subscribing to the 3 next days date.
         ArrayList<String> channels = new ArrayList<>();
-        channels.add("static:" + DateHelper.dateForChannel(0));
-        channels.add("static:" + DateHelper.dateForChannel(1));
-        channels.add("static:" + DateHelper.dateForChannel(2));
+        channels.add("company" + ":" + mUser);
+        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(0));
+        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(1));
+        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(2));
         mPuller.setChannels(channels);
 
         // Start synchronisation
@@ -142,5 +143,9 @@ public class DatabaseHandler {
             e.printStackTrace();
         }
         return;
+    }
+
+    public String getUser() {
+        return mUser;
     }
 }

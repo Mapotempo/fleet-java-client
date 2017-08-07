@@ -44,8 +44,8 @@ public class Location  extends SubModelBase
         this.lon = lon;
     }
 
-    private double lat;
-    private double lon;
+    public double lat;
+    public double lon;
 
     @Override
     public boolean equals(Object obj) {
