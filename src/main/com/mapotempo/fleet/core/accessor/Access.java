@@ -69,7 +69,7 @@ public class Access<T extends MapotempoModelBase>  {
     public T getNew () {
         T res = null;
         try {
-            res = mConstructorFromDocument.newInstance(mDatabaseHandler.mDatabase);
+            res = mConstructorFromDatabase.newInstance(mDatabaseHandler.mDatabase);
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -79,6 +79,13 @@ public class Access<T extends MapotempoModelBase>  {
         } finally {
             return res;
         }
+    }
+
+    public T get(String id) throws CoreException {
+        Document doc = mDatabaseHandler.mDatabase.getExistingDocument(id);
+        if (doc != null)
+            return getInstance(doc);
+        return null;
     }
 
     /**

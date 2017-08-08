@@ -1,34 +1,98 @@
 package com.mapotempo.fleet;
 
 import com.couchbase.lite.Context;
+import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.exception.CoreException;
+import com.mapotempo.fleet.model.Company;
+import com.mapotempo.fleet.model.User;
 import com.mapotempo.fleet.model.accessor.CompanyAccess;
 import com.mapotempo.fleet.model.accessor.MissionAccess;
 import com.mapotempo.fleet.model.accessor.UserAccess;
 
+import java.util.List;
+
 /**
  * MapotempoFleetManager.
  */
-public class MapotempoFleetManager {
-
-    private static MapotempoFleetManager ourInstance = null;
-
-    public static MapotempoFleetManager getInstance(Context context) {
-        if(ourInstance == null)
-            ourInstance = new MapotempoFleetManager(context);
-        return ourInstance;
-    }
+public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private Context mContext;
 
-    public DatabaseHandler mDatabaseHandler;
+    private DatabaseHandler mDatabaseHandler;
 
-    public CompanyAccess mCompanyAccess;
-    public UserAccess mUserAccess;
-    public MissionAccess mMissionAccess;
+    private CompanyAccess mCompanyAccess;
 
-    private MapotempoFleetManager(Context context) {
+    private UserAccess mUserAccess;
+
+    private MissionAccess mMissionAccess;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Company getCompany() {
+        try {
+            List<Company> companies = mCompanyAccess.getAll();
+            if(companies.size() > 0)
+                return companies.get(0);
+            else
+                return mCompanyAccess.getNew();
+        } catch (CoreException e) {
+            e.printStackTrace();
+            return mCompanyAccess.getNew();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public User getUser() {
+        try {
+            List<User> users = mUserAccess.getAll();
+            if(users.size() > 0)
+                return users.get(0);
+            else
+                return mUserAccess.getNew();
+        } catch (CoreException e) {
+            e.printStackTrace();
+            return mUserAccess.getNew();
+        }    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MissionAccess getMissionAccess() {
+        return mMissionAccess;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean connexion(boolean status) {
+        // TODO
+        System.err.println("connexion not implemented");
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean getConnexionStatus() {
+        // TODO
+        System.err.println("connexion not implemented");
+        return false;
+    }
+
+    /**
+     * Default manager.
+     * @param context java context
+     */
+    public MapotempoFleetManager(Context context) {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler("default", mContext);
@@ -40,16 +104,22 @@ public class MapotempoFleetManager {
         };
     }
 
-    public void newConnexion(String user, String password) {
+    /**
+     * Connected manager.
+     * @param context java context
+     * @param user user login
+     * @param password user password
+     */
+    public MapotempoFleetManager(Context context, String user, String password) {
+        mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);
             mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
-            mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
+            mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
-        } catch (CoreException e)
-        {
+        } catch (CoreException e) {
             e.printStackTrace();
-        }
+        };
     }
 }

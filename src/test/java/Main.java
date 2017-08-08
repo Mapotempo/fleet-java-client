@@ -14,12 +14,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String [ ] args) throws CoreException
     {
-        MapotempoFleetManager mapotempoFleetManager = MapotempoFleetManager.getInstance(new JavaContext());
-        mapotempoFleetManager.newConnexion("static", "static");
-
-        List<Company> companies = mapotempoFleetManager.mCompanyAccess.getAll();
-        List<Mission> missions = mapotempoFleetManager.mMissionAccess.getAll();
-        List<User> users = mapotempoFleetManager.mUserAccess.getAll();
+        MapotempoFleetManager mapotempoFleetManager = new MapotempoFleetManager(new JavaContext(), "static", "static");
+        List<Mission> missions = mapotempoFleetManager.getMissionAccess().getAll();
 
         while(true) {
             Scanner keyboard = new Scanner(System.in);
@@ -28,14 +24,11 @@ public class Main {
                 continue;
             }
             else if(nextLine.equals("company")) {
-                for (Company c : companies) {
-                    System.out.println(c.getName());
-                }
+                Company c = mapotempoFleetManager.getCompany();
+                System.out.println(c.getName());
             }
             else if(nextLine.equals("company_up")) {
-                for (Company c : companies) {
-                    System.out.println(c.getName());
-                }
+
             }
             else if(nextLine.equals("mission")) {
                 for (Mission m : missions) {
@@ -48,12 +41,11 @@ public class Main {
                 }
             }
             else if(nextLine.equals("user")) {
-                for (User u : users) {
-                    System.out.println(u.getName());
-                }
+                User u = mapotempoFleetManager.getUser();
+                System.out.println(u.getName());
             }
             else if(nextLine.equals("all")) {
-                mapotempoFleetManager.mDatabaseHandler.printAllData();
+                //mapotempoFleetManager.mDatabaseHandler.printAllData();
             }
         }
 

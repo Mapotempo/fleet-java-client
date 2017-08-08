@@ -26,6 +26,7 @@ abstract public class MapotempoModelBase {
     }
 
     public MapotempoModelBase(Document doc) {
+        // Check Document type
         mDocument = doc;
         mDatabase = mDocument.getDatabase();
         updateDocument = mDocument.createRevision();
