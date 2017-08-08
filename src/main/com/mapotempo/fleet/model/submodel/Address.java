@@ -1,6 +1,5 @@
 package com.mapotempo.fleet.model.submodel;
 
-import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.SubModelBase;
 
 import java.util.HashMap;
@@ -11,8 +10,8 @@ import java.util.Map;
  */
 public class Address extends SubModelBase
 {
-    public Address(Map map, DatabaseHandler databaseHandler) {
-        super(map, databaseHandler);
+    public Address(Map map) {
+        super(map);
     }
 
     public Address(String street, String postalcode, String city, String state, String country, String detail) {

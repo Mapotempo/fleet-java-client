@@ -43,13 +43,17 @@ public class DatabaseHandler {
         try {
             this.mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
         } catch (IOException e) {
-            throw new CoreException(e);
+            e.printStackTrace();
+            // TODO
+            throw new CoreException("TODO");
         }
         mDbname = mUser + "_database";
         try {
             this.mDatabase = mManager.getDatabase(mDbname);
         } catch (CouchbaseLiteException e) {
-            throw new CoreException(e);
+            e.printStackTrace();
+            // TODO
+            throw new CoreException("TODO");
         }
     }
 
@@ -61,7 +65,9 @@ public class DatabaseHandler {
         try{
             url = new URL(syncGatewayUrl);
         } catch (MalformedURLException e){
-           throw new CoreException(e);
+            e.printStackTrace();
+            // TODO
+            throw new CoreException("TODO");
         }
 
         // Pusher and Puller sync
@@ -70,7 +76,7 @@ public class DatabaseHandler {
         mPusher.addChangeListener(new Replication.ChangeListener() {
             @Override
             public void changed(Replication.ChangeEvent changeEvent) {
-                System.out.println("pusher changed listener");
+                System.out.println("pusher changed listener " + changeEvent.getStatus());
             }
         });
         mPuller = mDatabase.createPullReplication(url);
@@ -79,7 +85,7 @@ public class DatabaseHandler {
             @Override
             public void changed(Replication.ChangeEvent changeEvent) {
                 Replication.ReplicationStatus a = changeEvent.getStatus();
-                System.out.println("puller changed listener");
+                System.out.println("puller changed listener " + changeEvent.getStatus());
             }
         });
 
@@ -89,12 +95,13 @@ public class DatabaseHandler {
         mPuller.setAuthenticator(authenticator);
 
         // Subscribing to the 3 next days date.
-        ArrayList<String> channels = new ArrayList<>();
-        channels.add("company" + ":" + mUser);
+        /*ArrayList<String> channels = new ArrayList<>();
+        channels.add("company:company_xxxx");
+        channels.add("company_bbbb");
         channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(0));
         channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(1));
         channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(2));
-        mPuller.setChannels(channels);
+        mPuller.setChannels(channels);*/
 
         // Start synchronisation
         mPusher.start();

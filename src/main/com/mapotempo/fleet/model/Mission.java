@@ -1,65 +1,53 @@
 package com.mapotempo.fleet.model;
 
+import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
+import com.mapotempo.fleet.core.accessor.MapotempoModelBase;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.base.FieldBase;
-import com.mapotempo.fleet.model.submodel.Address;
+import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.model.submodel.Location;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * Company.
+ */
 @DocumentBase(type = "mission")
-public class Mission extends ModelBase {
-    public Mission() {
+public class Mission extends MapotempoModelBase {
+
+    public Mission(Database database) {
+        super(database);
     }
 
-    /**
-     * Constructor.
-     * @param name Mission name
-     * @param location Mission Location
-     */
-    public Mission(String name, Address address, Location location, Company company, Date deliveryDate) {
-        this.mName = name;
-        this.mLocation = location;
-        this.mCompany = company;
-        this.address = address;
-        this.mDeliveryDate = deliveryDate;
+    public Mission(Document document) {
+        super(document);
     }
 
-    @FieldBase(name = "device", foreign = true)
-    public Company mCompany;
+    public String getName() {
+        return (String)getProperty("name", "Unknow");
+    }
 
-    @FieldBase(name = "name")
-    public String mName = "unknow mission";
+    /*
+    public void setName(String name) {
+        setProperty("name", name);
+    }*/
 
-    @FieldBase(name = "address")
-    public Address address = new Address("", "", "", "", "", "");
+    public String getCompanyId() {
+        return (String)getProperty("company_id", "No comnay id found");
+    }
 
-    @FieldBase(name = "location")
-    public Location mLocation = new Location(0, 0);
+    public Date getDeliveryDate() {
+        String dataType = (String)getProperty("delivery_date", "0");
+        Date res = DateHelper.dateFromString(dataType);
+        return res;
+    }
 
-    @FieldBase(name = "delivery_date")
-    public Date mDeliveryDate = new Date();
-
-    @FieldBase(name = "owners")
-    public ArrayList<String> mOwner = new ArrayList<>();
-
-    /**
-     * equals.
-     * @param obj
-     * @return
-     */
-    @Override
-    public boolean equals(Object obj) {
-        if(obj != null )
-            if(this.mName.equals(((Mission)obj).mName))
-                if((this.mLocation == null && ((Mission)obj).mLocation == null) || this.mLocation.equals(((Mission)obj).mLocation))
-                    if(this.mCompany != null && ((Mission)obj).mCompany != null) {
-                        if (this.mCompany.equals(((Mission) obj).mCompany))
-                            return super.equals(obj);
-                    }
-                    else if(this.mCompany == null && ((Mission)obj).mCompany == null)
-                            return true;
-        return false;
+    public Location getLocation() {
+        Location defaultLocation = new Location(0, 0);
+        Map dataType = (Map)getProperty("location", defaultLocation.toMap());
+        Location res = new Location(dataType);
+        return res;
     }
 }

@@ -1,15 +1,14 @@
 package com.mapotempo.fleet.model.submodel;
 
 import com.mapotempo.fleet.core.base.SubModelBase;
-import com.mapotempo.fleet.core.DatabaseHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Location  extends SubModelBase
+public class Location extends SubModelBase
 {
-    public Location(Map map, DatabaseHandler databaseHandler) {
-        super(map, databaseHandler);
+    public Location(Map map) {
+        super(map);
     }
 
     /**
@@ -34,14 +33,6 @@ public class Location  extends SubModelBase
         res.put("lat", Double.toString(lat));
         res.put("lon", Double.toString(lon));
         return res;
-    }
-
-    public void setLat(double lat) {
-        this.lat = lat;
-    }
-
-    public void setLon(double lon) {
-        this.lon = lon;
     }
 
     public double lat;

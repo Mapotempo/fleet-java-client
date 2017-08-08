@@ -1,5 +1,6 @@
 package com.mapotempo.fleet.core.base;
 
+import com.couchbase.lite.Database;
 import com.mapotempo.fleet.core.DatabaseHandler;
 
 import java.util.Map;
@@ -11,7 +12,7 @@ public abstract class SubModelBase {
         return;
     }
 
-    public SubModelBase(Map map, DatabaseHandler databaseHandler) {
+    public SubModelBase(Map map) {
         fromMap(map);
         return;
     }

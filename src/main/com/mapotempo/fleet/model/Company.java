@@ -1,27 +1,34 @@
 package com.mapotempo.fleet.model;
 
+import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
+import com.mapotempo.fleet.core.accessor.MapotempoModelBase;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.base.FieldBase;
 import com.mapotempo.fleet.model.submodel.Location;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
 
 /**
  * Company.
  */
 @DocumentBase(type = "company")
-public class Company extends ModelBase
-{
-    public Company() {
+public class Company extends MapotempoModelBase {
+
+    public Company(Database database) {
+        super(database);
     }
 
-    @FieldBase(name = "name")
-    public String mName;
+    public Company(Document doc) {
+        super(doc);
+    }
 
-    @FieldBase(name = "location")
-    public Location mLocation;
+    public String getName() {
+        return mDocument.getProperty("name").toString();
+    }
 
-    @FieldBase(name = "owners")
-    public ArrayList<String> owners;
+    public Location getLocation() {
+        Map dataType = (Map)mDocument.getProperty("location");
+        Location res = new Location(dataType);
+        return res;
+    }
 }

@@ -1,18 +1,18 @@
 package com.mapotempo.fleet.core.accessor;
 
 import com.couchbase.lite.*;
-import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.utils.DateHelper;
+import com.mapotempo.fleet.core.exception.CoreException;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 /**
  * Access.
  */
-public class Access<T> {
-
+public class Access<T extends MapotempoModelBase>  {
     private DatabaseHandler mDatabaseHandler;
 
     private Class<T> mClazz;
@@ -21,136 +21,64 @@ public class Access<T> {
 
     private DocumentBase mDocumentAnnotation;
 
-    private Factory<T> mFactory;
+    private Constructor<T> mConstructorFromDocument;
 
-    private Analyzer<T> mAnalyzer;
+    private Constructor<T> mConstructorFromDatabase;
 
     public Access(Class<T> clazz, DatabaseHandler dbHandler) throws CoreException {
+        mClazz = clazz;
+
+        // TODO ERROR MESSAGE !!
+        try {
+            mConstructorFromDocument = mClazz.getConstructor(Document.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new CoreException("In Class : " + mClazz.getName() + " wrong definition of constructor define.");
+        }
+
+        try {
+            mConstructorFromDatabase = mClazz.getConstructor(Database.class);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+            throw new CoreException("In Class : " + mClazz.getName() + " wrong definition of constructor define.");
+        }
+
 
         mDatabaseHandler = dbHandler;
 
         mClazz = clazz;
 
-        mFactory = new Factory<T>(mClazz, mDatabaseHandler);
-
-        mAnalyzer = new Analyzer<T>(mClazz);
-
         mDocumentAnnotation = mClazz.getAnnotation(DocumentBase.class);
 
+        // TODO complete
         if(mDocumentAnnotation == null)
-            throw new CoreException("e");
+            throw new CoreException("TODO Exception");
 
         mView = mDatabaseHandler.mDatabase.getView(mClazz.getSimpleName());
-
-        mView.setMap(new Mapper() {
+        boolean test = mView.setMap(new Mapper() {
             @Override
             public void map(Map<String, Object> document, Emitter emitter) {
+                System.out.println(document);
                 Object type_found = document.get(mDocumentAnnotation.type_field());
-
                 if(type_found != null && type_found.toString().equals(mDocumentAnnotation.type()))
                     emitter.emit(document, document.get("_id"));
             }
         }, "2");
     }
 
-    /**
-     * commit.
-     * @param data the data to commit
-     * @return true if data_sample successfully add
-     */
-    public boolean commit(T data) throws CoreException
-    {
-        Map<String, Object> mapData = mAnalyzer.getData(data);
-
-        // ID
-        String docId  = (String)mapData.get("_id");
-        if(docId == null || docId.isEmpty()) {
-            docId = mClazz.getSimpleName() + "_" + UUID.randomUUID().toString();
-            mapData.put("_id", docId);
-        }
-
-        // Owner
-        String owner  = (String)mapData.get("owner");
-        if(owner == null || owner.isEmpty()) {
-            owner = getDatabaseHandler().getUser();
-            mapData.put("owner", owner);
-        }
-
-        Document document = mDatabaseHandler.mDatabase.getDocument(docId);
-        Map oldMapData = document.getProperties();
+    public T getNew () {
+        T res = null;
         try {
-            Map mapMerge = new HashMap();
-            if(oldMapData != null)
-                mapMerge.putAll(oldMapData);
-            mapMerge.putAll(mapData);
-            document.putProperties(mapMerge);
-            return true;
-        } catch (CouchbaseLiteException e) {
+            res = mConstructorFromDocument.newInstance(mDatabaseHandler.mDatabase);
+        } catch (InstantiationException e) {
             e.printStackTrace();
-            return false;
-        }
-        /*UnsavedRevision update = document.createRevision();
-        try {
-            Map mapMerge = new HashMap();
-            mapMerge.putAll(oldMapData);
-            mapMerge.putAll(mapData);
-            update.setProperties(mapMerge);
-            update.save();
-            return true;
-        } catch (CouchbaseLiteException e) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-            return false;
-        }*/
-    }
-
-    /**
-     * delete.
-     * @param id the document id
-     * @return true if successfully delete
-     */
-    public boolean delete(String id) throws CoreException
-    {
-        Document doc = mDatabaseHandler.mDatabase.getExistingDocument(id);
-        if(doc != null) {
-            try {
-                return doc.delete();
-            } catch (CouchbaseLiteException e) {
-                throw new CoreException(e);
-            }
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } finally {
+            return res;
         }
-        return false;
-    }
-
-    /**
-     * deleteAll.
-     * @return true if successfully delete
-     */
-    public boolean deleteAll() throws CoreException
-    {
-        try {
-            Query query = mView.createQuery();
-            QueryEnumerator result = query.run();
-            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
-                QueryRow row = it.next();
-                row.getDocument().delete();
-            }
-            return true;
-        } catch (CouchbaseLiteException e) {
-            return false;
-        }
-    }
-
-    /**
-     * get.
-     * @param id the document id
-     * @return the specific T data
-     */
-    public T get(String id) throws CoreException
-    {
-        Document doc = mDatabaseHandler.mDatabase.getExistingDocument(id);
-        if(doc != null)
-            return mFactory.getInstance(doc);
-        return null;
     }
 
     /**
@@ -169,7 +97,7 @@ public class Access<T> {
      * @param query the query to run
      * @return a list of T
      **/
-    protected List<T> runQuery(Query query) throws CoreException
+    protected List<T> runQuery(Query query)
     {
         List<T> res = new ArrayList<T>();
         try {
@@ -177,9 +105,8 @@ public class Access<T> {
 
             for (Iterator<QueryRow> it = result; it.hasNext(); ) {
                 QueryRow row = it.next();
-                String docId = row.getDocumentId();
-                Document doc = mDatabaseHandler.mDatabase.getDocument(docId );
-                T data = mFactory.getInstance(doc);
+                Document doc = row.getDocument();
+                T data = getInstance(doc);
                 if(data != null)
                     res.add(data);
             }
@@ -189,15 +116,18 @@ public class Access<T> {
         return res;
     }
 
-    public DatabaseHandler getDatabaseHandler() {
-        return mDatabaseHandler;
-    }
-
-    public Class<T> getClazz() {
-        return mClazz;
-    }
-
-    public View getView() {
-        return mView;
+    private T getInstance(Document document) {
+        T res = null;
+        try {
+            res = mConstructorFromDocument.newInstance(document);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } finally {
+            return res;
+        }
     }
 }
