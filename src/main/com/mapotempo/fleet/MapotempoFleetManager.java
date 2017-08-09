@@ -89,10 +89,19 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     /**
+     * todo
+     * @param context
+     * @return return a {@link MapotempoFleetManagerInterface}
+     */
+    public static MapotempoFleetManagerInterface getDefaultManager(Context context) {
+        return new MapotempoFleetManager(context);
+    }
+
+    /**
      * Default manager.
      * @param context java context
      */
-    public MapotempoFleetManager(Context context) {
+    private MapotempoFleetManager(Context context) {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler("default", mContext);
@@ -105,12 +114,23 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     /**
+     * todo
+     * @param context
+     * @param user
+     * @param password
+     * @return return a {@link MapotempoFleetManagerInterface}
+     */
+    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password) {
+        return new MapotempoFleetManager(context, user, password);
+    }
+
+    /**
      * Connected manager.
      * @param context java context
      * @param user user login
      * @param password user password
      */
-    public MapotempoFleetManager(Context context, String user, String password) {
+    private MapotempoFleetManager(Context context, String user, String password) {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);

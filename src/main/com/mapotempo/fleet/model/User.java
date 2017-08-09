@@ -2,7 +2,7 @@ package com.mapotempo.fleet.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.core.accessor.MapotempoModelBase;
+import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.base.DocumentBase;
 
 /**

@@ -1,8 +1,10 @@
 package com.mapotempo.fleet.core.accessor;
 
 import com.couchbase.lite.*;
+import com.mapotempo.fleet.api.model.model.accessor.AccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
+import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.lang.reflect.Constructor;
@@ -12,7 +14,7 @@ import java.util.*;
 /**
  * Access.
  */
-public class Access<T extends MapotempoModelBase>  {
+public class Access<T extends MapotempoModelBase> implements AccessInterface {
     private DatabaseHandler mDatabaseHandler;
 
     private Class<T> mClazz;

@@ -1,4 +1,4 @@
-package com.mapotempo.fleet.core.accessor;
+package com.mapotempo.fleet.core.base;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;

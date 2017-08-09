@@ -1,5 +1,6 @@
 import com.couchbase.lite.JavaContext;
 import com.mapotempo.fleet.MapotempoFleetManager;
+import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.model.Company;
 import com.mapotempo.fleet.model.Mission;
@@ -14,7 +15,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String [ ] args) throws CoreException
     {
-        MapotempoFleetManager mapotempoFleetManager = new MapotempoFleetManager(new JavaContext(), "static", "static");
+        MapotempoFleetManagerInterface mapotempoFleetManager = MapotempoFleetManager.getManager(new JavaContext(), "static", "static");
         List<Mission> missions = mapotempoFleetManager.getMissionAccess().getAll();
 
         while(true) {

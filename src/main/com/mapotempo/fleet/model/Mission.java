@@ -2,13 +2,12 @@ package com.mapotempo.fleet.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.core.accessor.MapotempoModelBase;
+import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.model.submodel.Location;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

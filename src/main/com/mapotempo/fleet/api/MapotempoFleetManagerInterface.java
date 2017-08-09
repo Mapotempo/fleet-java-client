@@ -1,8 +1,8 @@
 package com.mapotempo.fleet.api;
 
+import com.mapotempo.fleet.api.model.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.model.Company;
 import com.mapotempo.fleet.model.User;
-import com.mapotempo.fleet.model.accessor.MissionAccess;
 
 /**
  * MapotempoFleetManagerInterface.
@@ -25,7 +25,7 @@ public interface MapotempoFleetManagerInterface {
      * todo
      * @return
      */
-    MissionAccess getMissionAccess();
+    MissionAccessInterface getMissionAccess();
 
     /**
      * todo
