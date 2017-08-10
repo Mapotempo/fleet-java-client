@@ -1,4 +1,4 @@
-package com.mapotempo.fleet.model;
+package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;

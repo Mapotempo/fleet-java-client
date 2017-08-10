@@ -1,4 +1,4 @@
-package com.mapotempo.fleet.model.submodel;
+package com.mapotempo.fleet.core.model.submodel;
 
 import com.mapotempo.fleet.core.base.SubModelBase;
 

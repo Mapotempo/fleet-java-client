@@ -30,6 +30,16 @@ abstract public class MapotempoModelBase {
         mDocument = doc;
         mDatabase = mDocument.getDatabase();
         updateDocument = mDocument.createRevision();
+        mDocument.addChangeListener(new Document.ChangeListener() {
+            @Override
+            public void changed(Document.ChangeEvent event) {
+                System.out.println("----------------------------------------");
+                System.out.println("CB On document");
+                System.out.println(event.getChange().getRevisionId());
+                System.out.println(event.getChange().getSource());
+                System.out.println("----------------------------------------");
+            }
+        });
     }
 
     public String getId() {
@@ -43,14 +53,13 @@ abstract public class MapotempoModelBase {
     protected Object getProperty(String key, Object def) {
         Object data= mDocument.getProperty(key);
         if(data == null) {
-            System.err.println("The key " + key + "is absent from document " + mDocument.getId());
+            System.err.println("WARNING : in " + getClass().getName() + " The key " + key + " is absent from document " + mDocument.getId());
             data = def;
         }
         return data;
     }
 
     protected boolean setProperty(String key, Object value) {
-
         try {
             Map mapMerge = new HashMap();
             Map properties= mDocument.getProperties();

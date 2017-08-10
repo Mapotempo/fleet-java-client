@@ -1,10 +1,10 @@
-package com.mapotempo.fleet.model.accessor;
+package com.mapotempo.fleet.core.model.accessor;
 
-import com.mapotempo.fleet.api.model.model.accessor.MissionAccessInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.model.Mission;
+import com.mapotempo.fleet.core.model.Mission;
 
 /**
  * MissionAccess.

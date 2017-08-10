@@ -1,5 +1,6 @@
-package com.mapotempo.fleet.api.model.model.accessor;
+package com.mapotempo.fleet.api.model.accessor;
 
+import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.List;
@@ -27,5 +28,15 @@ public interface AccessInterface<T> {
      * @return
      */
     public List<T> getAll() throws CoreException;
+
+    /**
+     * addChangeListener.
+     */
+    public void addChangeListener(Access.ChangeListener<T> changeListener);
+
+    /**
+     * addRemoveListener.
+     */
+    public void addRemoveListener(Access.ChangeListener<T> changeListener);
 
 }

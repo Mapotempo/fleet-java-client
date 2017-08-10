@@ -1,7 +1,7 @@
 package com.mapotempo.fleet.core.accessor;
 
 import com.couchbase.lite.*;
-import com.mapotempo.fleet.api.model.model.accessor.AccessInterface;
+import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
@@ -21,6 +21,8 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
 
     private View mView;
 
+    private LiveQuery mLiveQuery;
+
     private DocumentBase mDocumentAnnotation;
 
     private Constructor<T> mConstructorFromDocument;
@@ -28,6 +30,8 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
     private Constructor<T> mConstructorFromDatabase;
 
     public Access(Class<T> clazz, DatabaseHandler dbHandler) throws CoreException {
+        mChangeListenerList = new ArrayList<>();
+
         mClazz = clazz;
 
         // TODO ERROR MESSAGE !!
@@ -60,14 +64,27 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
         boolean test = mView.setMap(new Mapper() {
             @Override
             public void map(Map<String, Object> document, Emitter emitter) {
-                System.out.println(document);
                 Object type_found = document.get(mDocumentAnnotation.type_field());
                 if(type_found != null && type_found.toString().equals(mDocumentAnnotation.type()))
                     emitter.emit(document, document.get("_id"));
             }
         }, "2");
+
+        mLiveQuery = mView.createQuery().toLiveQuery();
+        mLiveQuery.start();
+        mLiveQuery.addChangeListener(new LiveQuery.ChangeListener() {
+            @Override
+            public void changed(LiveQuery.ChangeEvent event) {
+                List<T> items = runQuery(event.getRows());
+                for(ChangeListener changeListener : mChangeListenerList) {
+                    changeListener.changed(items);
+                }
+                mLiveQuery.start();
+            }
+        });
     }
 
+    @Override
     public T getNew () {
         T res = null;
         try {
@@ -83,7 +100,8 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
         }
     }
 
-    public T get(String id) throws CoreException {
+    @Override
+    public T get(String id) {
         Document doc = mDatabaseHandler.mDatabase.getExistingDocument(id);
         if (doc != null)
             return getInstance(doc);
@@ -95,33 +113,34 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
      * Type view filter
      * @return all data T in a list
      */
-    public List<T> getAll() throws CoreException
-    {
-        Query query = mView.createQuery().toLiveQuery();
-        return runQuery(query);
+    @Override
+    public List<T> getAll() {
+        Query query = mView.createQuery();
+        try {
+            QueryEnumerator result = query.run();
+            return runQuery(result);
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     /**
      * runQuery.
-     * @param query the query to run
+     * @param result the query row enumerator result
      * @return a list of T
      **/
-    protected List<T> runQuery(Query query)
+    protected List<T> runQuery(QueryEnumerator result)//Query query)
     {
         List<T> res = new ArrayList<T>();
-        try {
-            QueryEnumerator result = query.run();
-
-            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
-                QueryRow row = it.next();
-                Document doc = row.getDocument();
-                T data = getInstance(doc);
-                if(data != null)
-                    res.add(data);
-            }
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
+        for (Iterator<QueryRow> it = result; it.hasNext(); ) {
+            QueryRow row = it.next();
+            Document doc = row.getDocument();
+            T data = getInstance(doc);
+            if(data != null)
+                res.add(data);
         }
+
         return res;
     }
 
@@ -139,4 +158,20 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
             return res;
         }
     }
+
+    @Override
+    public void addChangeListener(ChangeListener changeListener) {
+        mChangeListenerList.add(changeListener);
+    }
+
+    @Override
+    public void addRemoveListener(ChangeListener changeListener) {
+        mChangeListenerList.remove(changeListener);
+    }
+
+    public interface ChangeListener<T> {
+        void changed(List<T> items);
+    }
+
+    private List<ChangeListener> mChangeListenerList;
 }

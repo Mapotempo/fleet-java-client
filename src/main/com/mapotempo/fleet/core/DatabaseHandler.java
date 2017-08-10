@@ -4,6 +4,7 @@ import com.couchbase.lite.*;
 import com.couchbase.lite.auth.Authenticator;
 import com.couchbase.lite.auth.AuthenticatorFactory;
 import com.couchbase.lite.replicator.Replication;
+import com.couchbase.lite.util.Log;
 import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.core.exception.CoreException;
 
@@ -13,6 +14,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.*;
 
 /**
  * DatabaseHandler.
@@ -38,6 +40,8 @@ public class DatabaseHandler {
     private Replication mPusher, mPuller;
 
     public DatabaseHandler(String user, Context context) throws CoreException {
+        Handler handler = new StreamHandler(System.out, new SimpleFormatter());
+
         this.mUser = user;
         this.mContext = context;
         try {
@@ -69,6 +73,28 @@ public class DatabaseHandler {
             // TODO
             throw new CoreException("TODO");
         }
+
+        mDatabase.addChangeListener(new Database.ChangeListener() {
+            @Override
+            public void changed(Database.ChangeEvent event) {
+                List<DocumentChange> changes = event.getChanges();
+                System.out.println("-----------------------------------------------");
+                System.out.println("CB On database");
+                for(DocumentChange documentChange : changes) {
+                    System.out.println("toString             " + documentChange.toString());
+                    System.out.println("getAddedRevision     " + documentChange.getAddedRevision());
+                    System.out.println("getDocumentId        " + documentChange.getDocumentId());
+                    System.out.println("getSource            " + documentChange.getSource());
+                    System.out.println("getWinningRevisionID " + documentChange.getWinningRevisionID());
+                    System.out.println("getRevisionId        " + documentChange.getRevisionId());
+                    System.out.println("isConflict           " + documentChange.isConflict());
+                    System.out.println("isCurrentRevision    " + documentChange.isCurrentRevision());
+                    System.out.println("isDeletion           " + documentChange.isDeletion());
+                }
+                System.out.println("database changed listener " + event.isExternal());
+                System.out.println("-----------------------------------------------");
+            }
+        });
 
         // Pusher and Puller sync
         mPusher = mDatabase.createPushReplication(url);

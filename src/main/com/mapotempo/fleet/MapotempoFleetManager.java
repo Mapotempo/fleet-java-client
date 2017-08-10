@@ -4,11 +4,11 @@ import com.couchbase.lite.Context;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.model.Company;
-import com.mapotempo.fleet.model.User;
-import com.mapotempo.fleet.model.accessor.CompanyAccess;
-import com.mapotempo.fleet.model.accessor.MissionAccess;
-import com.mapotempo.fleet.model.accessor.UserAccess;
+import com.mapotempo.fleet.core.model.Company;
+import com.mapotempo.fleet.core.model.User;
+import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionAccess;
+import com.mapotempo.fleet.core.model.accessor.UserAccess;
 
 import java.util.List;
 
@@ -32,16 +32,11 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      */
     @Override
     public Company getCompany() {
-        try {
-            List<Company> companies = mCompanyAccess.getAll();
-            if(companies.size() > 0)
-                return companies.get(0);
-            else
-                return mCompanyAccess.getNew();
-        } catch (CoreException e) {
-            e.printStackTrace();
+        List<Company> companies = mCompanyAccess.getAll();
+        if(companies.size() > 0)
+            return companies.get(0);
+        else
             return mCompanyAccess.getNew();
-        }
     }
 
     /**
@@ -49,16 +44,12 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      */
     @Override
     public User getUser() {
-        try {
             List<User> users = mUserAccess.getAll();
-            if(users.size() > 0)
-                return users.get(0);
-            else
-                return mUserAccess.getNew();
-        } catch (CoreException e) {
-            e.printStackTrace();
+        if(users.size() > 0)
+            return users.get(0);
+        else
             return mUserAccess.getNew();
-        }    }
+  }
 
     /**
      * {@inheritDoc}
@@ -134,7 +125,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);
-            mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
+            mDatabaseHandler.setConnexionParam(password, "http://localhost:4985/db");
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);

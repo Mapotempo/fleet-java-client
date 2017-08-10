@@ -1,10 +1,11 @@
 import com.couchbase.lite.JavaContext;
 import com.mapotempo.fleet.MapotempoFleetManager;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
+import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.model.Company;
-import com.mapotempo.fleet.model.Mission;
-import com.mapotempo.fleet.model.User;
+import com.mapotempo.fleet.core.model.Company;
+import com.mapotempo.fleet.core.model.Mission;
+import com.mapotempo.fleet.core.model.User;
 
 import java.util.List;
 import java.util.Scanner;
@@ -17,6 +18,20 @@ public class Main {
     {
         MapotempoFleetManagerInterface mapotempoFleetManager = MapotempoFleetManager.getManager(new JavaContext(), "static", "static");
         List<Mission> missions = mapotempoFleetManager.getMissionAccess().getAll();
+
+        mapotempoFleetManager.getMissionAccess().addChangeListener(new Access.ChangeListener<Mission>() {
+            @Override
+            public void changed(List<Mission> items) {
+                for (Mission m : items) {
+                    System.out.println("-----------------");
+                    System.out.println(m.getName());
+                    System.out.println(m.getCompanyId());
+                    System.out.println(m.getDeliveryDate());
+                    System.out.println(m.getLocation());
+                }
+
+            }
+        });
 
         while(true) {
             Scanner keyboard = new Scanner(System.in);
@@ -38,7 +53,7 @@ public class Main {
                     System.out.println(m.getCompanyId());
                     System.out.println(m.getDeliveryDate());
                     System.out.println(m.getLocation());
-                    //m.setName("toto");
+                    System.out.println(m.getAddress());
                 }
             }
             else if(nextLine.equals("user")) {
