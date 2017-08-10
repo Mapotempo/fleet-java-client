@@ -133,4 +133,37 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             e.printStackTrace();
         };
     }
+
+
+    /**
+     * todo
+     * @param context
+     * @param user
+     * @param url server url
+     * @param password
+     * @return return a {@link MapotempoFleetManagerInterface}
+     */
+    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password, String url) {
+        return new MapotempoFleetManager(context, user, password, url);
+    }
+
+    /**
+     * Connected manager.
+     * @param context java context
+     * @param user user login
+     * @param url server url
+     * @param password user password
+     */
+    private MapotempoFleetManager(Context context, String user, String password, String url) {
+        mContext = context;
+        try {
+            mDatabaseHandler = new DatabaseHandler(user, mContext);
+            mDatabaseHandler.setConnexionParam(password, url);
+            mMissionAccess = new MissionAccess(mDatabaseHandler);
+            mCompanyAccess = new CompanyAccess(mDatabaseHandler);
+            mUserAccess = new UserAccess(mDatabaseHandler);
+        } catch (CoreException e) {
+            e.printStackTrace();
+        };
+    }
 }
