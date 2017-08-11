@@ -24,11 +24,11 @@ public class DateHelper {
     // ####################################
     private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    public static String dateToString(Date value) {
+    public static String toStringISO8601(Date value) {
         return sdf.format(value);
     }
 
-    public static Date dateFromString(String value) {
+    public static Date fromStringISO8601(String value) {
         try {
             return sdf.parse(value);
         } catch (ParseException e)

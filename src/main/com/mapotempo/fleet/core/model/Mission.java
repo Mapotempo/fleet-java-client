@@ -29,18 +29,30 @@ public class Mission extends MapotempoModelBase {
         return (String)getProperty("name", "Unknow");
     }
 
-    /*public void setName(String name) {
+    public void setName(String name) {
         setProperty("name", name);
-    }*/
+    }
 
     public String getCompanyId() {
         return (String)getProperty("company_id", "No comnay id found");
     }
 
+    public void setCompanyId(String companyId) {
+        setProperty("company_id", companyId);
+    }
+
     public Date getDeliveryDate() {
         String dataType = (String)getProperty("delivery_date", "0");
-        Date res = DateHelper.dateFromString(dataType);
+        Date res = DateHelper.fromStringISO8601(dataType);
         return res;
+    }
+
+    public void setDeliveryDate(String isoDate) {
+        setProperty("delivery_date", isoDate);
+    }
+
+    public void setDeliveryDate(Date date) {
+        setProperty("delivery_date", DateHelper.toStringISO8601(date));
     }
 
     public Location getLocation() {
@@ -50,10 +62,18 @@ public class Mission extends MapotempoModelBase {
         return res;
     }
 
+    public void setLocation(Location location) {
+        setProperty("location", location.toMap());
+    }
+
     public Address getAddress() {
         Address defaultAddress = new Address("", "", "", "", "", "");
         Map dataType = (Map)getProperty("address", defaultAddress.toMap());
         Address res = new Address(dataType);
         return res;
+    }
+
+    public void setAddress(Address address) {
+        setProperty("address", address.toMap());
     }
 }

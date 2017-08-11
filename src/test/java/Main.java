@@ -29,7 +29,6 @@ public class Main {
                     System.out.println(m.getDeliveryDate());
                     System.out.println(m.getLocation());
                 }
-
             }
         });
 

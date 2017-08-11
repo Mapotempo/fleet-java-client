@@ -1,6 +1,7 @@
 package com.mapotempo.fleet.api.model.accessor;
 
 import com.mapotempo.fleet.core.accessor.Access;
+import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.List;
@@ -8,35 +9,35 @@ import java.util.List;
 /**
  * AccessInterface.
  */
-public interface AccessInterface<T> {
+public interface AccessInterface<T extends MapotempoModelBase> {
 
     /**
      * getNew.
      * @return return new data
      */
-    public T getNew () throws CoreException;
+    T getNew ();
 
     /**
      * get.
      * @param id
      * @return
      */
-    public T get(String id) throws CoreException;
+    T get(String id);
 
     /**
      * getAll.
      * @return
      */
-    public List<T> getAll() throws CoreException;
+    List<T> getAll();
 
     /**
      * addChangeListener.
      */
-    public void addChangeListener(Access.ChangeListener<T> changeListener);
+    void addChangeListener(Access.ChangeListener<T> changeListener);
 
     /**
      * addRemoveListener.
      */
-    public void addRemoveListener(Access.ChangeListener<T> changeListener);
+    void removeChangeListener(Access.ChangeListener<T> changeListener);
 
 }

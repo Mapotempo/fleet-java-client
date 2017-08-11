@@ -5,5 +5,5 @@ import com.mapotempo.fleet.core.model.Mission;
 /**
  * MissionAccessInterface.
  */
-public interface MissionAccessInterface<Mission> extends AccessInterface <Mission>{
+public interface MissionAccessInterface extends AccessInterface<Mission> {
 }

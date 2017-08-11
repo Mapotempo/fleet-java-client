@@ -1,18 +1,16 @@
 package com.mapotempo.fleet.core.base;
 
-import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.Database;
-import com.couchbase.lite.Document;
-import com.couchbase.lite.UnsavedRevision;
+import com.couchbase.lite.*;
+import com.mapotempo.fleet.core.accessor.Access;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * MapotempoModelBase.
  */
 abstract public class MapotempoModelBase {
+
+    MapotempoModelBase INSTANCE = this;
 
     private UnsavedRevision updateDocument;
 
@@ -20,9 +18,27 @@ abstract public class MapotempoModelBase {
 
     protected Database mDatabase;
 
+    private Document.ChangeListener mDocumentChangeListener = new Document.ChangeListener() {
+        @Override
+        public void changed(Document.ChangeEvent event) {
+            for(ChangeListener changeListener : mChangeListenerList) {
+                changeListener.changed(INSTANCE);
+            }
+        }
+    };
+
+    public interface ChangeListener<T extends MapotempoModelBase> {
+        void changed(T item);
+    }
+
+    private List<ChangeListener> mChangeListenerList = new ArrayList<>();
+
     public MapotempoModelBase(Database database) {
         mDatabase = database;
         mDocument = mDatabase.getDocument(UUID.randomUUID().toString());
+        updateDocument = mDocument.createRevision();
+        // Listener never is never remove, it will be remove with Document deallocation
+        mDocument.addChangeListener(mDocumentChangeListener);
     }
 
     public MapotempoModelBase(Document doc) {
@@ -30,16 +46,16 @@ abstract public class MapotempoModelBase {
         mDocument = doc;
         mDatabase = mDocument.getDatabase();
         updateDocument = mDocument.createRevision();
-        mDocument.addChangeListener(new Document.ChangeListener() {
-            @Override
-            public void changed(Document.ChangeEvent event) {
-                System.out.println("----------------------------------------");
-                System.out.println("CB On document");
-                System.out.println(event.getChange().getRevisionId());
-                System.out.println(event.getChange().getSource());
-                System.out.println("----------------------------------------");
-            }
-        });
+        // Listener never is never remove, it will be remove with Document deallocation
+        mDocument.addChangeListener(mDocumentChangeListener);
+    }
+
+    public void addChangeListener(ChangeListener changeListener) {
+        mChangeListenerList.add(changeListener);
+    }
+
+    public void removeChangeListener(ChangeListener changeListener) {
+        mChangeListenerList.remove(changeListener);
     }
 
     public String getId() {
@@ -50,6 +66,26 @@ abstract public class MapotempoModelBase {
         return mDocument.getCurrentRevision().getId();
     }
 
+    public boolean save() {
+        try {
+            updateDocument.save();
+            // Create the new futur revision
+            updateDocument = mDocument.createRevision();
+            return true;
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    protected void setProperty(String key, Object value) {
+        Map mapMerge = new HashMap();
+        Map properties= updateDocument.getProperties();
+        mapMerge.putAll(properties);
+        mapMerge.put(key, value);
+        updateDocument.setProperties(mapMerge);
+    }
+
     protected Object getProperty(String key, Object def) {
         Object data= mDocument.getProperty(key);
         if(data == null) {
@@ -57,30 +93,5 @@ abstract public class MapotempoModelBase {
             data = def;
         }
         return data;
-    }
-
-    protected boolean setProperty(String key, Object value) {
-        try {
-            Map mapMerge = new HashMap();
-            Map properties= mDocument.getProperties();
-            mapMerge.putAll(properties);
-            mapMerge.put(key, value);
-            mDocument.putProperties(mapMerge);
-            return true;
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Maybe propage an exception
-    public boolean save() {
-        try {
-            updateDocument.save();
-            return true;
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 }

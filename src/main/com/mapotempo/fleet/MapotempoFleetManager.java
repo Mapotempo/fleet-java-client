@@ -134,7 +134,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         };
     }
 
-
     /**
      * todo
      * @param context

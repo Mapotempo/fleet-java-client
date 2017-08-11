@@ -1,7 +1,6 @@
 package com.mapotempo.fleet.core.accessor;
 
 import com.couchbase.lite.*;
-import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
@@ -14,7 +13,7 @@ import java.util.*;
 /**
  * Access.
  */
-public class Access<T extends MapotempoModelBase> implements AccessInterface {
+public class Access<T extends MapotempoModelBase> {
     private DatabaseHandler mDatabaseHandler;
 
     private Class<T> mClazz;
@@ -28,6 +27,13 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
     private Constructor<T> mConstructorFromDocument;
 
     private Constructor<T> mConstructorFromDatabase;
+
+
+    public interface ChangeListener<T> {
+        void changed(List<T> items);
+    }
+
+    private List<ChangeListener> mChangeListenerList;
 
     public Access(Class<T> clazz, DatabaseHandler dbHandler) throws CoreException {
         mChangeListenerList = new ArrayList<>();
@@ -84,7 +90,6 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
         });
     }
 
-    @Override
     public T getNew () {
         T res = null;
         try {
@@ -100,7 +105,6 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
         }
     }
 
-    @Override
     public T get(String id) {
         Document doc = mDatabaseHandler.mDatabase.getExistingDocument(id);
         if (doc != null)
@@ -113,7 +117,6 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
      * Type view filter
      * @return all data T in a list
      */
-    @Override
     public List<T> getAll() {
         Query query = mView.createQuery();
         try {
@@ -123,6 +126,14 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
             e.printStackTrace();
             return new ArrayList<>();
         }
+    }
+
+    public void addChangeListener(Access.ChangeListener<T> changeListener) {
+        mChangeListenerList.add(changeListener);
+    }
+
+    public void removeChangeListener(Access.ChangeListener<T> changeListener) {
+        mChangeListenerList.remove(changeListener);
     }
 
     /**
@@ -158,20 +169,4 @@ public class Access<T extends MapotempoModelBase> implements AccessInterface {
             return res;
         }
     }
-
-    @Override
-    public void addChangeListener(ChangeListener changeListener) {
-        mChangeListenerList.add(changeListener);
-    }
-
-    @Override
-    public void addRemoveListener(ChangeListener changeListener) {
-        mChangeListenerList.remove(changeListener);
-    }
-
-    public interface ChangeListener<T> {
-        void changed(List<T> items);
-    }
-
-    private List<ChangeListener> mChangeListenerList;
 }

@@ -1,15 +1,4 @@
-package com.mapotempo.fleet.core.accessor_TO_DELETE;
-
-import com.couchbase.lite.*;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mapotempo.fleet.core.DatabaseHandler;
-import com.mapotempo.fleet.core.exception.CoreException;
-
-import org.junit.*;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+package com.mapotempo.fleet.core.accessor;
 
 
 import static junit.framework.TestCase.assertEquals;
@@ -18,7 +7,7 @@ import static junit.framework.TestCase.assertEquals;
  * MissionTest.
  */
 public class MissionTest {
-
+/*
     private static String DB_NAME = "database_test";
 
     private static DatabaseHandler databaseHandler;
@@ -62,6 +51,5 @@ public class MissionTest {
     @Test
     public void testDocumentFromMission() throws Exception {
         // TODO
-        assertEquals(2, 2);
-    }
+    }*/
 }
