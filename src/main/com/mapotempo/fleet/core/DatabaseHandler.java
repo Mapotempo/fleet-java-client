@@ -19,7 +19,7 @@ import java.util.logging.*;
  */
 public class DatabaseHandler {
 
-    private boolean mConnexionStatus = false;
+    private boolean mConnexionStatus = true;
 
     private Context mContext;
 
@@ -118,28 +118,21 @@ public class DatabaseHandler {
         mPusher.start();
         mPuller.start();
 
-        // TODO go offline ?
-        //mPusher.goOffline();
-        //mPuller.goOffline();
+        onlineStatus(mConnexionStatus);
     }
 
-    public boolean goOnline()
-    {
-        if(mConnexionStatus == false) {
-            mPuller.goOnline();
+    public void onlineStatus(boolean status) {
+        mConnexionStatus = status;
+        if(status) {
             mPusher.goOnline();
-            mConnexionStatus = true;
+            mPuller.goOnline();
+        } else {
+            mPusher.goOffline();
+            mPuller.goOffline();
         }
-        return mConnexionStatus;
     }
 
-    public boolean goOffline()
-    {
-        if(mConnexionStatus == true) {
-            mPuller.goOffline();
-            mPusher.goOffline();
-            mConnexionStatus = false;
-        }
+    public boolean isOnline() {
         return mConnexionStatus;
     }
 

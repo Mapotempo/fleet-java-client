@@ -63,20 +63,16 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * {@inheritDoc}
      */
     @Override
-    public boolean connexion(boolean status) {
-        // TODO
-        System.err.println("connexion not implemented");
-        return false;
+    public void onlineStatus(boolean status) {
+        mDatabaseHandler.onlineStatus(status);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public boolean getConnexionStatus() {
-        // TODO
-        System.err.println("connexion not implemented");
-        return false;
+    public boolean isOnline() {
+        return mDatabaseHandler.isOnline();
     }
 
     /**
@@ -125,7 +121,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);
-            mDatabaseHandler.setConnexionParam(password, "http://localhost:4985/db");
+            mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);

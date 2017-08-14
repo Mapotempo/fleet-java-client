@@ -35,12 +35,11 @@ public interface MapotempoFleetManagerInterface {
 
     /**
      * todo
-     * @return
      */
-    boolean connexion(boolean status);
+    void onlineStatus(boolean status);
 
     /**
      * todo
      */
-    boolean getConnexionStatus();
+    boolean isOnline();
 }

@@ -18,7 +18,7 @@ public class Access<T extends MapotempoModelBase> {
 
     private Class<T> mClazz;
 
-    private View mView;
+    protected View mView;
 
     private LiveQuery mLiveQuery;
 
@@ -28,6 +28,7 @@ public class Access<T extends MapotempoModelBase> {
 
     private Constructor<T> mConstructorFromDatabase;
 
+    private List<T> mItems;
 
     public interface ChangeListener<T> {
         void changed(List<T> items);
@@ -81,9 +82,14 @@ public class Access<T extends MapotempoModelBase> {
         mLiveQuery.addChangeListener(new LiveQuery.ChangeListener() {
             @Override
             public void changed(LiveQuery.ChangeEvent event) {
-                List<T> items = runQuery(event.getRows());
+                mItems = runQuery(event.getRows());
+                // todo
+                //for(MapotempoModelBase mapotempoModelBase: mItems) {
+                //    mapotempoModelBase.addConflictSolver();
+                //}
+
                 for(ChangeListener changeListener : mChangeListenerList) {
-                    changeListener.changed(items);
+                    changeListener.changed(mItems);
                 }
                 mLiveQuery.start();
             }
@@ -121,7 +127,8 @@ public class Access<T extends MapotempoModelBase> {
         Query query = mView.createQuery();
         try {
             QueryEnumerator result = query.run();
-            return runQuery(result);
+            mItems = runQuery(result);
+            return mItems;
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             return new ArrayList<>();

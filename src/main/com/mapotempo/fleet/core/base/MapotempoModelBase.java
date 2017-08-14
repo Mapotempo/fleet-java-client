@@ -2,6 +2,7 @@ package com.mapotempo.fleet.core.base;
 
 import com.couchbase.lite.*;
 import com.mapotempo.fleet.core.accessor.Access;
+import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.*;
 
@@ -17,6 +18,20 @@ abstract public class MapotempoModelBase {
     protected Document mDocument;
 
     protected Database mDatabase;
+
+    private Document.ChangeListener mConflictSolver = new Document.ChangeListener() {
+        @Override
+        public void changed(Document.ChangeEvent event) {
+            System.out.println("isConflict           :" + event.getChange().isConflict());
+            System.out.println("getRevisionId        :" + event.getChange().getRevisionId());
+            System.out.println("isDeletion           :" + event.getChange().isDeletion());
+            System.out.println("isCurrentRevision    :" + event.getChange().isCurrentRevision());
+            System.out.println("getWinningRevisionID :" + event.getChange().getWinningRevisionID());
+            System.out.println("getAddedRevision     :" + event.getChange().getAddedRevision());
+            System.out.println("toString             :" + event.getChange().toString());
+            System.out.println("-----------------------------------------------------------------------");
+        }
+    };
 
     private Document.ChangeListener mDocumentChangeListener = new Document.ChangeListener() {
         @Override
@@ -34,9 +49,15 @@ abstract public class MapotempoModelBase {
     private List<ChangeListener> mChangeListenerList = new ArrayList<>();
 
     public MapotempoModelBase(Database database) {
+        DocumentBase documentAnnotation = getClass().getAnnotation(DocumentBase.class);
+
         mDatabase = database;
-        mDocument = mDatabase.getDocument(UUID.randomUUID().toString());
+        mDocument = mDatabase.getDocument(documentAnnotation.type() + "_" + UUID.randomUUID().toString());
         updateDocument = mDocument.createRevision();
+        Map map = new HashMap();
+        map.put(documentAnnotation.type_field(), documentAnnotation.type());
+        updateDocument.setProperties(map);
+
         // Listener never is never remove, it will be remove with Document deallocation
         mDocument.addChangeListener(mDocumentChangeListener);
     }
@@ -48,6 +69,19 @@ abstract public class MapotempoModelBase {
         updateDocument = mDocument.createRevision();
         // Listener never is never remove, it will be remove with Document deallocation
         mDocument.addChangeListener(mDocumentChangeListener);
+    }
+
+    public void addConflictSolver() {
+        mDocument.addChangeListener(mConflictSolver);
+    }
+
+    public boolean delete() {
+        try {
+            return mDocument.delete();
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public void addChangeListener(ChangeListener changeListener) {
