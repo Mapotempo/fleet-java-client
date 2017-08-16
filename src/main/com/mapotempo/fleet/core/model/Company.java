@@ -14,6 +14,10 @@ import java.util.Map;
 @DocumentBase(type = "company")
 public class Company extends MapotempoModelBase {
 
+    // MAPOTEMPO KEY
+    public static final String NAME = "name";
+    public static final String COMPANY_ID = "company_id";
+
     public Company(Database database) {
         super(database);
     }
@@ -23,12 +27,12 @@ public class Company extends MapotempoModelBase {
     }
 
     public String getName() {
-        return (String) getProperty("name", "unknow");
+        return (String) getProperty(NAME, "unknow");
     }
 
     public Location getLocation() {
         Location defaultLocation = new Location(0, 0);
-        Map dataType = (Map)getProperty("location", defaultLocation.toMap());
+        Map dataType = (Map)getProperty(COMPANY_ID, defaultLocation.toMap());
         Location res = new Location(dataType);
         return res;
     }

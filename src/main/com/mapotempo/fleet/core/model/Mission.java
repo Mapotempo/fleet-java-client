@@ -8,6 +8,7 @@ import com.mapotempo.fleet.core.model.submodel.Address;
 import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.core.model.submodel.Location;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
@@ -16,6 +17,14 @@ import java.util.Map;
  */
 @DocumentBase(type = "mission")
 public class Mission extends MapotempoModelBase {
+
+    // MAPOTEMPO KEY
+    public static final String NAME = "name";
+    public static final String COMPANY_ID = "company_id";
+    public static final String DELIVERY_DATE = "delivery_date";
+    public static final String LOCATION = "location";
+    public static final String ADDRESS = "address";
+    public static final String OWNERS = "owners";
 
     public Mission(Database database) {
         super(database);
@@ -26,54 +35,62 @@ public class Mission extends MapotempoModelBase {
     }
 
     public String getName() {
-        return (String)getProperty("name", "Unknow");
+        return (String)getProperty(NAME, "Unknow");
     }
 
     public void setName(String name) {
-        setProperty("name", name);
+        setProperty(NAME, name);
     }
 
     public String getCompanyId() {
-        return (String)getProperty("company_id", "No company id found");
+        return (String)getProperty(COMPANY_ID, "No company id found");
     }
 
     public void setCompanyId(String companyId) {
-        setProperty("company_id", companyId);
+        setProperty(COMPANY_ID, companyId);
     }
 
     public Date getDeliveryDate() {
-        String dataType = (String)getProperty("delivery_date", "0");
+        String dataType = (String)getProperty(DELIVERY_DATE, "0");
         Date res = DateHelper.fromStringISO8601(dataType);
         return res;
     }
 
     public void setDeliveryDate(String isoDate) {
-        setProperty("delivery_date", isoDate);
+        setProperty(DELIVERY_DATE, isoDate);
     }
 
     public void setDeliveryDate(Date date) {
-        setProperty("delivery_date", DateHelper.toStringISO8601(date));
+        setProperty(DELIVERY_DATE, DateHelper.toStringISO8601(date));
     }
 
     public Location getLocation() {
         Location defaultLocation = new Location(0, 0);
-        Map dataType = (Map)getProperty("location", defaultLocation.toMap());
+        Map dataType = (Map)getProperty(LOCATION, defaultLocation.toMap());
         Location res = new Location(dataType);
         return res;
     }
 
     public void setLocation(Location location) {
-        setProperty("location", location.toMap());
+        setProperty(LOCATION, location.toMap());
     }
 
     public Address getAddress() {
         Address defaultAddress = new Address("", "", "", "", "", "");
-        Map dataType = (Map)getProperty("address", defaultAddress.toMap());
+        Map dataType = (Map)getProperty(ADDRESS, defaultAddress.toMap());
         Address res = new Address(dataType);
         return res;
     }
 
     public void setAddress(Address address) {
-        setProperty("address", address.toMap());
+        setProperty(ADDRESS, address.toMap());
+    }
+
+    public ArrayList<String> getOwners() {
+        return  (ArrayList<String>)getProperty(OWNERS, new ArrayList<String>());
+    }
+
+    public void setOwners(ArrayList<String> owners) {
+        setProperty(OWNERS, owners);
     }
 }

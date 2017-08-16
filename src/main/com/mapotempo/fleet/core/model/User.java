@@ -11,6 +11,10 @@ import com.mapotempo.fleet.core.base.DocumentBase;
 @DocumentBase(type = "user")
 public class User extends MapotempoModelBase {
 
+    // MAPOTEMPO KEY
+    public static final String USER = "user";
+    public static final String COMPANY_ID = "company_id";
+
     public User(Database database) {
         super(database);
     }
@@ -20,10 +24,10 @@ public class User extends MapotempoModelBase {
     }
 
     public String getUser() {
-        return (String)getProperty("user", "Unknow");
+        return (String)getProperty(USER, "Unknow");
     }
 
     public String getCompanyId() {
-        return (String)getProperty("company_id", "No company id found");
+        return (String)getProperty(COMPANY_ID, "No company id found");
     }
 }
