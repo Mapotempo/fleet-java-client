@@ -19,11 +19,11 @@ public class User extends MapotempoModelBase {
         super(doc);
     }
 
-    public String getName() {
-        return mDocument.getProperty("user").toString();
+    public String getUser() {
+        return (String)getProperty("user", "Unknow");
     }
 
     public String getCompanyId() {
-        return mDocument.getProperty("company_id").toString();
+        return (String)getProperty("company_id", "No company id found");
     }
 }

@@ -105,15 +105,6 @@ public class DatabaseHandler {
         mPusher.setAuthenticator(authenticator);
         mPuller.setAuthenticator(authenticator);
 
-        // Subscribing to the 3 next days date.
-        /*ArrayList<String> channels = new ArrayList<>();
-        channels.add("company:company_xxxx");
-        channels.add("company_bbbb");
-        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(0));
-        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(1));
-        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(2));
-        mPuller.setChannels(channels);*/
-
         // Start synchronisation
         mPusher.start();
         mPuller.start();
@@ -156,7 +147,38 @@ public class DatabaseHandler {
         return;
     }
 
-    public String getUser() {
-        return mUser;
+    public void setUserChannel(String userName) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("user:" + userName);
+        mPuller.setChannels(channels);
+    }
+
+    public void setCompanyChannel(String companyId) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("company:" + companyId);
+        mPuller.setChannels(channels);
+    }
+
+    public void setMissionChannel(String userName, String date) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("mission:" + userName + ":" + date);
+        mPuller.setChannels(channels);
+
+        /*
+        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(0));
+        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(1));
+        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(2));
+        */
+    }
+
+    public void close() {
+        if(mPusher != null)
+            mPusher.stop();
+
+        if(mPuller != null)
+            mPuller.stop();
+
+        mDatabase.close();
+        mManager.close();
     }
 }

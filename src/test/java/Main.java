@@ -32,7 +32,9 @@ public class Main {
             }
         });
 
-        while(true) {
+        boolean run = true;
+
+        while(run) {
             Scanner keyboard = new Scanner(System.in);
             String nextLine = keyboard.nextLine();
             if (nextLine.equals("")) {
@@ -57,10 +59,15 @@ public class Main {
             }
             else if(nextLine.equals("user")) {
                 User u = mapotempoFleetManager.getUser();
-                System.out.println(u.getName());
+                System.out.println(u.getUser());
             }
             else if(nextLine.equals("all")) {
                 //mapotempoFleetManager.mDatabaseHandler.printAllData();
+            }
+            else if(nextLine.equals("exit")) {
+                mapotempoFleetManager.close();
+                run = false;
+                continue;
             }
         }
 

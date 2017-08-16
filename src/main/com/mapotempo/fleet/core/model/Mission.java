@@ -34,7 +34,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public String getCompanyId() {
-        return (String)getProperty("company_id", "No comnay id found");
+        return (String)getProperty("company_id", "No company id found");
     }
 
     public void setCompanyId(String companyId) {
