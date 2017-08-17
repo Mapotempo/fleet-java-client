@@ -25,6 +25,23 @@ public class Mission extends MapotempoModelBase {
     public static final String LOCATION = "location";
     public static final String ADDRESS = "address";
     public static final String OWNERS = "owners";
+    public static final String STATUS = "status";
+
+    public enum MissionStatus {
+        PENDING(0xffa700),
+        COMPLETED(0x00ff00),
+        UNCOMPLETED(0xff0000);
+
+        private int mColor;
+
+        MissionStatus(int color) {
+            mColor = color;
+        }
+
+        public int getColor() {
+            return mColor;
+        }
+    }
 
     public Mission(Database database) {
         super(database);
@@ -86,8 +103,18 @@ public class Mission extends MapotempoModelBase {
         setProperty(ADDRESS, address.toMap());
     }
 
+    public void setStatus(MissionStatus status) {
+        setProperty(STATUS, status.toString().toUpperCase());
+    }
+
+    public MissionStatus getStatus() {
+        String enumString = (String)getProperty(STATUS, MissionStatus.UNCOMPLETED.toString());
+        MissionStatus res = MissionStatus.valueOf(enumString.toUpperCase());
+        return res;
+    }
+
     public ArrayList<String> getOwners() {
-        return  (ArrayList<String>)getProperty(OWNERS, new ArrayList<String>());
+        return  (ArrayList<String>)getProperty(STATUS, new ArrayList<String>());
     }
 
     public void setOwners(ArrayList<String> owners) {
