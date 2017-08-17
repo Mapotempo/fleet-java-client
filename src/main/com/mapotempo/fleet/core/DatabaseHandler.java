@@ -163,20 +163,24 @@ public class DatabaseHandler {
         List<String> channels = mPuller.getChannels();
         channels.add("mission:" + userName + ":" + date);
         mPuller.setChannels(channels);
+    }
 
-        /*
-        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(0));
-        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(1));
-        channels.add("mission" + ":" + mUser + ":" + DateHelper.dateForChannel(2));
-        */
+    public void setMissionStatusTypeChannel(String company_id) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("mission_status_type:" + company_id);
+        mPuller.setChannels(channels);
     }
 
     public void close() {
-        if(mPusher != null)
+        if(mPusher != null) {
+            mPusher.goOnline();
             mPusher.stop();
+        }
 
-        if(mPuller != null)
+        if(mPuller != null) {
+            mPuller.goOnline();
             mPuller.stop();
+        }
 
         mDatabase.close();
         mManager.close();

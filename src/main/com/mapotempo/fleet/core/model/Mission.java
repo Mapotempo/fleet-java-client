@@ -4,10 +4,10 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.base.DocumentBase;
+import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.submodel.Address;
-import com.mapotempo.fleet.core.model.submodel.MissionStatus;
-import com.mapotempo.fleet.core.utils.DateHelper;
 import com.mapotempo.fleet.core.model.submodel.Location;
+import com.mapotempo.fleet.core.utils.DateHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,7 +26,7 @@ public class Mission extends MapotempoModelBase {
     public static final String LOCATION = "location";
     public static final String ADDRESS = "address";
     public static final String OWNERS = "owners";
-    public static final String STATUS = "status";
+    public static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
 
     public Mission(Database database) {
         super(database);
@@ -88,21 +88,27 @@ public class Mission extends MapotempoModelBase {
         setProperty(ADDRESS, address.toMap());
     }
 
-
-    public MissionStatus getStatus() {
-        MissionStatus defaultStatus = new MissionStatus("unknow", 0x000000);
-        Map dataType = (Map)getProperty(STATUS, defaultStatus.toMap());
-        MissionStatus res = new MissionStatus(dataType);
-        return res;
+    public MissionStatusType getStatus() {
+        String status_id = (String)getProperty(MISSION_STATUS_TYPE_ID, "0");
+        try {
+            MissionStatusType defaultStatus = new MissionStatusType(status_id, mDatabase);
+            return defaultStatus;
+        } catch (CoreException e) {
+            e.printStackTrace();
+            System.out.println("WARNING : return a non saved MissionStatusType");
+            MissionStatusType missionStatus = new MissionStatusType(mDatabase);
+            missionStatus.setLabel(status_id);
+            return missionStatus;
+        }
     }
 
-    public void setStatus(MissionStatus status) {
-        setProperty(STATUS, status.toMap());
+    public void setStatus(MissionStatusType missionStatus) {
+        setProperty(MISSION_STATUS_TYPE_ID, missionStatus.getId());
     }
 
 
     public ArrayList<String> getOwners() {
-        return  (ArrayList<String>)getProperty(STATUS, new ArrayList<String>());
+        return  (ArrayList<String>)getProperty(OWNERS, new ArrayList<String>());
     }
 
     public void setOwners(ArrayList<String> owners) {

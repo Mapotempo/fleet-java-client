@@ -1,7 +1,6 @@
 package com.mapotempo.fleet.core.base;
 
 import com.couchbase.lite.*;
-import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.*;
@@ -11,15 +10,19 @@ import java.util.*;
  */
 abstract public class MapotempoModelBase {
 
-    MapotempoModelBase INSTANCE = this;
+    protected boolean readOnly = false;
+
+    private MapotempoModelBase INSTANCE = this;
 
     private UnsavedRevision updateDocument;
+    private HashMap<String, Boolean> readInUpdateDocument = new HashMap<>();
 
     protected Document mDocument;
 
     protected Database mDatabase;
 
-    private Document.ChangeListener mConflictSolver = new Document.ChangeListener() {
+    // TODO
+    /*private Document.ChangeListener mConflictSolver = new Document.ChangeListener() {
         @Override
         public void changed(Document.ChangeEvent event) {
             System.out.println("isConflict           :" + event.getChange().isConflict());
@@ -31,7 +34,7 @@ abstract public class MapotempoModelBase {
             System.out.println("toString             :" + event.getChange().toString());
             System.out.println("-----------------------------------------------------------------------");
         }
-    };
+    };*/
 
     private Document.ChangeListener mDocumentChangeListener = new Document.ChangeListener() {
         @Override
@@ -57,22 +60,26 @@ abstract public class MapotempoModelBase {
         Map map = new HashMap();
         map.put(documentAnnotation.type_field(), documentAnnotation.type());
         updateDocument.setProperties(map);
-
-        // Listener never is never remove, it will be remove with Document deallocation
-        mDocument.addChangeListener(mDocumentChangeListener);
     }
 
     public MapotempoModelBase(Document doc) {
-        // Check Document type
         mDocument = doc;
         mDatabase = mDocument.getDatabase();
         updateDocument = mDocument.createRevision();
-        // Listener never is never remove, it will be remove with Document deallocation
-        mDocument.addChangeListener(mDocumentChangeListener);
     }
 
-    public void addConflictSolver() {
-        mDocument.addChangeListener(mConflictSolver);
+    // USE THIS WITH CAUTION FOR THE MOMENT !
+    public MapotempoModelBase(String id, Database database) throws CoreException {
+        mDatabase = database;
+        // getExistingDocument return null value if document isn't found in database,
+        // maybe i could use getDocument, i don't know for the moment, sorry =/ !
+        mDocument = mDatabase.getExistingDocument(id);
+
+        // throw an exception for the moment !
+        if(mDocument == null) {
+            throw new CoreException(getClass().getName() + " : document id " + id + " not found in database " + mDatabase.getName());
+        }
+        updateDocument = mDocument.createRevision();
     }
 
     public boolean delete() {
@@ -85,10 +92,14 @@ abstract public class MapotempoModelBase {
     }
 
     public void addChangeListener(ChangeListener changeListener) {
+        if(mChangeListenerList.size() == 0)
+            mDocument.addChangeListener(mDocumentChangeListener);
         mChangeListenerList.add(changeListener);
     }
 
     public void removeChangeListener(ChangeListener changeListener) {
+        if(mChangeListenerList.size() == 0)
+            mDocument.removeChangeListener(mDocumentChangeListener);
         mChangeListenerList.remove(changeListener);
     }
 
@@ -101,27 +112,47 @@ abstract public class MapotempoModelBase {
     }
 
     public boolean save() {
-        try {
-            updateDocument.save();
-            // Create the new futur revision
-            updateDocument = mDocument.createRevision();
-            return true;
-        } catch (CouchbaseLiteException e) {
-            e.printStackTrace();
+        if(readOnly) {
+            try {
+                updateDocument.save();
+                // Create the new futur revision
+                updateDocument = mDocument.createRevision();
+                readInUpdateDocument.clear();
+                return true;
+            } catch (CouchbaseLiteException e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
+            DocumentBase documentAnnotation = getClass().getAnnotation(DocumentBase.class);
+            System.out.println("warning: property of " + documentAnnotation.type() + " " + mDocument.getId() +
+                    " can be set, model is defined as read only");
             return false;
         }
     }
 
     protected void setProperty(String key, Object value) {
-        Map mapMerge = new HashMap();
-        Map properties= updateDocument.getProperties();
-        mapMerge.putAll(properties);
-        mapMerge.put(key, value);
-        updateDocument.setProperties(mapMerge);
+        if(readOnly) {
+            Map mapMerge = new HashMap();
+            Map properties= updateDocument.getProperties();
+            mapMerge.putAll(properties);
+            mapMerge.put(key, value);
+            updateDocument.setProperties(mapMerge);
+            readInUpdateDocument.put(key, true);
+        } else {
+            DocumentBase documentAnnotation = getClass().getAnnotation(DocumentBase.class);
+            System.out.println("warning: property of " + documentAnnotation.type() + " " + mDocument.getId() +
+                    " can be set, model is defined as read only");
+        }
     }
 
     protected Object getProperty(String key, Object def) {
-        Object data= mDocument.getProperty(key);
+        Object data;
+        if(readInUpdateDocument.get(key) == null)
+            data= mDocument.getProperty(key);
+        else
+            data= updateDocument.getProperty(key);
+
         if(data == null) {
             System.err.println("WARNING : in " + getClass().getName() + " The key " + key + " is absent from document " + mDocument.getId());
             data = def;

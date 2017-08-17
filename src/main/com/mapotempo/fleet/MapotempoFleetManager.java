@@ -29,6 +29,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private MissionAccess mMissionAccess;
 
+    private boolean mChannelInit = false;
 
     /** {@inheritDoc} */
     @Override
@@ -99,28 +100,46 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         return mDatabaseHandler.isOnline();
     }
 
-    private void channelsConfiguration(final String user) {
-        mDatabaseHandler.setUserChannel(user);
+    private void channelsConfigurationSequence(final String userName) {
+        mDatabaseHandler.setUserChannel(userName);
         mUserAccess.addChangeListener(new Access.ChangeListener<User>() {
             @Override
             public void changed(List<User> items) {
-                if(mOnUserAvailable != null) {
-                    if(items.size() > 0)
-                    {
+                User user;
+
+                if(items.size() > 0)
+                {
+                    if(mOnUserAvailable != null) {
                         mOnUserAvailable.userAvailable(items.get(0));
-                        if(items.size() > 1)
-                            System.err.println("Warning : " + getClass().getSimpleName()  + " more than one user available, return the first");
                     }
-                    else
-                        System.err.println("Warning : " + getClass().getSimpleName()  + "no user found");
-                }
+                    if(items.size() > 1)
+                        System.err.println("Warning : " + getClass().getSimpleName()  + " more than one user available, return the first");
+
+                    // When user is received we can add channel
+                    if(mChannelInit) {
+                        channelsConfiguration(items.get(0));
+                    }
+}
+                else
+                    System.err.println("Warning : " + getClass().getSimpleName()  + "no user found");
             }
         });
 
-        mDatabaseHandler.setMissionChannel(user, DateHelper.dateForChannel(-1));
-        mDatabaseHandler.setMissionChannel(user, DateHelper.dateForChannel(0));
-        mDatabaseHandler.setMissionChannel(user, DateHelper.dateForChannel(1));
-        mDatabaseHandler.setMissionChannel(user, DateHelper.dateForChannel(2));
+        User user = getUser();
+        if(user != null) {
+            channelsConfiguration(user);
+        }
+    }
+
+    private void channelsConfiguration(User user) {
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-1));
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(0));
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(1));
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(2));
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(2));
+        mDatabaseHandler.setCompanyChannel(user.getCompanyId());
+        mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
+        mChannelInit = true;
     }
 
     @Override
@@ -180,7 +199,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mUserAccess = new UserAccess(mDatabaseHandler);
 
             // Set channels
-            channelsConfiguration(user);
+            channelsConfigurationSequence(user);
         } catch (CoreException e) {
             e.printStackTrace();
         };
@@ -215,7 +234,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mUserAccess = new UserAccess(mDatabaseHandler);
 
             // Set channels
-            channelsConfiguration(user);
+            channelsConfigurationSequence(user);
         } catch (CoreException e) {
             e.printStackTrace();
         };

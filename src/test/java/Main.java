@@ -16,7 +16,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String [ ] args) throws CoreException
     {
-        MapotempoFleetManagerInterface mapotempoFleetManager = MapotempoFleetManager.getManager(new JavaContext(), "static", "static");
+        MapotempoFleetManager mapotempoFleetManager = (MapotempoFleetManager)MapotempoFleetManager.getManager(new JavaContext(), "static", "static");
         List<Mission> missions = mapotempoFleetManager.getMissionAccess().getAll();
 
         mapotempoFleetManager.getMissionAccess().addChangeListener(new Access.ChangeListener<Mission>() {
