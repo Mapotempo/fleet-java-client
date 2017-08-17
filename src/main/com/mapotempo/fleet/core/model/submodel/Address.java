@@ -10,65 +10,96 @@ import java.util.Map;
  */
 public class Address extends SubModelBase
 {
+    // MAPOTEMPO KEY
+    public static final String STREET = "mStreet";
+    public static final String POSTALCODE = "mPostalcode";
+    public static final String CITY = "mCity";
+    public static final String STATE = "mState";
+    public static final String COUNTRY = "mCountry";
+    public static final String DETAIL = "mDetail";
+
+    private String mStreet;
+    private String mPostalCode;
+    private String mCity;
+    private String mState;
+    private String mCountry;
+    private String mDetail;
+
     public Address(Map map) {
         super(map);
     }
 
-    public Address(String street, String postalcode, String city, String state, String country, String detail) {
-        this.street = street;
-        this.postalcode = postalcode;
-        this.city = city;
-        this.state = state;
-        this.country = country;
-        this.detail = detail;
+    public Address(String street, String postalCode, String city, String state, String country, String detail) {
+        this.mStreet = street;
+        this.mPostalCode = postalCode;
+        this.mCity = city;
+        this.mState = state;
+        this.mCountry = country;
+        this.mDetail = detail;
     }
 
     @Override
     public void fromMap(Map map) {
-        this.street = map.get("street").toString();
-        this.postalcode = map.get("postalcode").toString();
-        this.city = map.get("city").toString();
-        this.state = map.get("state").toString();
-        this.country = map.get("country").toString();
-        this.detail = map.get("detail").toString();
+        this.mStreet = map.get(STREET).toString();
+        this.mPostalCode = map.get(POSTALCODE).toString();
+        this.mCity = map.get(CITY).toString();
+        this.mState = map.get(STATE).toString();
+        this.mCountry = map.get(COUNTRY).toString();
+        this.mDetail = map.get(DETAIL).toString();
     }
 
     @Override
     public Map<String, String> toMap() {
         HashMap<String, String> res = new HashMap<>();
-        res.put("street", street);
-        res.put("postalcode", postalcode);
-        res.put("city", city);
-        res.put("state", state);
-        res.put("country", country);
-        res.put("detail", detail);
+        res.put(STREET, mStreet);
+        res.put(POSTALCODE, mPostalCode);
+        res.put(CITY, mCity);
+        res.put(STATE, mState);
+        res.put(COUNTRY, mCountry);
+        res.put(DETAIL, mDetail);
         return res;
     }
 
-    private String street;
-    private String postalcode;
-    private String city;
-    private String state;
-    private String country;
-    private String detail;
+    public String getStreet() {
+        return mStreet;
+    }
 
+    public String getPostalcode() {
+        return mPostalCode;
+    }
+
+    public String getCity() {
+        return mCity;
+    }
+
+    public String getState() {
+        return mState;
+    }
+
+    public String getCountry() {
+        return mCountry;
+    }
+
+    public String getDetail() {
+        return mDetail;
+    }
 
     @Override
     public boolean equals(Object obj) {
         if(obj != null)
-            if(this.street == ((Address)obj).street)
-                if(this.postalcode == ((Address)obj).postalcode)
-                    if(this.city == ((Address)obj).city)
-                        if(this.state == ((Address)obj).state)
-                            if(this.country == ((Address)obj).country)
-                                if(this.detail == ((Address)obj).detail)
+            if(this.mStreet == ((Address)obj).mStreet)
+                if(this.mPostalCode == ((Address)obj).mPostalCode)
+                    if(this.mCity == ((Address)obj).mCity)
+                        if(this.mState == ((Address)obj).mState)
+                            if(this.mCountry == ((Address)obj).mCountry)
+                                if(this.mDetail == ((Address)obj).mDetail)
                                     return true;
         return false;
     }
 
     @Override
     public String toString() {
-        return "address : \n" + street + "\n" + postalcode + "\n" + city  + "\n" + state + "\n" + country +"\n" + detail;
+        return "address : \n" + mStreet + "\n" + mPostalCode + "\n" + mCity + "\n" + mState + "\n" + mCountry +"\n" + mDetail;
     }
 }
 

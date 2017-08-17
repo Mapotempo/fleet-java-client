@@ -7,6 +7,13 @@ import java.util.Map;
 
 public class Location extends SubModelBase
 {
+    // MAPOTEMPO KEY
+    public static final String LAT = "lat";
+    public static final String LON = "lon";
+
+    private double mLat;
+    private double mLon;
+
     public Location(Map map) {
         super(map);
     }
@@ -17,38 +24,43 @@ public class Location extends SubModelBase
      * @param lon longitude
      */
     public Location(double lat, double lon) {
-        this.lat = lat;
-        this.lon = lon;
+        this.mLat = lat;
+        this.mLon = lon;
     }
 
     @Override
     public void fromMap(Map map) {
-        this.lon = Double.valueOf(map.get("lon").toString());
-        this.lat = Double.valueOf(map.get("lat").toString());
+        this.mLat = Double.valueOf(map.get(LAT).toString());
+        this.mLon = Double.valueOf(map.get(LON).toString());
     }
 
     @Override
     public Map<String, String> toMap() {
         HashMap<String, String> res = new HashMap<>();
-        res.put("lat", Double.toString(lat));
-        res.put("lon", Double.toString(lon));
+        res.put(LAT, Double.toString(mLat));
+        res.put(LON, Double.toString(mLon));
         return res;
     }
 
-    public double lat;
-    public double lon;
+    public double getLon() {
+        return mLon;
+    }
+
+    public double getLat() {
+        return mLat;
+    }
 
     @Override
     public boolean equals(Object obj) {
         if(obj != null)
-            if(this.lat == ((Location)obj).lat)
-                if(this.lon == ((Location)obj).lon)
+            if(this.mLat == ((Location)obj).mLat)
+                if(this.mLon == ((Location)obj).mLon)
                     return true;
         return false;
     }
 
     @Override
     public String toString() {
-        return "(" + lat + " ; " + lon + ")";
+        return "(" + mLat + " ; " + mLon + ")";
     }
 }
