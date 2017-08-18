@@ -147,6 +147,10 @@ public class DatabaseHandler {
         return;
     }
 
+    public void restartPuller() {
+        mPuller.restart();
+    }
+
     public void setUserChannel(String userName) {
         List<String> channels = mPuller.getChannels();
         channels.add("user:" + userName);

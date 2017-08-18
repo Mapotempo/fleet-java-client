@@ -5,5 +5,5 @@ import com.mapotempo.fleet.core.model.MissionStatusType;
 /**
  * MissionAccessInterface.
  */
-public interface MissionStatusAccessInterface extends AccessInterface<MissionStatusType> {
+public interface MissionStatusTypeAccessInterface extends AccessInterface<MissionStatusType> {
 }

@@ -1,8 +1,11 @@
 package com.mapotempo.fleet.api;
 
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.core.model.Company;
+import com.mapotempo.fleet.core.model.MissionStatusType;
 import com.mapotempo.fleet.core.model.User;
+import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 
 /**
  * MapotempoFleetManager is the entry point for the mapotempo fleet java client.
@@ -71,6 +74,12 @@ public interface MapotempoFleetManagerInterface {
      * @return
      */
     MissionAccessInterface getMissionAccess();
+
+    /**
+     * todo
+     * @return
+     */
+    MissionStatusTypeAccessInterface getMissionStatusTypeAccessInterface();
 
     /**
      * todo

@@ -9,6 +9,7 @@ import com.mapotempo.fleet.core.model.Company;
 import com.mapotempo.fleet.core.model.User;
 import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 import com.mapotempo.fleet.core.model.accessor.UserAccess;
 import com.mapotempo.fleet.core.utils.DateHelper;
 
@@ -28,6 +29,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private UserAccess mUserAccess;
 
     private MissionAccess mMissionAccess;
+
+    private MissionStatusTypeAccess mMissionStatusTypeAccess;
 
     private boolean mChannelInit = false;
 
@@ -90,6 +93,12 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     /** {@inheritDoc} */
     @Override
+    public MissionStatusTypeAccess getMissionStatusTypeAccessInterface() {
+        return mMissionStatusTypeAccess;
+    };
+
+    /** {@inheritDoc} */
+    @Override
     public void onlineStatus(boolean status) {
         mDatabaseHandler.onlineStatus(status);
     }
@@ -107,8 +116,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             public void changed(List<User> items) {
                 User user;
 
-                if(items.size() > 0)
-                {
+                if(items.size() > 0) {
                     if(mOnUserAvailable != null) {
                         mOnUserAvailable.userAvailable(items.get(0));
                     }
@@ -116,17 +124,17 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
                         System.err.println("Warning : " + getClass().getSimpleName()  + " more than one user available, return the first");
 
                     // When user is received we can add channel
-                    if(mChannelInit) {
+                    if(!mChannelInit) {
                         channelsConfiguration(items.get(0));
                     }
-}
-                else
-                    System.err.println("Warning : " + getClass().getSimpleName()  + "no user found");
+                } else {
+                    System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
+                }
             }
         });
 
         User user = getUser();
-        if(user != null) {
+        if(user != null && !mChannelInit) {
             channelsConfiguration(user);
         }
     }
@@ -136,10 +144,10 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(0));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(1));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(2));
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(2));
         mDatabaseHandler.setCompanyChannel(user.getCompanyId());
         mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
         mChannelInit = true;
+        mDatabaseHandler.restartPuller();
     }
 
     @Override
@@ -167,6 +175,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
+            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
+
         } catch (CoreException e) {
             e.printStackTrace();
         };
@@ -197,6 +207,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
+            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
             channelsConfigurationSequence(user);
@@ -232,6 +243,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
+            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
             channelsConfigurationSequence(user);
