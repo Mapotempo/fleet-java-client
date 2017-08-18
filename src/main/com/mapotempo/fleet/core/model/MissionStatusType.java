@@ -36,11 +36,11 @@ public class MissionStatusType extends MapotempoModelBase {
         setProperty(LABEL, label);
     }
 
-    public int getColor() {
-        return (int)getProperty(COLOR, 0xFF0000);
+    public String getColor() {
+        return (String)getProperty(COLOR, "FF0000");
     }
 
-    public void setColor(int color) {
-        setProperty(COLOR, 0x000000);
+    public void setColor(String hexColor) {
+        setProperty(COLOR, hexColor);
     }
 }
