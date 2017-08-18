@@ -11,12 +11,12 @@ import java.util.Map;
 public class Address extends SubModelBase
 {
     // MAPOTEMPO KEY
-    public static final String STREET = "mStreet";
-    public static final String POSTALCODE = "mPostalcode";
-    public static final String CITY = "mCity";
-    public static final String STATE = "mState";
-    public static final String COUNTRY = "mCountry";
-    public static final String DETAIL = "mDetail";
+    private static final String STREET = "street";
+    private static final String POSTALCODE = "postalcode";
+    private static final String CITY = "city";
+    private static final String STATE = "state";
+    private static final String COUNTRY = "country";
+    private static final String DETAIL = "detail";
 
     private String mStreet;
     private String mPostalCode;
