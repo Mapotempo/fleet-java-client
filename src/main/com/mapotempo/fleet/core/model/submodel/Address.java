@@ -99,7 +99,6 @@ public class Address extends SubModelBase
 
     @Override
     public String toString() {
-        return "address : \n" + mStreet + "\n" + mPostalCode + "\n" + mCity + "\n" + mState + "\n" + mCountry +"\n" + mDetail;
+        return mStreet + " " + mCity + ", " + mPostalCode + " " +  mState + " ";
     }
 }
-
