@@ -7,11 +7,10 @@ import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.submodel.Address;
 import com.mapotempo.fleet.core.model.submodel.Location;
+import com.mapotempo.fleet.core.model.submodel.TimeWindow;
 import com.mapotempo.fleet.core.utils.DateHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Company.
@@ -20,13 +19,18 @@ import java.util.Map;
 public class Mission extends MapotempoModelBase {
 
     // MAPOTEMPO KEY
-    public static final String NAME = "name";
-    public static final String COMPANY_ID = "company_id";
-    public static final String DELIVERY_DATE = "delivery_date";
-    public static final String LOCATION = "location";
-    public static final String ADDRESS = "address";
-    public static final String OWNERS = "owners";
-    public static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
+    private static final String NAME = "name";
+    private static final String COMPANY_ID = "company_id";
+    private static final String DELIVERY_DATE = "delivery_date";
+    private static final String LOCATION = "location";
+    private static final String ADDRESS = "address";
+    private static final String OWNERS = "owners";
+    private static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
+    private static final String REFERENCE = "reference";
+    private static final String COMMENT = "comment";
+    private static final String PHONE = "phone";
+    private static final String DURATION = "duration";
+    private static final String TIME_WINDOWS = "time_windows";
 
     public Mission(Database database) {
         super(database);
@@ -106,7 +110,6 @@ public class Mission extends MapotempoModelBase {
         setProperty(MISSION_STATUS_TYPE_ID, missionStatus.getId());
     }
 
-
     public ArrayList<String> getOwners() {
         return  (ArrayList<String>)getProperty(OWNERS, new ArrayList<String>());
     }
@@ -114,4 +117,52 @@ public class Mission extends MapotempoModelBase {
     public void setOwners(ArrayList<String> owners) {
         setProperty(OWNERS, owners);
     }
+
+    public String getReference() {
+        return (String)getProperty(REFERENCE, "");
+    }
+
+    public void setReference(String reference) {
+        setProperty(REFERENCE, reference);
+    }
+
+    public String getComment() {
+        return (String)getProperty(COMMENT, "");
+    }
+
+    public void setComment(String comment) {
+        setProperty(COMMENT, comment);
+    }
+
+    public String getPhone() {
+        return (String)getProperty(PHONE, "");
+    }
+
+    public void setPhone(String phone) {
+        setProperty(PHONE, phone);
+    }
+
+    public int getDuration() {
+        return (int)getProperty(DURATION, 0);
+    }
+
+    public void setDuration(int duration) {
+        getProperty(DURATION, duration);
+    }
+
+    public ArrayList<TimeWindow> getTimeWindow() {
+        ArrayList<HashMap> hashArray = (ArrayList)getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
+        ArrayList<TimeWindow> res = new ArrayList<>();
+        for(HashMap hm : hashArray)
+            res.add(new TimeWindow(hm));
+        return res;
+    }
+
+    public void setTimeWindow(ArrayList<TimeWindow> timeWindows) {
+        ArrayList<TimeWindow> hashArray = new ArrayList<>();
+        for(TimeWindow tm : timeWindows)
+            hashArray.add(new TimeWindow(tm.toMap()));
+        setProperty(TIME_WINDOWS, hashArray);
+    }
 }
+    
