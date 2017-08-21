@@ -112,7 +112,7 @@ abstract public class MapotempoModelBase {
     }
 
     public boolean save() {
-        if(readOnly) {
+        if(!readOnly) {
             try {
                 updateDocument.save();
                 // Create the new futur revision
@@ -126,13 +126,13 @@ abstract public class MapotempoModelBase {
         } else {
             DocumentBase documentAnnotation = getClass().getAnnotation(DocumentBase.class);
             System.out.println("warning: property of " + documentAnnotation.type() + " " + mDocument.getId() +
-                    " can be set, model is defined as read only");
+                    " can't be set, model is defined as read only");
             return false;
         }
     }
 
     protected void setProperty(String key, Object value) {
-        if(readOnly) {
+        if(!readOnly) {
             Map mapMerge = new HashMap();
             Map properties= updateDocument.getProperties();
             mapMerge.putAll(properties);
@@ -142,7 +142,7 @@ abstract public class MapotempoModelBase {
         } else {
             DocumentBase documentAnnotation = getClass().getAnnotation(DocumentBase.class);
             System.out.println("warning: property of " + documentAnnotation.type() + " " + mDocument.getId() +
-                    " can be set, model is defined as read only");
+                    " can't be set, model is defined as read only");
         }
     }
 
