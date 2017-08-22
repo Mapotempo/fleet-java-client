@@ -142,9 +142,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             }
         });
 
+        // Test si le user est déja la
         User user = getUser();
         if(user != null && !mChannelInit) {
             channelsConfiguration(user);
+            if(mOnUserAvailable != null) {
+                mOnUserAvailable.userAvailable(user);
+            }
         }
     }
 
