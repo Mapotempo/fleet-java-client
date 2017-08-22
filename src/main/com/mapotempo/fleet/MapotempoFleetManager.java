@@ -250,14 +250,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);
-            mDatabaseHandler.setConnexionParam(password, url);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
-            mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
+            mDatabaseHandler.setConnexionParam(password, url);
             channelsConfigurationSequence(user);
         } catch (CoreException e) {
             e.printStackTrace();
