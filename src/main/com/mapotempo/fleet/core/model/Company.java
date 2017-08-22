@@ -31,9 +31,9 @@ public class Company extends MapotempoModelBase {
     }
 
     public Location getLocation() {
-        Location defaultLocation = new Location(0, 0);
+        Location defaultLocation = new Location(0, 0, mDatabase);
         Map dataType = (Map)getProperty(COMPANY_ID, defaultLocation.toMap());
-        Location res = new Location(dataType);
+        Location res = new Location(dataType, mDatabase);
         return res;
     }
 }

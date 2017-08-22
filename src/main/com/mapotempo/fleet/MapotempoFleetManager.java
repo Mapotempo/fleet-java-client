@@ -2,6 +2,7 @@ package com.mapotempo.fleet;
 
 import com.couchbase.lite.Context;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
+import com.mapotempo.fleet.api.model.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -11,6 +12,7 @@ import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 import com.mapotempo.fleet.core.model.accessor.UserAccess;
+import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
 import com.mapotempo.fleet.core.utils.DateHelper;
 
 import java.util.List;
@@ -34,6 +36,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private boolean mChannelInit = false;
 
+    private SubModelFactoryInterface mSubModelFactoryInterface;
+
     /** {@inheritDoc} */
     @Override
     public Company getCompany() {
@@ -48,7 +52,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private OnCompanyAvailable mOnCompanyAvailable;
 
     /** {@inheritDoc} */
-
     @Override
     public void setOnCompanyAvailable(OnCompanyAvailable onCompanyAvailable) {
         mOnCompanyAvailable = onCompanyAvailable;
@@ -99,6 +102,12 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     /** {@inheritDoc} */
     @Override
+    public SubModelFactoryInterface getSubmodelFactory() {
+        return null;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public void onlineStatus(boolean status) {
         mDatabaseHandler.onlineStatus(status);
     }
@@ -109,7 +118,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         return mDatabaseHandler.isOnline();
     }
 
-    private void channelsConfigurationSequence(final String userName) {
+    private void channelsConfigurationSequence(final String userName) throws CoreException{
         mDatabaseHandler.setUserChannel(userName);
         mUserAccess.addChangeListener(new Access.ChangeListener<User>() {
             @Override
@@ -172,6 +181,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler("default", mContext);
+            mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
@@ -203,13 +213,14 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);
-            mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
+            mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
+            mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
             channelsConfigurationSequence(user);
         } catch (CoreException e) {
             e.printStackTrace();
@@ -246,6 +257,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
+            mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
             channelsConfigurationSequence(user);
         } catch (CoreException e) {
             e.printStackTrace();

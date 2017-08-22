@@ -151,10 +151,14 @@ public class DatabaseHandler {
         mPuller.restart();
     }
 
-    public void setUserChannel(String userName) {
-        List<String> channels = mPuller.getChannels();
-        channels.add("user:" + userName);
-        mPuller.setChannels(channels);
+    public void setUserChannel(String userName) throws CoreException {
+        if(mPuller != null) {
+            List<String> channels = mPuller.getChannels();
+            channels.add("user:" + userName);
+            mPuller.setChannels(channels);
+        } else {
+            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
+        }
     }
 
     public void setCompanyChannel(String companyId) {

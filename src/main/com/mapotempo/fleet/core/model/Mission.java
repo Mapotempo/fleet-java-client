@@ -71,9 +71,9 @@ public class Mission extends MapotempoModelBase {
     }
 
     public Location getLocation() {
-        Location defaultLocation = new Location(0, 0);
+        Location defaultLocation = new Location(0, 0, mDatabase);
         Map dataType = (Map)getProperty(LOCATION, defaultLocation.toMap());
-        Location res = new Location(dataType);
+        Location res = new Location(dataType, mDatabase);
         return res;
     }
 
@@ -82,9 +82,9 @@ public class Mission extends MapotempoModelBase {
     }
 
     public Address getAddress() {
-        Address defaultAddress = new Address("", "", "", "", "", "");
+        Address defaultAddress = new Address("", "", "", "", "", "", mDatabase);
         Map dataType = (Map)getProperty(ADDRESS, defaultAddress.toMap());
-        Address res = new Address(dataType);
+        Address res = new Address(dataType, mDatabase);
         return res;
     }
 
@@ -95,8 +95,8 @@ public class Mission extends MapotempoModelBase {
     public MissionStatusType getStatus() {
         String status_id = (String)getProperty(MISSION_STATUS_TYPE_ID, "0");
         try {
-            MissionStatusType defaultStatus = new MissionStatusType(status_id, mDatabase);
-            return defaultStatus;
+            MissionStatusType statusType = new MissionStatusType(status_id, mDatabase);
+            return statusType;
         } catch (CoreException e) {
             e.printStackTrace();
             System.out.println("WARNING : return a non saved MissionStatusType");
@@ -154,15 +154,14 @@ public class Mission extends MapotempoModelBase {
         ArrayList<HashMap> hashArray = (ArrayList)getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
         ArrayList<TimeWindow> res = new ArrayList<>();
         for(HashMap hm : hashArray)
-            res.add(new TimeWindow(hm));
+            res.add(new TimeWindow(hm, mDatabase));
         return res;
     }
 
     public void setTimeWindow(ArrayList<TimeWindow> timeWindows) {
         ArrayList<TimeWindow> hashArray = new ArrayList<>();
         for(TimeWindow tm : timeWindows)
-            hashArray.add(new TimeWindow(tm.toMap()));
+            hashArray.add(new TimeWindow(tm.toMap(), mDatabase));
         setProperty(TIME_WINDOWS, hashArray);
     }
 }
-    

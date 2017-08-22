@@ -1,5 +1,6 @@
 package com.mapotempo.fleet.core.model.submodel;
 
+import com.couchbase.lite.Database;
 import com.mapotempo.fleet.core.base.SubModelBase;
 
 import java.util.HashMap;
@@ -25,11 +26,27 @@ public class Address extends SubModelBase
     private String mCountry;
     private String mDetail;
 
-    public Address(Map map) {
-        super(map);
+    /**
+     * Location.
+     * @param map map
+     * @param database database
+     */
+    public Address(Map map, Database database) {
+        super(map, database);
     }
 
-    public Address(String street, String postalCode, String city, String state, String country, String detail) {
+    /**
+     * Location.
+     * @param street street
+     * @param postalCode postalCode
+     * @param city city
+     * @param state state
+     * @param country country
+     * @param detail detail
+     * @param database database
+     */
+    public Address(String street, String postalCode, String city, String state, String country, String detail, Database database) {
+        super(database);
         this.mStreet = street;
         this.mPostalCode = postalCode;
         this.mCity = city;

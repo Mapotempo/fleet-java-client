@@ -1,23 +1,26 @@
 package com.mapotempo.fleet.core.base;
 
 import com.couchbase.lite.Database;
-import com.mapotempo.fleet.core.DatabaseHandler;
 
 import java.util.Map;
 
 /** The abstract submodel base.*/
 public abstract class SubModelBase {
 
-    public SubModelBase() {
+    protected Database mDatabase;
+
+    public SubModelBase(Database database) {
+        mDatabase = database;
         return;
     }
 
-    public SubModelBase(Map map) {
+    public SubModelBase(Map map, Database database) {
+        mDatabase = database;
         fromMap(map);
         return;
     }
 
-    abstract public void fromMap(Map map);
+    abstract protected void fromMap(Map map);
 
     abstract public Map<String, String> toMap();
 }

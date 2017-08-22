@@ -1,5 +1,6 @@
 package com.mapotempo.fleet.core.model.submodel;
 
+import com.couchbase.lite.Database;
 import com.mapotempo.fleet.core.base.SubModelBase;
 import com.mapotempo.fleet.core.utils.DateHelper;
 
@@ -16,16 +17,24 @@ public class TimeWindow extends SubModelBase
     private Date mStart;
     private Date mEnd;
 
-    public TimeWindow(Map map) {
-        super(map);
+
+    /**
+     * TimeWindow.
+     * @param map map
+     * @param database database
+     */
+    public TimeWindow(Map map, Database database) {
+        super(map, database);
     }
 
     /**
      * TimeWindow.
      * @param start start time
      * @param end end time
+     * @param database database
      */
-    public TimeWindow(Date start, Date end) {
+    public TimeWindow(Date start, Date end, Database database) {
+        super(database);
         this.mStart = start;
         this.mEnd = end;
     }

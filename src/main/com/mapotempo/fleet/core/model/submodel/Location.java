@@ -1,12 +1,12 @@
 package com.mapotempo.fleet.core.model.submodel;
 
+import com.couchbase.lite.Database;
 import com.mapotempo.fleet.core.base.SubModelBase;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Location extends SubModelBase
-{
+public class Location extends SubModelBase {
     // MAPOTEMPO KEY
     public static final String LAT = "lat";
     public static final String LON = "lon";
@@ -14,16 +14,23 @@ public class Location extends SubModelBase
     private double mLat;
     private double mLon;
 
-    public Location(Map map) {
-        super(map);
+    /**
+     * Location.
+     * @param map map
+     * @param database database
+     */
+    public Location(Map map, Database database) {
+        super(map, database);
     }
 
     /**
      * Location.
      * @param lat lattide
      * @param lon longitude
+     * @param database database
      */
-    public Location(double lat, double lon) {
+    public Location(double lat, double lon, Database database) {
+        super(database);
         this.mLat = lat;
         this.mLon = lon;
     }
