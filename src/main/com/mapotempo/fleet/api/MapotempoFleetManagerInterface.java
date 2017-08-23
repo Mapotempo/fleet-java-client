@@ -23,24 +23,6 @@ public interface MapotempoFleetManagerInterface {
     Company getCompany();
 
     /**
-     * OnCompanyAvailable.
-     */
-    interface OnCompanyAvailable {
-        void companyAvailable(Company company);
-    }
-
-    /**
-     * Set a callback to be notify on available company.
-     * @param onCompanyAvailable interface to implement
-     */
-    void setOnCompanyAvailable(OnCompanyAvailable onCompanyAvailable);
-
-    /**
-     * Clear the callback.
-     */
-    void clearOnCompanyAvailable();
-
-    /**
      * Return the user data associate to the user.
      * If user havn't data or data isn't
      * syncronisated getUser return null.
@@ -51,22 +33,18 @@ public interface MapotempoFleetManagerInterface {
     User getUser();
 
     /**
-     * OnUserAvailable.
+     * onServerConnexionVerify.
      */
-    interface OnUserAvailable {
-        void userAvailable(User user);
+    interface OnServerConnexionVerify {
+        enum Status {
+            TIMEOUT,
+            VERIFY,
+            PASSWORD_ERROR,
+            USER_ERROR
+        }
+
+        void connexion(Status status);
     }
-
-    /**
-     * Set a callback to be notify on available user.
-     * @param onUserAvailable interface to user
-     */
-    void setOnUserAvailable(OnUserAvailable onUserAvailable);
-
-    /**
-     * Clear the callback.
-     */
-    void clearOnUserAvailable();
 
     /**
      * todo
@@ -98,7 +76,7 @@ public interface MapotempoFleetManagerInterface {
 
 
     /**
-     * Close connexion.
+     * Release connexion.
      */
-    void close();
+    void release();
 }

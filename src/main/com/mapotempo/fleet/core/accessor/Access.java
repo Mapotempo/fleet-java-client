@@ -8,7 +8,10 @@ import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Access.
@@ -27,8 +30,6 @@ public class Access<T extends MapotempoModelBase> {
     private Constructor<T> mConstructorFromDocument;
 
     private Constructor<T> mConstructorFromDatabase;
-
-    private List<T> mItems;
 
     public interface ChangeListener<T> {
         void changed(List<T> items);
@@ -82,18 +83,17 @@ public class Access<T extends MapotempoModelBase> {
         mLiveQuery.addChangeListener(new LiveQuery.ChangeListener() {
             @Override
             public void changed(LiveQuery.ChangeEvent event) {
-                mItems = runQuery(event.getRows());
-                // todo
-                //for(MapotempoModelBase mapotempoModelBase: mItems) {
-                //    mapotempoModelBase.addConflictSolver();
-                //}
-
+                List<T> item = runQuery(event.getRows());
                 for(ChangeListener changeListener : mChangeListenerList) {
-                    changeListener.changed(mItems);
+                    changeListener.changed(item);
                 }
-                mLiveQuery.start();
+                //mLiveQuery.start();
             }
         });
+    }
+
+    public void purgeAll() {
+        //mItems = runQuery(event.getRows());
     }
 
     public T getNew () {
@@ -127,8 +127,8 @@ public class Access<T extends MapotempoModelBase> {
         Query query = mView.createQuery();
         try {
             QueryEnumerator result = query.run();
-            mItems = runQuery(result);
-            return mItems;
+            List<T> items = runQuery(result);
+            return items;
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             return new ArrayList<>();

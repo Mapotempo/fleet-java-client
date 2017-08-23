@@ -16,7 +16,12 @@ import java.util.Scanner;
 public class Main {
     public static void main(String [ ] args) throws CoreException
     {
-        MapotempoFleetManager mapotempoFleetManager = (MapotempoFleetManager)MapotempoFleetManager.getManager(new JavaContext(), "static", "static");
+        MapotempoFleetManager mapotempoFleetManager = (MapotempoFleetManager)MapotempoFleetManager.getManager(new JavaContext(), "static", "static", new MapotempoFleetManagerInterface.OnServerConnexionVerify() {
+            @Override
+            public void connexion(Status status) {
+
+            }
+        }, 0);
         List<Mission> missions = mapotempoFleetManager.getMissionAccess().getAll();
 
         mapotempoFleetManager.getMissionAccess().addChangeListener(new Access.ChangeListener<Mission>() {
@@ -65,7 +70,7 @@ public class Main {
                 //mapotempoFleetManager.mDatabaseHandler.printAllData();
             }
             else if(nextLine.equals("exit")) {
-                mapotempoFleetManager.close();
+                mapotempoFleetManager.release();
                 run = false;
                 continue;
             }

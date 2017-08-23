@@ -34,9 +34,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private MissionStatusTypeAccess mMissionStatusTypeAccess;
 
+    private boolean mConnexionIsVerify = false;
+
     private boolean mChannelInit = false;
 
     private SubModelFactoryInterface mSubModelFactoryInterface;
+
+    private OnServerConnexionVerify mOnServerConnexionVerify;
 
     /** {@inheritDoc} */
     @Override
@@ -46,21 +50,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             return companies.get(0);
         else
             return null;
-    //        return mCompanyAccess.getNew();
-    }
-
-    private OnCompanyAvailable mOnCompanyAvailable;
-
-    /** {@inheritDoc} */
-    @Override
-    public void setOnCompanyAvailable(OnCompanyAvailable onCompanyAvailable) {
-        mOnCompanyAvailable = onCompanyAvailable;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void clearOnCompanyAvailable() {
-        mOnCompanyAvailable = null;
+            // return mCompanyAccess.getNew();
     }
 
     /** {@inheritDoc} */
@@ -71,21 +61,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             return users.get(0);
         else
             return null;
-    //        return mUserAccess.getNew();
-    }
-
-    private OnUserAvailable mOnUserAvailable;
-
-    /** {@inheritDoc} */
-    @Override
-    public void setOnUserAvailable(OnUserAvailable onUserAvailable) {
-        mOnUserAvailable = onUserAvailable;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void clearOnUserAvailable() {
-        mOnUserAvailable = null;
+            // return mUserAccess.getNew();
     }
 
     /** {@inheritDoc} */
@@ -103,7 +79,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     /** {@inheritDoc} */
     @Override
     public SubModelFactoryInterface getSubmodelFactory() {
-        return null;
+        return mSubModelFactoryInterface;
     }
 
     /** {@inheritDoc} */
@@ -118,41 +94,45 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         return mDatabaseHandler.isOnline();
     }
 
-    private void channelsConfigurationSequence(final String userName) throws CoreException{
+    private void initChannelsConfigurationSequence(final String userName) throws CoreException{
+
         mDatabaseHandler.setUserChannel(userName);
+
+
+        // Ecoute des Documents User
         mUserAccess.addChangeListener(new Access.ChangeListener<User>() {
             @Override
             public void changed(List<User> items) {
-                User user;
-
                 if(items.size() > 0) {
-                    if(mOnUserAvailable != null) {
-                        mOnUserAvailable.userAvailable(items.get(0));
-                    }
                     if(items.size() > 1)
                         System.err.println("Warning : " + getClass().getSimpleName()  + " more than one user available, return the first");
 
                     // When user is received we can add channel
                     if(!mChannelInit) {
-                        channelsConfiguration(items.get(0));
+                        tryToInitchannels(items.get(0));
                     }
                 } else {
                     System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
                 }
+                verityConnexion();
             }
         });
+        verityConnexion();
+    }
 
-        // Test si le user est déja la
+    private void verityConnexion() {
         User user = getUser();
-        if(user != null && !mChannelInit) {
-            channelsConfiguration(user);
-            if(mOnUserAvailable != null) {
-                mOnUserAvailable.userAvailable(user);
+        if(user != null) {
+            if(!mChannelInit) {
+                tryToInitchannels(user);
+            }
+            if(!mConnexionIsVerify) {
+                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY);
             }
         }
     }
 
-    private void channelsConfiguration(User user) {
+    private void tryToInitchannels(User user) {
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-1));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(0));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(1));
@@ -164,8 +144,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     @Override
-    public void close() {
-        mDatabaseHandler.close();
+    public void release() {
+        mDatabaseHandler.release();
     }
 
     /**
@@ -203,8 +183,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param password
      * @return return a {@link MapotempoFleetManagerInterface}
      */
-    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password) {
-        return new MapotempoFleetManager(context, user, password);
+    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, int timeout) {
+        return new MapotempoFleetManager(context, user, password, onServerConnexionVerify);
     }
 
     /**
@@ -213,8 +193,10 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param user user login
      * @param password user password
      */
-    private MapotempoFleetManager(Context context, String user, String password) {
+    private MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
         mContext = context;
+        mOnServerConnexionVerify = onServerConnexionVerify;
+
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
@@ -225,7 +207,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
             // Set channels
             mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
-            channelsConfigurationSequence(user);
+            initChannelsConfigurationSequence(user);
         } catch (CoreException e) {
             e.printStackTrace();
         };
@@ -239,8 +221,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param password
      * @return return a {@link MapotempoFleetManagerInterface}
      */
-    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password, String url) {
-        return new MapotempoFleetManager(context, user, password, url);
+    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
+        return new MapotempoFleetManager(context, user, password, onServerConnexionVerify, url);
     }
 
     /**
@@ -250,8 +232,10 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param url server url
      * @param password user password
      */
-    private MapotempoFleetManager(Context context, String user, String password, String url) {
+    private MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
         mContext = context;
+        mOnServerConnexionVerify = onServerConnexionVerify;
+
         try {
             mDatabaseHandler = new DatabaseHandler(user, mContext);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
@@ -261,7 +245,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
             // Set channels
             mDatabaseHandler.setConnexionParam(password, url);
-            channelsConfigurationSequence(user);
+
+            initChannelsConfigurationSequence(user);
         } catch (CoreException e) {
             e.printStackTrace();
         };

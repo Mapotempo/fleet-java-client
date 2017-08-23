@@ -179,18 +179,21 @@ public class DatabaseHandler {
         mPuller.setChannels(channels);
     }
 
-    public void close() {
+    public void release() {
         if(mPusher != null) {
-            mPusher.goOnline();
             mPusher.stop();
+            mPusher = null;
         }
 
         if(mPuller != null) {
-            mPuller.goOnline();
+            mPuller.clearAuthenticationStores();
             mPuller.stop();
+            mPuller = null;
         }
 
         mDatabase.close();
+        mDatabase = null;
         mManager.close();
+        mManager = null;
     }
 }
