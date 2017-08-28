@@ -51,7 +51,7 @@ public class DatabaseHandler {
         }
         mDbname = mUser + "_database";
         try {
-            this.mDatabase = mManager.getDatabase(mDbname);
+            this.mDatabase = mManager.getDatabase(mDbname.toLowerCase());
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             // TODO
