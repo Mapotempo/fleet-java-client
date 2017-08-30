@@ -1,7 +1,9 @@
 package com.mapotempo.fleet.core.model.accessor;
 
+import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Predicate;
 import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
@@ -10,6 +12,7 @@ import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Mission;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,26 +23,37 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
         super(Mission.class, dbHandler);
     }
 
-    /*
-    // Query filter example
-    public List<Mission> getAllDataName(final String name)
-    {
+
+    /**
+     * Filter missions trough a time window
+     * @param before Start fetching from this date
+     * @param after End fetching from this date
+     * @return List<Mission>
+     */
+    public List<Mission> getByWindow(final Date before, final Date after) {
         List<Mission> res = new ArrayList<>();
-        System.out.println(mView.getDocumentType());
 
         Query query = mView.createQuery();
-        System.out.println("DEBUG");
         query.setPostFilter(new Predicate<QueryRow>() {
             @Override
             public boolean apply(QueryRow queryRow) {
-                System.out.println(queryRow.getValue());
-                Object doc_name = queryRow.getDocument().getProperty("name");
-                if(doc_name != null && doc_name.equals(name))
+                Mission mission = new Mission(queryRow.getDocument());
+
+                if (mission.getDeliveryDate().after(before) && mission.getDeliveryDate().before(after)) {
                     return true;
+                }
                 return false;
             }
         });
-        System.out.println("DEBUG");
-        return runQuery(query);
-    }*/
+
+        QueryEnumerator queryEnumerator;
+        try {
+            queryEnumerator = query.run();
+            res = runQuery(queryEnumerator);
+        } catch(CouchbaseLiteException e) {
+            e.printStackTrace();
+        } finally {
+            return res;
+        }
+    }
 }
