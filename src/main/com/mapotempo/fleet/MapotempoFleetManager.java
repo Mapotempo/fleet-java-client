@@ -236,7 +236,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param url
      */
     public static void getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
-        new MapotempoFleetManager(context, user, password, onServerConnexionVerify);
+        new MapotempoFleetManager(context, user, password, onServerConnexionVerify, url);
     }
 
     /**
