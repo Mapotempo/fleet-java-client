@@ -44,7 +44,7 @@ public class DateHelper {
 
     public static String dateForChannel(int dayOffset) {
         Date date = new Date();
-            Calendar calendar = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(calendar.DATE, dayOffset);
         return sdf_for_channel.format(calendar.getTime());

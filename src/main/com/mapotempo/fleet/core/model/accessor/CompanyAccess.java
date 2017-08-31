@@ -10,6 +10,6 @@ import com.mapotempo.fleet.core.model.Company;
  */
 public class CompanyAccess extends Access<Company> {
     public CompanyAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(Company.class, dbHandler);
+        super(Company.class, dbHandler, null);
     }
 }

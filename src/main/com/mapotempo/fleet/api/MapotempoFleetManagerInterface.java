@@ -1,5 +1,6 @@
 package com.mapotempo.fleet.api;
 
+import com.mapotempo.fleet.MapotempoFleetManager;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.model.submodel.SubModelFactoryInterface;
@@ -39,11 +40,10 @@ public interface MapotempoFleetManagerInterface {
         enum Status {
             TIMEOUT,
             VERIFY,
-            PASSWORD_ERROR,
-            USER_ERROR
+            LOGIN_ERROR
         }
 
-        void connexion(Status status);
+        void connexion(Status status, MapotempoFleetManager mapotempoFleetManager);
     }
 
     /**

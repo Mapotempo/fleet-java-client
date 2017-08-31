@@ -74,7 +74,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     @Override
     public MissionStatusTypeAccess getMissionStatusTypeAccessInterface() {
         return mMissionStatusTypeAccess;
-    };
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -98,7 +98,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
         mDatabaseHandler.setUserChannel(userName);
 
-
         // Ecoute des Documents User
         mUserAccess.addChangeListener(new Access.ChangeListener<User>() {
             @Override
@@ -111,23 +110,27 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
                     if(!mChannelInit) {
                         tryToInitchannels(items.get(0));
                     }
+
                 } else {
                     System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
                 }
-                verityConnexion();
+                verifyConnexion();
             }
         });
-        verityConnexion();
+
+        verifyConnexion();
     }
 
-    private void verityConnexion() {
+    private void verifyConnexion() {
         User user = getUser();
         if(user != null) {
             if(!mChannelInit) {
                 tryToInitchannels(user);
             }
+
             if(!mConnexionIsVerify) {
-                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY);
+                mConnexionIsVerify = true;
+                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY, this);
             }
         }
     }
@@ -145,7 +148,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     @Override
     public void release() {
-        mDatabaseHandler.release();
+        // Release ask by user, we don't delete database
+        mDatabaseHandler.release(false);
     }
 
     /**
@@ -157,6 +161,14 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         return new MapotempoFleetManager(context);
     }
 
+    private DatabaseHandler.OnCatchLoginError onCatchLoginError = new DatabaseHandler.OnCatchLoginError() {
+        @Override
+        public void CatchLoginError() {
+            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
+            mDatabaseHandler.release(true);
+        }
+    };
+
     /**
      * Default manager.
      * @param context java context
@@ -164,7 +176,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private MapotempoFleetManager(Context context) {
         mContext = context;
         try {
-            mDatabaseHandler = new DatabaseHandler("default", mContext);
+            mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", mContext, onCatchLoginError);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
@@ -177,28 +189,29 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     /**
-     * todo
+     * TODO
      * @param context
      * @param user
      * @param password
-     * @return return a {@link MapotempoFleetManagerInterface}
+     * @param onServerConnexionVerify
      */
-    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, int timeout) {
-        return new MapotempoFleetManager(context, user, password, onServerConnexionVerify);
+    public static void getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
+        MapotempoFleetManager mapotempoFleetManager = new MapotempoFleetManager(context, user, password, onServerConnexionVerify);
     }
 
     /**
-     * Connected manager.
-     * @param context java context
-     * @param user user login
-     * @param password user password
+     * TODO
+     * @param context
+     * @param user
+     * @param password
+     * @param onServerConnexionVerify
      */
     private MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
         mContext = context;
         mOnServerConnexionVerify = onServerConnexionVerify;
 
         try {
-            mDatabaseHandler = new DatabaseHandler(user, mContext);
+            mDatabaseHandler = new DatabaseHandler(user, password, mContext, onCatchLoginError);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
@@ -206,49 +219,52 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
-            mDatabaseHandler.setConnexionParam(password, "http://localhost:4984/db");
+            mDatabaseHandler.initConnexion("http://localhost:4984/db");
             initChannelsConfigurationSequence(user);
         } catch (CoreException e) {
+            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
             e.printStackTrace();
         };
     }
 
     /**
-     * todo
+     * TODO
      * @param context
      * @param user
-     * @param url server url
      * @param password
-     * @return return a {@link MapotempoFleetManagerInterface}
+     * @param onServerConnexionVerify
+     * @param url
      */
-    public static MapotempoFleetManagerInterface getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
-        return new MapotempoFleetManager(context, user, password, onServerConnexionVerify, url);
+    public static void getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
+        new MapotempoFleetManager(context, user, password, onServerConnexionVerify);
     }
 
     /**
-     * Connected manager.
-     * @param context java context
-     * @param user user login
-     * @param url server url
-     * @param password user password
+     * TODO
+     * @param context
+     * @param user
+     * @param password
+     * @param onServerConnexionVerify
+     * @param url
      */
     private MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
         mContext = context;
         mOnServerConnexionVerify = onServerConnexionVerify;
 
         try {
-            mDatabaseHandler = new DatabaseHandler(user, mContext);
+            mDatabaseHandler = new DatabaseHandler(user, password, mContext, onCatchLoginError);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
-            mDatabaseHandler.setConnexionParam(password, url);
+            mDatabaseHandler.initConnexion(url);
 
             initChannelsConfigurationSequence(user);
         } catch (CoreException e) {
+            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
             e.printStackTrace();
-        };
+        }
     }
 }

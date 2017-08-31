@@ -10,6 +10,6 @@ import com.mapotempo.fleet.core.model.User;
  */
 public class UserAccess extends Access<User> {
     public UserAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(User.class, dbHandler);
+        super(User.class, dbHandler, null);
     }
 }

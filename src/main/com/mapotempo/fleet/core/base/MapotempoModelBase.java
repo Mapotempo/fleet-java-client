@@ -21,8 +21,9 @@ abstract public class MapotempoModelBase {
 
     protected Database mDatabase;
 
+
     // TODO
-    /*private Document.ChangeListener mConflictSolver = new Document.ChangeListener() {
+    private Document.ChangeListener mConflictSolver = new Document.ChangeListener() {
         @Override
         public void changed(Document.ChangeEvent event) {
             System.out.println("isConflict           :" + event.getChange().isConflict());
@@ -34,7 +35,7 @@ abstract public class MapotempoModelBase {
             System.out.println("toString             :" + event.getChange().toString());
             System.out.println("-----------------------------------------------------------------------");
         }
-    };*/
+    };
 
     private Document.ChangeListener mDocumentChangeListener = new Document.ChangeListener() {
         @Override

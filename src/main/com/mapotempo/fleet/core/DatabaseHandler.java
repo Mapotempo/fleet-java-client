@@ -3,21 +3,28 @@ package com.mapotempo.fleet.core;
 import com.couchbase.lite.*;
 import com.couchbase.lite.auth.Authenticator;
 import com.couchbase.lite.auth.AuthenticatorFactory;
+import com.couchbase.lite.replicator.RemoteRequestResponseException;
 import com.couchbase.lite.replicator.Replication;
+import com.couchbase.lite.support.FileDirUtils;
 import com.mapotempo.fleet.core.exception.CoreException;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.*;
+import java.util.logging.Handler;
+import java.util.logging.SimpleFormatter;
+import java.util.logging.StreamHandler;
 
 /**
  * DatabaseHandler.
  */
 public class DatabaseHandler {
+
+    private boolean mReleaseStatus = false;
 
     private boolean mConnexionStatus = true;
 
@@ -37,8 +44,17 @@ public class DatabaseHandler {
 
     private Replication mPusher, mPuller;
 
-    public DatabaseHandler(String user, Context context) throws CoreException {
+    public interface OnCatchLoginError{
+        void CatchLoginError();
+    }
+
+    private OnCatchLoginError mOnCatchLoginError;
+
+    public DatabaseHandler(String user, String password, Context context, OnCatchLoginError onCatchLoginError) throws CoreException {
+        mOnCatchLoginError = onCatchLoginError;
+
         Handler handler = new StreamHandler(System.out, new SimpleFormatter());
+        this.mPassword = password;
 
         this.mUser = user;
         this.mContext = context;
@@ -50,8 +66,12 @@ public class DatabaseHandler {
             throw new CoreException("TODO");
         }
         mDbname = mUser + "_database";
+
         try {
-            this.mDatabase = mManager.getDatabase(mDbname.toLowerCase());
+            DatabaseOptions passwordDatabaseOption = new DatabaseOptions();
+            passwordDatabaseOption.setEncryptionKey(mPassword);
+            passwordDatabaseOption.setCreate(true);
+            this.mDatabase = mManager.openDatabase(mDbname.toLowerCase(), passwordDatabaseOption);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             // TODO
@@ -59,10 +79,10 @@ public class DatabaseHandler {
         }
     }
 
-    public void setConnexionParam(String password, String syncGatewayUrl) throws CoreException
-    {
-        this.mPassword = password;
+    final private String PASSWORD = "password";
 
+    public void initConnexion(String syncGatewayUrl) throws CoreException
+    {
         // CONNEXION
         try{
             url = new URL(syncGatewayUrl);
@@ -97,6 +117,21 @@ public class DatabaseHandler {
             public void changed(Replication.ChangeEvent changeEvent) {
                 Replication.ReplicationStatus a = changeEvent.getStatus();
                 System.out.println("puller changed listener " + changeEvent.getStatus());
+                System.out.println("> *************");
+                if(changeEvent.getError() != null){
+                    System.out.println(changeEvent.toString());
+                    if(changeEvent.getError() instanceof RemoteRequestResponseException){
+                        RemoteRequestResponseException ex = (RemoteRequestResponseException)changeEvent.getError();
+                        System.out.println("HTTP Error: " + ex.getCode() + ": " + ex.getMessage());
+                        System.out.println("            " + ex.getUserInfo());
+                        System.out.println(" hash code  " + ex.hashCode());
+                        if(new Integer(401).equals(ex.getCode())) {
+                            System.out.println("401 !!");
+                            mOnCatchLoginError.CatchLoginError();
+                        }
+                    }
+                }
+                System.out.println("< *************");
             }
         });
 
@@ -179,21 +214,51 @@ public class DatabaseHandler {
         mPuller.setChannels(channels);
     }
 
-    public void release() {
+    public void release(boolean delete_db) {
+        if(mReleaseStatus)
+            return;
+
         if(mPusher != null) {
             mPusher.stop();
             mPusher = null;
         }
 
         if(mPuller != null) {
-            mPuller.clearAuthenticationStores();
             mPuller.stop();
             mPuller = null;
         }
 
-        mDatabase.close();
+        // ###############################################################
+        // ## FIXME Trick
+        // ## Ce 'trick' permet d'effectuer la fermeture de la base
+        // ## dans un autre thread. En effet la fermeture d'une base
+        // ## qui a reçu un 401 sur l'un de ses replicator (puller, pusher)
+        // ## prend un timeout de 60s à la fermeture de celle ci. Pour ne
+        // ## pas bloquer le thread ui de l'utilisateur nous déléguons donc
+        // ## cette tache à couchbase.
+        mDatabase.runAsync(new AsyncTask() {
+            @Override
+            public void run(Database database) {
+                mDatabase.close();
+            }
+        });
+
+        if(delete_db) {
+            File databaseDirectory = mManager.getDirectory();
+            if (databaseDirectory != null) {
+                File databaseFile = new File(databaseDirectory, mDbname + ".cblite2"); // Or ".cblite"...
+                if (databaseFile.exists()) {
+                    FileDirUtils.deleteRecursive(databaseFile);
+                }
+            }
+        }
+        // # FIXME Trick
+        // ###############################################################
+
         mDatabase = null;
+
         mManager.close();
         mManager = null;
+        mReleaseStatus = true;
     }
 }

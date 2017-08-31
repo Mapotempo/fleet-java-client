@@ -37,7 +37,7 @@ public class Access<T extends MapotempoModelBase> {
 
     private List<ChangeListener> mChangeListenerList;
 
-    public Access(Class<T> clazz, DatabaseHandler dbHandler) throws CoreException {
+    public Access(Class<T> clazz, DatabaseHandler dbHandler, final String sortField) throws CoreException {
         mChangeListenerList = new ArrayList<>();
 
         mClazz = clazz;
@@ -72,9 +72,13 @@ public class Access<T extends MapotempoModelBase> {
         boolean test = mView.setMap(new Mapper() {
             @Override
             public void map(Map<String, Object> document, Emitter emitter) {
+                String _sortField = "_id";
+                if(sortField != null)
+                    _sortField = sortField;
+
                 Object type_found = document.get(mDocumentAnnotation.type_field());
                 if(type_found != null && type_found.toString().equals(mDocumentAnnotation.type()))
-                    emitter.emit(document, document.get("_id"));
+                    emitter.emit(document, document.get(_sortField));
             }
         }, "2");
 

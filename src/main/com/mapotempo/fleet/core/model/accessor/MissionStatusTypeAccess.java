@@ -11,7 +11,7 @@ import com.mapotempo.fleet.core.model.MissionStatusType;
  */
 public class MissionStatusTypeAccess extends Access<MissionStatusType> implements MissionStatusTypeAccessInterface {
     public MissionStatusTypeAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(MissionStatusType.class, dbHandler);
+        super(MissionStatusType.class, dbHandler, null);
     }
 
 }

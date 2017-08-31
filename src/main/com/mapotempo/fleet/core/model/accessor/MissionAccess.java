@@ -5,6 +5,7 @@ import com.couchbase.lite.Predicate;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
+
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.accessor.Access;
@@ -15,12 +16,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+
 /**
  * MissionAccess.
  */
 public class MissionAccess extends Access<Mission> implements MissionAccessInterface {
+
     public MissionAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(Mission.class, dbHandler);
+        super(Mission.class, dbHandler, "name");
     }
 
 
