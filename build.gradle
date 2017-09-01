@@ -43,3 +43,10 @@ publishing {
     }
 }
 
+task generateJavaDoc(type: org.gradle.api.tasks.javadoc.Javadoc) {
+    source = 'src/main/com/mapotempo/fleet/api'
+//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    destinationDir = file("./build/doc/")
+    failOnError false
+}
+
