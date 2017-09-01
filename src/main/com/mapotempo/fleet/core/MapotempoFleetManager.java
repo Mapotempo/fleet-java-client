@@ -1,9 +1,8 @@
-package com.mapotempo.fleet;
+package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.Context;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.api.model.model.submodel.SubModelFactoryInterface;
-import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
@@ -173,7 +172,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * Default manager.
      * @param context java context
      */
-    private MapotempoFleetManager(Context context) {
+    public MapotempoFleetManager(Context context) {
         mContext = context;
         try {
             mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", mContext, onCatchLoginError);
@@ -188,16 +187,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         };
     }
 
-    /**
-     * TODO
-     * @param context
-     * @param user
-     * @param password
-     * @param onServerConnexionVerify
-     */
-    public static void getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
-        MapotempoFleetManager mapotempoFleetManager = new MapotempoFleetManager(context, user, password, onServerConnexionVerify);
-    }
 
     /**
      * TODO
@@ -206,7 +195,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param password
      * @param onServerConnexionVerify
      */
-    private MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
+    public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
         mContext = context;
         mOnServerConnexionVerify = onServerConnexionVerify;
 
@@ -235,19 +224,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param onServerConnexionVerify
      * @param url
      */
-    public static void getManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
-        new MapotempoFleetManager(context, user, password, onServerConnexionVerify, url);
-    }
-
-    /**
-     * TODO
-     * @param context
-     * @param user
-     * @param password
-     * @param onServerConnexionVerify
-     * @param url
-     */
-    private MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
+    public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
         mContext = context;
         mOnServerConnexionVerify = onServerConnexionVerify;
 

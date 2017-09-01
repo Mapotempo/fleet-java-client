@@ -1,5 +1,5 @@
 import com.couchbase.lite.JavaContext;
-import com.mapotempo.fleet.MapotempoFleetManager;
+import com.mapotempo.fleet.core.MapotempoFleetManager;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;

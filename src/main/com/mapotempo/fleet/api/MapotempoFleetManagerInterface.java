@@ -1,6 +1,5 @@
 package com.mapotempo.fleet.api;
 
-import com.mapotempo.fleet.MapotempoFleetManager;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.model.submodel.SubModelFactoryInterface;
@@ -43,7 +42,12 @@ public interface MapotempoFleetManagerInterface {
             LOGIN_ERROR
         }
 
-        void connexion(Status status, MapotempoFleetManager mapotempoFleetManager);
+        /**
+         *
+         * @param status
+         * @param mapotempoFleetManager {@code null}
+         */
+        void connexion(Status status, MapotempoFleetManagerInterface mapotempoFleetManager);
     }
 
     /**
