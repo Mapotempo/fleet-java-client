@@ -26,7 +26,10 @@ import java.util.List;
 
 /**
  * MissionAccessInterface.
+ * {@serial AccessInterface}
  */
 public interface MissionAccessInterface extends AccessInterface<Mission> {
+
     List<Mission> getByWindow(final Date before, final Date after);
+
 }

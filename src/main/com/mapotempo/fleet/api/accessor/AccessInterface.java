@@ -30,13 +30,15 @@ import java.util.List;
 public interface AccessInterface<T extends MapotempoModelBase> {
 
     /**
-     * getNew.
+     * Get a new instance of <T>
+     *
      * @return return new data
      */
-    T getNew ();
+    T getNew();
 
     /**
      * get.
+     *
      * @param id
      * @return
      */
@@ -44,6 +46,7 @@ public interface AccessInterface<T extends MapotempoModelBase> {
 
     /**
      * getAll.
+     *
      * @return
      */
     List<T> getAll();
