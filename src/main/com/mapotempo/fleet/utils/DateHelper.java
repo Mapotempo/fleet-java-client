@@ -17,12 +17,12 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.core.utils;
+package com.mapotempo.fleet.utils;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * DateHelper.
@@ -50,8 +50,7 @@ public class DateHelper {
     public static Date fromStringISO8601(String value) {
         try {
             return sdf.parse(value);
-        } catch (ParseException e)
-        {
+        } catch (ParseException e) {
             return new Date(0);
         }
     }
@@ -75,7 +74,7 @@ public class DateHelper {
     private static SimpleDateFormat sdf_for_display = new SimpleDateFormat("dd MMMMMMM yyyy ':' hh'H' mm'M' ss's' SSS'ms'");
 
     public static String displayDate(Date value) {
-        if(value != null)
+        if (value != null)
             return sdf_for_display.format(value);
         else
             return null;

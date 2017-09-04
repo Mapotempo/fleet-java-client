@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.api.model.accessor;
+package com.mapotempo.fleet.api.accessor;
 
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
@@ -30,7 +30,7 @@ import java.util.List;
 public interface AccessInterface<T extends MapotempoModelBase> {
 
     /**
-     * Get a new instance of <T>
+     * Get a new instance of ...
      *
      * @return return new data
      */
@@ -39,25 +39,29 @@ public interface AccessInterface<T extends MapotempoModelBase> {
     /**
      * get.
      *
-     * @param id
-     * @return
+     * @param id Element id to retrieve
+     * @return T element or null
      */
     T get(String id);
 
     /**
      * getAll.
      *
-     * @return
+     * @return Return all element
      */
     List<T> getAll();
 
     /**
-     * addChangeListener.
+     * addChangeListener
+     *
+     * @param changeListener add a change listener
      */
     void addChangeListener(Access.ChangeListener<T> changeListener);
 
     /**
      * addRemoveListener.
+     *
+     * @param changeListener remove the change listener
      */
     void removeChangeListener(Access.ChangeListener<T> changeListener);
 

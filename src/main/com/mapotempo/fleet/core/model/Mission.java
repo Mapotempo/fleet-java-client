@@ -21,15 +21,18 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.base.DocumentBase;
+import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.submodel.Address;
 import com.mapotempo.fleet.core.model.submodel.Location;
 import com.mapotempo.fleet.core.model.submodel.TimeWindow;
-import com.mapotempo.fleet.core.utils.DateHelper;
+import com.mapotempo.fleet.utils.DateHelper;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Company.
@@ -60,7 +63,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public String getName() {
-        return (String)getProperty(NAME, "Unknow");
+        return (String) getProperty(NAME, "Unknow");
     }
 
     public void setName(String name) {
@@ -68,7 +71,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public String getCompanyId() {
-        return (String)getProperty(COMPANY_ID, "No company id found");
+        return (String) getProperty(COMPANY_ID, "No company id found");
     }
 
     public void setCompanyId(String companyId) {
@@ -76,7 +79,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public Date getDeliveryDate() {
-        String dataType = (String)getProperty(DELIVERY_DATE, "0");
+        String dataType = (String) getProperty(DELIVERY_DATE, "0");
         Date res = DateHelper.fromStringISO8601(dataType);
         return res;
     }
@@ -91,7 +94,7 @@ public class Mission extends MapotempoModelBase {
 
     public Location getLocation() {
         Location defaultLocation = new Location(0, 0, mDatabase);
-        Map dataType = (Map)getProperty(LOCATION, defaultLocation.toMap());
+        Map dataType = (Map) getProperty(LOCATION, defaultLocation.toMap());
         Location res = new Location(dataType, mDatabase);
         return res;
     }
@@ -102,7 +105,7 @@ public class Mission extends MapotempoModelBase {
 
     public Address getAddress() {
         Address defaultAddress = new Address("", "", "", "", "", "", mDatabase);
-        Map dataType = (Map)getProperty(ADDRESS, defaultAddress.toMap());
+        Map dataType = (Map) getProperty(ADDRESS, defaultAddress.toMap());
         Address res = new Address(dataType, mDatabase);
         return res;
     }
@@ -112,7 +115,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public MissionStatusType getStatus() {
-        String status_id = (String)getProperty(MISSION_STATUS_TYPE_ID, "0");
+        String status_id = (String) getProperty(MISSION_STATUS_TYPE_ID, "0");
         try {
             MissionStatusType statusType = new MissionStatusType(status_id, mDatabase);
             return statusType;
@@ -130,7 +133,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public ArrayList<String> getOwners() {
-        return  (ArrayList<String>)getProperty(OWNERS, new ArrayList<String>());
+        return (ArrayList<String>) getProperty(OWNERS, new ArrayList<String>());
     }
 
     public void setOwners(ArrayList<String> owners) {
@@ -138,7 +141,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public String getReference() {
-        return (String)getProperty(REFERENCE, "");
+        return (String) getProperty(REFERENCE, "");
     }
 
     public void setReference(String reference) {
@@ -146,7 +149,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public String getComment() {
-        return (String)getProperty(COMMENT, "");
+        return (String) getProperty(COMMENT, "");
     }
 
     public void setComment(String comment) {
@@ -154,7 +157,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public String getPhone() {
-        return (String)getProperty(PHONE, "");
+        return (String) getProperty(PHONE, "");
     }
 
     public void setPhone(String phone) {
@@ -162,7 +165,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public int getDuration() {
-        return (int)getProperty(DURATION, 0);
+        return (int) getProperty(DURATION, 0);
     }
 
     public void setDuration(int duration) {
@@ -170,16 +173,16 @@ public class Mission extends MapotempoModelBase {
     }
 
     public ArrayList<TimeWindow> getTimeWindow() {
-        ArrayList<HashMap> hashArray = (ArrayList)getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
+        ArrayList<HashMap> hashArray = (ArrayList) getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
         ArrayList<TimeWindow> res = new ArrayList<>();
-        for(HashMap hm : hashArray)
+        for (HashMap hm : hashArray)
             res.add(new TimeWindow(hm, mDatabase));
         return res;
     }
 
     public void setTimeWindow(ArrayList<TimeWindow> timeWindows) {
         ArrayList<TimeWindow> hashArray = new ArrayList<>();
-        for(TimeWindow tm : timeWindows)
+        for (TimeWindow tm : timeWindows)
             hashArray.add(new TimeWindow(tm.toMap(), mDatabase));
         setProperty(TIME_WINDOWS, hashArray);
     }

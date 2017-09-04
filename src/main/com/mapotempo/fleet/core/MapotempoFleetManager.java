@@ -21,7 +21,7 @@ package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.Context;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
-import com.mapotempo.fleet.api.model.model.submodel.SubModelFactoryInterface;
+import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
@@ -31,7 +31,7 @@ import com.mapotempo.fleet.core.model.accessor.MissionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 import com.mapotempo.fleet.core.model.accessor.UserAccess;
 import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
-import com.mapotempo.fleet.core.utils.DateHelper;
+import com.mapotempo.fleet.utils.DateHelper;
 
 import java.util.List;
 
@@ -60,59 +60,73 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private OnServerConnexionVerify mOnServerConnexionVerify;
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Company getCompany() {
         List<Company> companies = mCompanyAccess.getAll();
-        if(companies.size() > 0)
+        if (companies.size() > 0)
             return companies.get(0);
         else
             return null;
-            // return mCompanyAccess.getNew();
+        // return mCompanyAccess.getNew();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public User getUser() {
-            List<User> users = mUserAccess.getAll();
-        if(users.size() > 0)
+        List<User> users = mUserAccess.getAll();
+        if (users.size() > 0)
             return users.get(0);
         else
             return null;
-            // return mUserAccess.getNew();
+        // return mUserAccess.getNew();
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MissionAccess getMissionAccess() {
         return mMissionAccess;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MissionStatusTypeAccess getMissionStatusTypeAccessInterface() {
         return mMissionStatusTypeAccess;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SubModelFactoryInterface getSubmodelFactory() {
         return mSubModelFactoryInterface;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onlineStatus(boolean status) {
         mDatabaseHandler.onlineStatus(status);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isOnline() {
         return mDatabaseHandler.isOnline();
     }
 
-    private void initChannelsConfigurationSequence(final String userName) throws CoreException{
+    private void initChannelsConfigurationSequence(final String userName) throws CoreException {
 
         mDatabaseHandler.setUserChannel(userName);
 
@@ -120,12 +134,12 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mUserAccess.addChangeListener(new Access.ChangeListener<User>() {
             @Override
             public void changed(List<User> items) {
-                if(items.size() > 0) {
-                    if(items.size() > 1)
-                        System.err.println("Warning : " + getClass().getSimpleName()  + " more than one user available, return the first");
+                if (items.size() > 0) {
+                    if (items.size() > 1)
+                        System.err.println("Warning : " + getClass().getSimpleName() + " more than one user available, return the first");
 
                     // When user is received we can add channel
-                    if(!mChannelInit) {
+                    if (!mChannelInit) {
                         tryToInitchannels(items.get(0));
                     }
 
@@ -141,12 +155,12 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private void verifyConnexion() {
         User user = getUser();
-        if(user != null) {
-            if(!mChannelInit) {
+        if (user != null) {
+            if (!mChannelInit) {
                 tryToInitchannels(user);
             }
 
-            if(!mConnexionIsVerify) {
+            if (!mConnexionIsVerify) {
                 mConnexionIsVerify = true;
                 mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY, this);
             }
@@ -172,6 +186,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     /**
      * todo
+     *
      * @param context
      * @return return a {@link MapotempoFleetManagerInterface}
      */
@@ -189,6 +204,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     /**
      * Default manager.
+     *
      * @param context java context
      */
     public MapotempoFleetManager(Context context) {
@@ -203,12 +219,14 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
         } catch (CoreException e) {
             e.printStackTrace();
-        };
+        }
+        ;
     }
 
 
     /**
      * TODO
+     *
      * @param context
      * @param user
      * @param password
@@ -232,11 +250,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         } catch (CoreException e) {
             mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
             e.printStackTrace();
-        };
+        }
+        ;
     }
 
     /**
      * TODO
+     *
      * @param context
      * @param user
      * @param password

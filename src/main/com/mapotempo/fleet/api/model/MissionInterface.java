@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.api.model.model;
+package com.mapotempo.fleet.api.model;
 
 /**
  * MissionInterface.

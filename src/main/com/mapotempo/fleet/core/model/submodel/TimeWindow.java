@@ -21,14 +21,13 @@ package com.mapotempo.fleet.core.model.submodel;
 
 import com.couchbase.lite.Database;
 import com.mapotempo.fleet.core.base.SubModelBase;
-import com.mapotempo.fleet.core.utils.DateHelper;
+import com.mapotempo.fleet.utils.DateHelper;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TimeWindow extends SubModelBase
-{
+public class TimeWindow extends SubModelBase {
     // MAPOTEMPO KEY
     public static final String START = "start";
     public static final String END = "end";
@@ -39,7 +38,8 @@ public class TimeWindow extends SubModelBase
 
     /**
      * TimeWindow.
-     * @param map map
+     *
+     * @param map      map
      * @param database database
      */
     public TimeWindow(Map map, Database database) {
@@ -48,23 +48,24 @@ public class TimeWindow extends SubModelBase
 
     /**
      * TimeWindow.
-     * @param start start time
-     * @param end end time
+     *
+     * @param start    start time
+     * @param end      end time
      * @param database database
      */
     public TimeWindow(Date start, Date end, Database database) {
         super(database);
-        this.mStart = start;
-        this.mEnd = end;
+        mStart = start;
+        mEnd = end;
     }
 
     @Override
     public void fromMap(Map map) {
         // TODO FIXME CHECK ISO
-        String str = (String)map.get(START);
-        this.mStart = DateHelper.fromStringISO8601(str);
-        str = (String)map.get(END);
-        this.mStart = DateHelper.fromStringISO8601(str);
+        String str = (String) map.get(START);
+        mStart = DateHelper.fromStringISO8601(str);
+        str = (String) map.get(END);
+        mStart = DateHelper.fromStringISO8601(str);
     }
 
     @Override
@@ -78,9 +79,9 @@ public class TimeWindow extends SubModelBase
 
     @Override
     public boolean equals(Object obj) {
-        if(obj != null)
-            if(this.mStart == ((TimeWindow)obj).mStart)
-                if(this.mEnd == ((TimeWindow)obj).mEnd)
+        if (obj != null)
+            if (mStart == ((TimeWindow) obj).mStart)
+                if (mEnd == ((TimeWindow) obj).mEnd)
                     return true;
         return false;
     }

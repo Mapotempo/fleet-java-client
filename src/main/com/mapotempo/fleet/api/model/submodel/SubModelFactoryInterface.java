@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.api.model.model.submodel;
+package com.mapotempo.fleet.api.model.submodel;
 
 import com.mapotempo.fleet.core.model.MissionStatusType;
 import com.mapotempo.fleet.core.model.submodel.Address;
@@ -31,6 +31,7 @@ public interface SubModelFactoryInterface {
 
     /**
      * Create a new allocated location.
+     *
      * @param lat latitude
      * @param lon longitude
      * @return a new allocated Location
@@ -39,29 +40,32 @@ public interface SubModelFactoryInterface {
 
     /**
      * Create a new allocated address.
-     * @param street street
+     *
+     * @param street     street
      * @param postalCode postalcode
-     * @param city city
-     * @param state state
-     * @param country country
-     * @param detail detail
+     * @param city       city
+     * @param state      state
+     * @param country    country
+     * @param detail     detail
      * @return a new allocated Address
      */
     Address CreateNewAddress(String street, String postalCode, String city, String state, String country, String detail);
 
     /**
      * Create a new allocated mission.
-     * @param label label
+     *
+     * @param label             label
      * @param missionStatusType missionStatusType
-     * @param group group
+     * @param group             group
      * @return a new allocated MissionCommand
      */
     MissionCommand CreateNewMissionCommand(String label, MissionStatusType missionStatusType, String group);
 
     /**
      * Create a new allocated TimeWindow
+     *
      * @param start windows start
-     * @param end windows end
+     * @param end   windows end
      * @return a new allocated TimeWindows
      */
     TimeWindow CreateNewTimeWindow(Date start, Date end);

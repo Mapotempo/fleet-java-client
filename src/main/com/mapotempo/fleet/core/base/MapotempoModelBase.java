@@ -19,7 +19,10 @@
 
 package com.mapotempo.fleet.core.base;
 
-import com.couchbase.lite.*;
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
+import com.couchbase.lite.UnsavedRevision;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.*;
@@ -59,7 +62,7 @@ abstract public class MapotempoModelBase {
     private Document.ChangeListener mDocumentChangeListener = new Document.ChangeListener() {
         @Override
         public void changed(Document.ChangeEvent event) {
-            for(ChangeListener changeListener : mChangeListenerList) {
+            for (ChangeListener changeListener : mChangeListenerList) {
                 changeListener.changed(INSTANCE);
             }
         }
@@ -96,7 +99,7 @@ abstract public class MapotempoModelBase {
         mDocument = mDatabase.getExistingDocument(id);
 
         // throw an exception for the moment !
-        if(mDocument == null) {
+        if (mDocument == null) {
             throw new CoreException(getClass().getName() + " : document id " + id + " not found in database " + mDatabase.getName());
         }
         updateDocument = mDocument.createRevision();
@@ -112,13 +115,13 @@ abstract public class MapotempoModelBase {
     }
 
     public void addChangeListener(ChangeListener changeListener) {
-        if(mChangeListenerList.size() == 0)
+        if (mChangeListenerList.size() == 0)
             mDocument.addChangeListener(mDocumentChangeListener);
         mChangeListenerList.add(changeListener);
     }
 
     public void removeChangeListener(ChangeListener changeListener) {
-        if(mChangeListenerList.size() == 0)
+        if (mChangeListenerList.size() == 0)
             mDocument.removeChangeListener(mDocumentChangeListener);
         mChangeListenerList.remove(changeListener);
     }
@@ -132,7 +135,7 @@ abstract public class MapotempoModelBase {
     }
 
     public boolean save() {
-        if(!readOnly) {
+        if (!readOnly) {
             try {
                 updateDocument.save();
                 // Create the new futur revision
@@ -152,9 +155,9 @@ abstract public class MapotempoModelBase {
     }
 
     protected void setProperty(String key, Object value) {
-        if(!readOnly) {
+        if (!readOnly) {
             Map mapMerge = new HashMap();
-            Map properties= updateDocument.getProperties();
+            Map properties = updateDocument.getProperties();
             mapMerge.putAll(properties);
             mapMerge.put(key, value);
             updateDocument.setProperties(mapMerge);
@@ -168,12 +171,12 @@ abstract public class MapotempoModelBase {
 
     protected Object getProperty(String key, Object def) {
         Object data;
-        if(readInUpdateDocument.get(key) == null)
-            data= mDocument.getProperty(key);
+        if (readInUpdateDocument.get(key) == null)
+            data = mDocument.getProperty(key);
         else
-            data= updateDocument.getProperty(key);
+            data = updateDocument.getProperty(key);
 
-        if(data == null) {
+        if (data == null) {
             System.err.println("WARNING : in " + getClass().getName() + " The key " + key + " is absent from document " + mDocument.getId());
             data = def;
         }

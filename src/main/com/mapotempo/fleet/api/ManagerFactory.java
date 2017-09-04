@@ -19,7 +19,6 @@
 
 package com.mapotempo.fleet.api;
 
-
 import com.couchbase.lite.Context;
 import com.mapotempo.fleet.core.MapotempoFleetManager;
 
@@ -27,7 +26,6 @@ import com.mapotempo.fleet.core.MapotempoFleetManager;
  * ManagerFactory.
  * <p>{@link ManagerFactory} is the entry point for the Mapotempo Fleet Java Client.</p>
  * <p>This factory allow to get {@link MapotempoFleetManagerInterface} for the entire java application.</p>
- * <p>
  * <p>Three methods getManager are implemented. One synchronous method and two asynchronous methods.
  * The two asynchronous methods return the {@link MapotempoFleetManagerInterface} into
  * {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify} callback method.</p>

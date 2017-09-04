@@ -19,13 +19,8 @@
 
 package com.mapotempo.fleet.core.model.accessor;
 
-import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.Predicate;
-import com.couchbase.lite.Query;
-import com.couchbase.lite.QueryEnumerator;
-import com.couchbase.lite.QueryRow;
-
-import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
+import com.couchbase.lite.*;
+import com.mapotempo.fleet.api.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -48,8 +43,9 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
 
     /**
      * Filter missions trough a time window
+     *
      * @param before Start fetching from this date
-     * @param after End fetching from this date
+     * @param after  End fetching from this date
      * @return List<Mission>
      */
     public List<Mission> getByWindow(final Date before, final Date after) {
@@ -72,7 +68,7 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
         try {
             queryEnumerator = query.run();
             res = runQuery(queryEnumerator);
-        } catch(CouchbaseLiteException e) {
+        } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         } finally {
             return res;

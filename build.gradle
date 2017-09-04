@@ -23,14 +23,15 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
-compileJava {
-    sourceSets {
-        main {
-            java.srcDirs = [
-                    'src/main',
-            ]
-        }
+sourceSets {
+    main {
+        java.srcDirs = [
+                'src/main',
+        ]
     }
+}
+
+compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
@@ -43,10 +44,8 @@ publishing {
     }
 }
 
-task generateJavaDoc(type: org.gradle.api.tasks.javadoc.Javadoc) {
-    source = 'src/main/com/mapotempo/fleet/api'
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    destinationDir = file("./build/doc/")
-    failOnError false
+javadoc {
+    exclude 'com/mapotempo/fleet/core'
+    exclude 'com/mapotempo/fleet/utils'
+    options.overview('src/main/overview.html')
 }
-

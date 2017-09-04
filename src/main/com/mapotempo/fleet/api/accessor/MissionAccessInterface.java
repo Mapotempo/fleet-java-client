@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.api.model.accessor;
+package com.mapotempo.fleet.api.accessor;
 
 import com.mapotempo.fleet.core.model.Mission;
 
@@ -26,7 +26,6 @@ import java.util.List;
 
 /**
  * MissionAccessInterface.
- * {@serial AccessInterface}
  */
 public interface MissionAccessInterface extends AccessInterface<Mission> {
 

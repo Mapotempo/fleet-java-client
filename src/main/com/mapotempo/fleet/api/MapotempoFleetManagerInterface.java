@@ -19,13 +19,14 @@
 
 package com.mapotempo.fleet.api;
 
-import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
-import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
-import com.mapotempo.fleet.api.model.model.submodel.SubModelFactoryInterface;
+import com.mapotempo.fleet.api.accessor.MissionAccessInterface;
+import com.mapotempo.fleet.api.accessor.MissionStatusTypeAccessInterface;
+import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.model.Company;
 import com.mapotempo.fleet.core.model.User;
 
 /**
+ * MapotempoFleetManagerInterface is a database model access and synchronisation server manager.
  */
 public interface MapotempoFleetManagerInterface {
 
@@ -36,6 +37,7 @@ public interface MapotempoFleetManagerInterface {
      * company.
      * Note : You can use setOnCompanyAvailable to attach a callback
      * for notify when user data is available.
+     *
      * @return the Company associated to the user
      */
     Company getCompany();
@@ -46,53 +48,69 @@ public interface MapotempoFleetManagerInterface {
      * syncronisated getUser return null.
      * Note : You can use setOnUserAvailable to attach a callback
      * for notify when user data is available.
+     *
      * @return the User data associated to the user
      */
     User getUser();
 
     /**
-     * onServerConnexionVerify.
+     * OnServerConnexionVerify.
+     * Interface use to call back when the connexion to the dabatase is ensure.
+     * Enumerator {@link Status} return the status connexion
+     * <ul>
+     * <li>VERIFY</li>
+     * <li>LOGIN_ERROR</li>
+     * </ul>
      */
     interface OnServerConnexionVerify {
         enum Status {
-            TIMEOUT,
             VERIFY,
             LOGIN_ERROR
         }
 
         /**
+         * connexion.
          *
-         * @param status
+         * @param status                The connexion status
          * @param mapotempoFleetManager {@code null}
          */
         void connexion(Status status, MapotempoFleetManagerInterface mapotempoFleetManager);
     }
 
     /**
-     * todo
-     * @return
+     * MissionAccessInterface
+     * Return the {@link MissionAccessInterface} or null
+     *
+     * @return {@link MissionAccessInterface}
      */
     MissionAccessInterface getMissionAccess();
 
     /**
-     * todo
-     * @return
+     * MissionStatusTypeAccessInterface
+     * Return the {@link MissionStatusTypeAccessInterface}
+     *
+     * @return MissionStatusTypeAccessInterface
      */
     MissionStatusTypeAccessInterface getMissionStatusTypeAccessInterface();
 
     /**
      * Return the submodel factory.
+     *
      * @return a submodel factory
      */
     SubModelFactoryInterface getSubmodelFactory();
 
     /**
-     * todo
+     * Set the synchronisation status.
+     *
+     * @param status new status
      */
     void onlineStatus(boolean status);
 
     /**
-     * todo
+     * Return the synchronisation status.
+     *
+     * @return the synchronisation status
      */
     boolean isOnline();
 
