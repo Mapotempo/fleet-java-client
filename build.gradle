@@ -36,6 +36,7 @@ compileJava {
     options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
 }
 
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -44,8 +45,17 @@ publishing {
     }
 }
 
-javadoc {
+FileTree docFilesTree = fileTree(dir: 'src/main/doc-files')
+
+task copyJavaDocSupportFiles(type: Copy) {
+    from docFilesTree
+    into 'build/docs/javadoc/doc-files/'
+}
+
+task generateApiJavadocs(name: 'documentation', type: Javadoc, dependsOn: ['copyJavaDocSupportFiles', 'clean']) {
+    source = sourceSets.main.allJava
     exclude 'com/mapotempo/fleet/core'
     exclude 'com/mapotempo/fleet/utils'
     options.overview('src/main/overview.html')
+    failOnError true
 }

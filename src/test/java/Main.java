@@ -1,5 +1,5 @@
 import com.couchbase.lite.JavaContext;
-import com.mapotempo.fleet.core.MapotempoFleetManager;
+import com.mapotempo.fleet.api.ManagerFactory;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -14,17 +14,22 @@ import java.util.Scanner;
  * Created by maxime on 08/08/17.
  */
 public class Main {
-    public static void main(String [ ] args) throws CoreException
-    {
-        MapotempoFleetManager mapotempoFleetManager = (MapotempoFleetManager)MapotempoFleetManager.getManager(new JavaContext(), "static", "static", new MapotempoFleetManagerInterface.OnServerConnexionVerify() {
+    public static void main(String[] args) throws CoreException {
+        MapotempoFleetManagerInterface mMapotempoFleetManager = null;
+        ManagerFactory.getManager(new JavaContext(), "static", "static", new MapotempoFleetManagerInterface.OnServerConnexionVerify() {
             @Override
-            public void connexion(Status status) {
-
+            public void connexion(Status status, MapotempoFleetManagerInterface mapotempoFleetManager) {
+                mapotempoFleetManager = mapotempoFleetManager;
             }
-        }, 0);
-        List<Mission> missions = mapotempoFleetManager.getMissionAccess().getAll();
+        });
 
-        mapotempoFleetManager.getMissionAccess().addChangeListener(new Access.ChangeListener<Mission>() {
+        while (mMapotempoFleetManager == null) {
+
+        }
+
+        List<Mission> missions = mMapotempoFleetManager.getMissionAccess().getAll();
+
+        mMapotempoFleetManager.getMissionAccess().addChangeListener(new Access.ChangeListener<Mission>() {
             @Override
             public void changed(List<Mission> items) {
                 for (Mission m : items) {
@@ -39,20 +44,17 @@ public class Main {
 
         boolean run = true;
 
-        while(run) {
+        while (run) {
             Scanner keyboard = new Scanner(System.in);
             String nextLine = keyboard.nextLine();
             if (nextLine.equals("")) {
                 continue;
-            }
-            else if(nextLine.equals("company")) {
-                Company c = mapotempoFleetManager.getCompany();
+            } else if (nextLine.equals("company")) {
+                Company c = mMapotempoFleetManager.getCompany();
                 System.out.println(c.getName());
-            }
-            else if(nextLine.equals("company_up")) {
+            } else if (nextLine.equals("company_up")) {
 
-            }
-            else if(nextLine.equals("mission")) {
+            } else if (nextLine.equals("mission")) {
                 for (Mission m : missions) {
                     System.out.println("-----------------");
                     System.out.println(m.getName());
@@ -61,16 +63,13 @@ public class Main {
                     System.out.println(m.getLocation());
                     System.out.println(m.getAddress());
                 }
-            }
-            else if(nextLine.equals("user")) {
-                User u = mapotempoFleetManager.getUser();
+            } else if (nextLine.equals("user")) {
+                User u = mMapotempoFleetManager.getUser();
                 System.out.println(u.getUser());
-            }
-            else if(nextLine.equals("all")) {
+            } else if (nextLine.equals("all")) {
                 //mapotempoFleetManager.mDatabaseHandler.printAllData();
-            }
-            else if(nextLine.equals("exit")) {
-                mapotempoFleetManager.release();
+            } else if (nextLine.equals("exit")) {
+                mMapotempoFleetManager.release();
                 run = false;
                 continue;
             }

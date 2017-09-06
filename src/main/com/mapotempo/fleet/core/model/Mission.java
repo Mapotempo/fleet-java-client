@@ -173,7 +173,7 @@ public class Mission extends MapotempoModelBase {
     }
 
     public ArrayList<TimeWindow> getTimeWindow() {
-        ArrayList<HashMap> hashArray = (ArrayList) getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
+        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
         ArrayList<TimeWindow> res = new ArrayList<>();
         for (HashMap hm : hashArray)
             res.add(new TimeWindow(hm, mDatabase));

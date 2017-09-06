@@ -46,7 +46,7 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
      *
      * @param before Start fetching from this date
      * @param after  End fetching from this date
-     * @return List<Mission>
+     * @return List
      */
     public List<Mission> getByWindow(final Date before, final Date after) {
         List<Mission> res = new ArrayList<>();

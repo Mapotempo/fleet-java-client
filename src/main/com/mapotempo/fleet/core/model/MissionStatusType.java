@@ -53,7 +53,7 @@ public class MissionStatusType extends MapotempoModelBase {
     }
 
     public String getLabel() {
-        return (String)getProperty(LABEL, "Unknow");
+        return (String) getProperty(LABEL, "Unknow");
     }
 
     public void setLabel(String label) {
@@ -61,7 +61,7 @@ public class MissionStatusType extends MapotempoModelBase {
     }
 
     public String getColor() {
-        return (String)getProperty(COLOR, "FF0000");
+        return (String) getProperty(COLOR, "FF0000");
     }
 
     public void setColor(String hexColor) {
@@ -69,10 +69,9 @@ public class MissionStatusType extends MapotempoModelBase {
     }
 
     public ArrayList<MissionCommand> getCommands() {
-        ArrayList<HashMap> hashArray = (ArrayList)getProperty(COMMANDS, new ArrayList<HashMap>());
+        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(COMMANDS, new ArrayList<HashMap>());
         ArrayList<MissionCommand> res = new ArrayList<>();
-        for(HashMap hm : hashArray)
-        {
+        for (HashMap hm : hashArray) {
             res.add(new MissionCommand(hm, mDatabase));
         }
         return res;

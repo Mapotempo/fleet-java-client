@@ -37,8 +37,6 @@ public interface MapotempoFleetManagerInterface {
      * company.
      * Note : You can use setOnCompanyAvailable to attach a callback
      * for notify when user data is available.
-     *
-     * @return the Company associated to the user
      */
     Company getCompany();
 
