@@ -20,6 +20,7 @@
 package com.mapotempo.fleet.core.model.submodel;
 
 import com.couchbase.lite.Database;
+import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.model.MissionStatusType;
 
@@ -58,8 +59,8 @@ public class SubModelFactory implements SubModelFactoryInterface {
      * {@inheritDoc}
      */
     @Override
-    public MissionCommand CreateNewMissionCommand(String label, MissionStatusType missionStatusType, String group) {
-        MissionCommand res = new MissionCommand(label, missionStatusType, group, mDatabase);
+    public MissionCommand CreateNewMissionCommand(String label, MissionStatusTypeInterface missionStatusType, String group) {
+        MissionCommand res = new MissionCommand(label, (MissionStatusType) missionStatusType, group, mDatabase);
         return res;
     }
 

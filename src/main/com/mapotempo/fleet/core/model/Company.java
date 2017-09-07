@@ -46,10 +46,16 @@ public class Company extends MapotempoModelBase implements CompanyInterface {
         super(doc);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public String getName() {
         return (String) getProperty(NAME, "unknow");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     public Location getLocation() {
         Location defaultLocation = new Location(0, 0, mDatabase);
         Map dataType = (Map) getProperty(COMPANY_ID, defaultLocation.toMap());

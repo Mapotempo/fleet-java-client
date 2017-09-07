@@ -23,6 +23,8 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
+import com.mapotempo.fleet.api.model.submodel.AddressInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -64,42 +66,69 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
         super(document);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getName() {
         return (String) getProperty(NAME, "Unknow");
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setName(String name) {
         setProperty(NAME, name);
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getCompanyId() {
         return (String) getProperty(COMPANY_ID, "No company id found");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setCompanyId(String companyId) {
         setProperty(COMPANY_ID, companyId);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Date getDeliveryDate() {
         String dataType = (String) getProperty(DELIVERY_DATE, "0");
         return DateHelper.fromStringISO8601(dataType);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setDeliveryDate(String isoDate) {
         setProperty(DELIVERY_DATE, isoDate);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setDeliveryDate(Date date) {
         setProperty(DELIVERY_DATE, DateHelper.toStringISO8601(date));
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Location getLocation() {
         Location defaultLocation = new Location(0, 0, mDatabase);
@@ -107,11 +136,17 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
         return new Location(dataType, mDatabase);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setLocation(Location location) {
-        setProperty(LOCATION, location.toMap());
+    public void setLocation(LocationInterface location) {
+        setProperty(LOCATION, ((Location) location).toMap());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Address getAddress() {
         Address defaultAddress = new Address("", "", "", "", "", "", mDatabase);
@@ -119,11 +154,17 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
         return new Address(dataType, mDatabase);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setAddress(Address address) {
-        setProperty(ADDRESS, address.toMap());
+    public void setAddress(AddressInterface address) {
+        setProperty(ADDRESS, ((Address) address).toMap());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MissionStatusTypeInterface getStatus() {
         String status_id = (String) getProperty(MISSION_STATUS_TYPE_ID, "0");
@@ -138,63 +179,99 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setStatus(MissionStatusTypeInterface missionStatus) {
         setProperty(MISSION_STATUS_TYPE_ID, missionStatus.getId());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArrayList<String> getOwners() {
         return (ArrayList<String>) getProperty(OWNERS, new ArrayList<String>());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setOwners(ArrayList<String> owners) {
         setProperty(OWNERS, owners);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getReference() {
         return (String) getProperty(REFERENCE, "");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setReference(String reference) {
         setProperty(REFERENCE, reference);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getComment() {
         return (String) getProperty(COMMENT, "");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setComment(String comment) {
         setProperty(COMMENT, comment);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getPhone() {
         return (String) getProperty(PHONE, "");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setPhone(String phone) {
         setProperty(PHONE, phone);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int getDuration() {
         return (int) getProperty(DURATION, 0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setDuration(int duration) {
         getProperty(DURATION, duration);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ArrayList<TimeWindow> getTimeWindow() {
+    public ArrayList getTimeWindow() {
         ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
         ArrayList<TimeWindow> res = new ArrayList<>();
         for (HashMap hm : hashArray)
@@ -202,10 +279,13 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
         return res;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public void setTimeWindow(ArrayList<TimeWindow> timeWindows) {
+    public void setTimeWindow(ArrayList timeWindows) {
         ArrayList<TimeWindow> hashArray = new ArrayList<>();
-        for (TimeWindow tm : timeWindows)
+        for (TimeWindow tm : (ArrayList<TimeWindow>) timeWindows)
             hashArray.add(new TimeWindow(tm.toMap(), mDatabase));
         setProperty(TIME_WINDOWS, hashArray);
     }

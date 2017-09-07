@@ -19,10 +19,45 @@
 
 package com.mapotempo.fleet.api.model.accessor;
 
-import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
+import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
+
+import java.util.List;
 
 /**
- * MissionAccessInterface.
+ * The {@link MissionStatusTypeInterface} accessor.
+ * An accessor provide actions on data as well as a notification mechanism.
  */
-public interface MissionStatusTypeAccessInterface extends AccessInterface<MapotempoModelBaseInterface> {
+public interface MissionStatusTypeAccessInterface extends AccessInterface<MissionStatusTypeInterface> {
+
+    /**
+     * @return The specific {@link MissionStatusTypeInterface}
+     */
+    @Override
+    MissionStatusTypeInterface get(String id);
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a new {@link MissionStatusTypeInterface} unsaved
+     */
+    @Override
+    MissionStatusTypeInterface getNew();
+
+    /**
+     * @return The list of all {@link MissionStatusTypeInterface}
+     */
+    @Override
+    List<MissionStatusTypeInterface> getAll();
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void addChangeListener(ChangeListener<MissionStatusTypeInterface> changeListener);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void removeChangeListener(ChangeListener<MissionStatusTypeInterface> changeListener);
 }

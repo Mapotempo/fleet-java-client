@@ -19,9 +19,9 @@
 
 package com.mapotempo.fleet.api.model;
 
-import com.mapotempo.fleet.core.model.submodel.Address;
-import com.mapotempo.fleet.core.model.submodel.Location;
-import com.mapotempo.fleet.core.model.submodel.TimeWindow;
+import com.mapotempo.fleet.api.model.submodel.AddressInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationInterface;
+import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,53 +31,178 @@ import java.util.Date;
  */
 public interface MissionInterface extends MapotempoModelBaseInterface {
 
+    /**
+     * Return the name.
+     *
+     * @return A name
+     */
     String getName();
 
+    /**
+     * Change the mission name.
+     *
+     * @param name The new name
+     */
     void setName(String name);
 
+    /**
+     * The company owned mission
+     *
+     * @return A {@link String}
+     */
     String getCompanyId();
 
+    /**
+     * Set the company id.
+     *
+     * @param companyId The new company
+     */
     void setCompanyId(String companyId);
 
+    /**
+     * Get the mission delivery date.
+     *
+     * @return A date
+     */
     Date getDeliveryDate();
 
+    /**
+     * Set the delivery date by iso8601 date {@link String}.
+     *
+     * @param isoDate An iso {@link String}
+     */
     void setDeliveryDate(String isoDate);
 
+    /**
+     * Set the delivery date.
+     *
+     * @param date A {@link Date}
+     */
     void setDeliveryDate(Date date);
 
-    Location getLocation();
+    /**
+     * Get the mission location.
+     *
+     * @return A {@link LocationInterface}
+     */
+    LocationInterface getLocation();
 
-    void setLocation(Location location);
+    /**
+     * Set the location.
+     *
+     * @param location A {@link LocationInterface}
+     */
+    void setLocation(LocationInterface location);
 
-    Address getAddress();
+    /**
+     * Get the mission address.
+     *
+     * @return An {@link AddressInterface}
+     */
+    AddressInterface getAddress();
 
-    void setAddress(Address address);
+    /**
+     * Set the mission address.
+     *
+     * @param address An {@link AddressInterface}
+     */
+    void setAddress(AddressInterface address);
 
+    /**
+     * Get the mission status.
+     *
+     * @return A {@link MissionStatusTypeInterface}
+     */
     MissionStatusTypeInterface getStatus();
 
+    /**
+     * Set the mission status.
+     *
+     * @param missionStatus A {@link MissionStatusTypeInterface}
+     */
     void setStatus(MissionStatusTypeInterface missionStatus);
 
+    /**
+     * Get all owners.
+     *
+     * @return An {@link ArrayList} of owner
+     */
     ArrayList<String> getOwners();
 
-    void setOwners(ArrayList<String> owners);
+    /**
+     * Set owners.
+     *
+     * @param owners A {@link ArrayList} of owner
+     */
+    void setOwners(ArrayList owners);
 
+    /**
+     * Get the reference.
+     *
+     * @return A {@link String}
+     */
     String getReference();
 
+    /**
+     * Set the reference.
+     *
+     * @param reference A {@link String}
+     */
     void setReference(String reference);
 
+    /**
+     * Get the comment.
+     *
+     * @return A {@link String}
+     */
     String getComment();
 
+    /**
+     * Set the comment.
+     *
+     * @param comment A {@link String}
+     */
     void setComment(String comment);
 
+    /**
+     * Get the phone number.
+     *
+     * @return A {@link String}
+     */
     String getPhone();
 
+    /**
+     * Set the phone number.
+     *
+     * @param phone A {@link String}
+     */
     void setPhone(String phone);
 
+    /**
+     * Get the mission duration.
+     *
+     * @return An int
+     */
     int getDuration();
 
+    /**
+     * Set the duration.
+     *
+     * @param duration An int
+     */
     void setDuration(int duration);
 
-    ArrayList<TimeWindow> getTimeWindow();
+    /**
+     * Get the mission time windows.
+     *
+     * @return An {@link ArrayList}
+     */
+    ArrayList<TimeWindowsInterface> getTimeWindow();
 
-    void setTimeWindow(ArrayList<TimeWindow> timeWindows);
+    /**
+     * Set the mission time windows.
+     *
+     * @param timeWindows An {@link ArrayList}
+     */
+    void setTimeWindow(ArrayList<TimeWindowsInterface> timeWindows);
 }

@@ -20,6 +20,7 @@
 package com.mapotempo.fleet.core.model.submodel;
 
 import com.couchbase.lite.Database;
+import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
 import com.mapotempo.fleet.core.base.SubModelBase;
 import com.mapotempo.fleet.utils.DateHelper;
 
@@ -27,14 +28,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TimeWindow extends SubModelBase {
+public class TimeWindow extends SubModelBase implements TimeWindowsInterface {
     // MAPOTEMPO KEY
     public static final String START = "start";
     public static final String END = "end";
 
     private Date mStart;
     private Date mEnd;
-
 
     /**
      * TimeWindow.
@@ -84,6 +84,22 @@ public class TimeWindow extends SubModelBase {
                 if (mEnd == ((TimeWindow) obj).mEnd)
                     return true;
         return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getStart() {
+        return mStart;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Date getEnd() {
+        return mEnd;
     }
 
     @Override

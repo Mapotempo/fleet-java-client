@@ -26,9 +26,24 @@ import java.util.List;
  */
 public interface UserInterface extends MapotempoModelBaseInterface {
 
+    /**
+     * Get the user login/name.
+     *
+     * @return A {@link String}
+     */
     String getUser();
 
+    /**
+     * Get the user company.
+     *
+     * @return A {@link String}
+     */
     String getCompanyId();
 
+    /**
+     * Get all the user roles.
+     *
+     * @return A {@link List} of roles.
+     */
     List<String> getRoles();
 }

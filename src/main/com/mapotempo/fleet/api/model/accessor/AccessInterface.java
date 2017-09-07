@@ -24,47 +24,55 @@ import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import java.util.List;
 
 /**
- * AccessInterface.
+ * {@link AccessInterface}
  */
 public interface AccessInterface<T extends MapotempoModelBaseInterface> {
 
+    /**
+     * ChangeListener interface.
+     *
+     * @param <T> The template type
+     */
     interface ChangeListener<T> {
         void changed(List<T> items);
     }
 
     /**
-     * Get a new instance of ...
+     * Get a new unsave instance.
+     * Use {@link MapotempoModelBaseInterface#save()} on the returned instance to save it in the local database.
+     * The synchronisation can fail if user aren't the create write, but the local model stay in the local storage.
      *
-     * @return return new data
+     * @return A new unsaved instance
      */
     T getNew();
 
     /**
-     * get.
+     * Get an element by id.
      *
-     * @param id Element id to retrieve
-     * @return T element or null
+     * @param id element's id to retrieve
+     * @return element or null
      */
     T get(String id);
 
     /**
-     * getAll.
+     * Get all elements.
      *
-     * @return Return all element
+     * @return Return all element or empty list
      */
     List<T> getAll();
 
     /**
-     * addChangeListener
+     * Add an {@link ChangeListener} in the accessor.
+     * The {@link ChangeListener#changed(List)} method will be called on data changes.
      *
-     * @param changeListener add a change listener
+     * @param changeListener add a change {@link ChangeListener}
      */
     void addChangeListener(ChangeListener<T> changeListener);
 
     /**
-     * addRemoveListener.
+     * Remove a recorded {@link ChangeListener}.
      *
-     * @param changeListener remove the change listener
+     * @param changeListener the listener to remove.
      */
     void removeChangeListener(ChangeListener<T> changeListener);
 

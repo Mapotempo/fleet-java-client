@@ -19,14 +19,13 @@
 
 package com.mapotempo.fleet.api.model.submodel;
 
-import com.mapotempo.fleet.core.model.MissionStatusType;
-import com.mapotempo.fleet.core.model.submodel.Address;
-import com.mapotempo.fleet.core.model.submodel.Location;
-import com.mapotempo.fleet.core.model.submodel.MissionCommand;
-import com.mapotempo.fleet.core.model.submodel.TimeWindow;
+import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 
 import java.util.Date;
 
+/**
+ * This factory can be use to create sub-modele.
+ */
 public interface SubModelFactoryInterface {
 
     /**
@@ -36,7 +35,7 @@ public interface SubModelFactoryInterface {
      * @param lon longitude
      * @return a new allocated Location
      */
-    Location CreateNewLocation(double lat, double lon);
+    LocationInterface CreateNewLocation(double lat, double lon);
 
     /**
      * Create a new allocated address.
@@ -49,7 +48,7 @@ public interface SubModelFactoryInterface {
      * @param detail     detail
      * @return a new allocated Address
      */
-    Address CreateNewAddress(String street, String postalCode, String city, String state, String country, String detail);
+    AddressInterface CreateNewAddress(String street, String postalCode, String city, String state, String country, String detail);
 
     /**
      * Create a new allocated mission.
@@ -59,7 +58,7 @@ public interface SubModelFactoryInterface {
      * @param group             group
      * @return a new allocated MissionCommand
      */
-    MissionCommand CreateNewMissionCommand(String label, MissionStatusType missionStatusType, String group);
+    MissionCommandInterface CreateNewMissionCommand(String label, MissionStatusTypeInterface missionStatusType, String group);
 
     /**
      * Create a new allocated TimeWindow
@@ -68,5 +67,5 @@ public interface SubModelFactoryInterface {
      * @param end   windows end
      * @return a new allocated TimeWindows
      */
-    TimeWindow CreateNewTimeWindow(Date start, Date end);
+    TimeWindowsInterface CreateNewTimeWindow(Date start, Date end);
 }

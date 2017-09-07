@@ -47,14 +47,26 @@ public class User extends MapotempoModelBase implements UserInterface {
         super(doc);
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getUser() {
         return (String) getProperty(USER, "Unknow");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getCompanyId() {
         return (String) getProperty(COMPANY_ID, "No company id found");
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<String> getRoles() {
         return (ArrayList<String>) getProperty(ROLES, new ArrayList<String>());
     }

@@ -24,7 +24,7 @@ import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
-import com.mapotempo.fleet.core.accessor.Access;
+import com.mapotempo.fleet.core.base.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Mission;
 

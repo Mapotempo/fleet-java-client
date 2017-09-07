@@ -19,22 +19,48 @@
 
 package com.mapotempo.fleet.api.model;
 
-import com.mapotempo.fleet.core.model.submodel.MissionCommand;
+import com.mapotempo.fleet.api.model.submodel.MissionCommandInterface;
 
 import java.util.ArrayList;
 
 /**
- * MissionInterface.
+ * A MissionStatusTypeInterface describe an actual mission status.
+ * Every MissionStatusTypeInterface correspond to a specific status describe by their company.
  */
 public interface MissionStatusTypeInterface extends MapotempoModelBaseInterface {
 
+    /**
+     * Get the status label.
+     *
+     * @return A {@link String}
+     */
     String getLabel();
 
+    /**
+     * Set the status label.
+     *
+     * @param label A {@link String}
+     */
     void setLabel(String label);
 
+    /**
+     * Get the status color to display.
+     *
+     * @return An hexa {@link String}
+     */
     String getColor();
 
+    /**
+     * Set the color.
+     *
+     * @param hexColor A hexa {@link String}
+     */
     void setColor(String hexColor);
 
-    ArrayList<MissionCommand> getCommands();
+    /**
+     * The next commands can be apply on this status.
+     *
+     * @return A {@link MissionStatusTypeInterface}
+     */
+    ArrayList<MissionCommandInterface> getCommands();
 }

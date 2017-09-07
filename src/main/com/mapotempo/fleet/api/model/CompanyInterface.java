@@ -19,14 +19,24 @@
 
 package com.mapotempo.fleet.api.model;
 
-import com.mapotempo.fleet.core.model.submodel.Location;
+import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 
 /**
  * CompanyInterface.
  */
 public interface CompanyInterface extends MapotempoModelBaseInterface {
 
+    /**
+     * The company name.
+     *
+     * @return A name
+     */
     String getName();
 
-    Location getLocation();
+    /**
+     * The company location.
+     *
+     * @return A location
+     */
+    LocationInterface getLocation();
 }

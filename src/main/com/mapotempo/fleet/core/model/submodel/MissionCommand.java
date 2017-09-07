@@ -20,6 +20,7 @@
 package com.mapotempo.fleet.core.model.submodel;
 
 import com.couchbase.lite.Database;
+import com.mapotempo.fleet.api.model.submodel.MissionCommandInterface;
 import com.mapotempo.fleet.core.base.SubModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.MissionStatusType;
@@ -27,11 +28,11 @@ import com.mapotempo.fleet.core.model.MissionStatusType;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MissionCommand extends SubModelBase {
+public class MissionCommand extends SubModelBase implements MissionCommandInterface {
     // MAPOTEMPO KEY
-    public static final String LABEL = "label";
-    public static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
-    public static final String GROUP = "group";
+    private static final String LABEL = "label";
+    private static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
+    private static final String GROUP = "group";
 
     private String mLabel;
     private MissionStatusType mMissionStatusType;
@@ -39,7 +40,8 @@ public class MissionCommand extends SubModelBase {
 
     /**
      * MissionCommand.
-     * @param map map
+     *
+     * @param map      map
      * @param database database
      */
     public MissionCommand(Map map, Database database) {
@@ -48,44 +50,56 @@ public class MissionCommand extends SubModelBase {
 
     /**
      * MissionCommand.
-     * @param label label
+     *
+     * @param label             label
      * @param missionStatusType missionStatusType
-     * @param group group
-     * @param database database
+     * @param group             group
+     * @param database          database
      */
     public MissionCommand(String label, MissionStatusType missionStatusType, String group, Database database) {
         super(database);
-        this.mLabel = label;
-        this.mMissionStatusType = missionStatusType;
-        this.mGroup = group;
+        mLabel = label;
+        mMissionStatusType = missionStatusType;
+        mGroup = group;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MissionStatusType getMissionStatusType() {
         return mMissionStatusType;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getGroup() {
         return mGroup;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getLabel() {
         return mLabel;
     }
 
     @Override
     public void fromMap(Map map) {
-        this.mLabel = map.get(LABEL).toString();
-        this.mGroup = map.get(GROUP).toString();
-        String status_id = map.get(MISSION_STATUS_TYPE_ID).toString();;
+        mLabel = map.get(LABEL).toString();
+        mGroup = map.get(GROUP).toString();
+        String status_id = map.get(MISSION_STATUS_TYPE_ID).toString();
         try {
-            MissionStatusType statusType = new MissionStatusType(status_id, mDatabase);
-            mMissionStatusType = statusType;
+            mMissionStatusType = new MissionStatusType(status_id, mDatabase);
         } catch (CoreException e) {
             e.printStackTrace();
             System.out.println("WARNING : return a non saved MissionStatusType");
             MissionStatusType missionStatus = new MissionStatusType(mDatabase);
             missionStatus.setLabel(status_id);
-            this.mMissionStatusType = missionStatus;
+            mMissionStatusType = missionStatus;
         }
     }
 

@@ -22,7 +22,7 @@
     <li>{@link com.mapotempo.fleet.api.model.CompanyInterface}</li>
     <li>{@link com.mapotempo.fleet.api.model.UserInterface}</li>
     <li>{@link com.mapotempo.fleet.api.model.MissionInterface}</li>
-    <li>{@link com.mapotempo.fleet.core.model.MissionStatusType}</li>
+    <li>{@link com.mapotempo.fleet.api.model.MissionStatusTypeInterface}</li>
 </ul>
 <h2>First connexion : </h2>
 <p>
@@ -31,35 +31,39 @@
     try to get a {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface}. Instance will be return into the {@link
     com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify} callback provide in the method.
     The first connexion necessity an available connexion with the mapotempo server. This is necessary to synchronise
-    {@link com.mapotempo.fleet.core.model.User} and {@link com.mapotempo.fleet.core.model.Company} models.
+    {@link com.mapotempo.fleet.api.model.UserInterface} and {@link com.mapotempo.fleet.api.model.CompanyInterface}
+    models.
 </p>
 <pre>
+<code>
 MapotempoFleetManagerInterface mMapotempoFleetManager = null;
-ManagerFactory.getManager(new JavaContext(), "static", "static", new MapotempoFleetManagerInterface.OnServerConnexionVerify() {
-        {@literal @Override}
-        public void connexion(Status status, MapotempoFleetManagerInterface mapotempoFleetManager) {
-            mapotempoFleetManager = mapotempoFleetManager;
-        }
-    });
+ManagerFactory.getManager(new JavaContext(), "my_user_name", "my_user_password", new MapotempoFleetManagerInterface.OnServerConnexionVerify() {
+   {@literal @}Override
+    public void connexion(Status status, MapotempoFleetManagerInterface mapotempoFleetManager) {
+        mapotempoFleetManager = mapotempoFleetManager;
+    }
+});
+</code>
 </pre>
 <h2>User and Company : </h2>
 <p>
-    The {@link com.mapotempo.fleet.core.model.User} and {@link com.mapotempo.fleet.core.model.Company} are return
-    respectively by the getUser() and getCompany() method of {@see
-    com.mapotempo.fleet.api.MapotempoFleetManagerInterface}.
+    The {@link com.mapotempo.fleet.api.model.UserInterface} and {@link com.mapotempo.fleet.api.model.CompanyInterface}
+    are return respectively by the {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getUser} and {@link
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getCompany} method.
 </p>
 <h2>Mission : </h2>
 <p>
-    To access at {@link com.mapotempo.fleet.core.model.Mission} you need to get a {@link
-    com.mapotempo.fleet.api.accessor.MissionAccessInterface}. {@link
-    com.mapotempo.fleet.api.MapotempoFleetManagerInterface} return it using the getMissionAccess() method.
+    To access at {@link com.mapotempo.fleet.api.model.MissionInterface} you need to get a {@link
+    com.mapotempo.fleet.api.model.accessor.MissionAccessInterface}. {@link
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface} return it using the {@link
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getMissionAccess} method.
 </p>
 <h2>MissionStatusType : </h2>
 <p>
-    To access at {@link com.mapotempo.fleet.core.model.MissionStatusType} you need to get a {@link
-    com.mapotempo.fleet.api.accessor.MissionStatusTypeAccessInterface}. {@link
-    com.mapotempo.fleet.api.MapotempoFleetManagerInterface} return it using the getMissionStatusTypeAccessInterface()
-    method.
+    To access at {@link com.mapotempo.fleet.api.model.MissionStatusTypeInterface} you need to get a {@link
+    com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface}. {@link
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface} return it using the {@link
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getMissionStatusTypeAccessInterface} method.
 </p>
 <h2>Synchronisation : </h2>
 <p>

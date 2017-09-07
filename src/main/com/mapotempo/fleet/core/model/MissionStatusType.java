@@ -22,6 +22,7 @@ package com.mapotempo.fleet.core.model;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
+import com.mapotempo.fleet.api.model.submodel.MissionCommandInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -53,30 +54,45 @@ public class MissionStatusType extends MapotempoModelBase implements MissionStat
         super(id, database);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getLabel() {
         return (String) getProperty(LABEL, "Unknow");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setLabel(String label) {
         setProperty(LABEL, label);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getColor() {
         return (String) getProperty(COLOR, "FF0000");
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setColor(String hexColor) {
         setProperty(COLOR, hexColor);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ArrayList<MissionCommand> getCommands() {
+    public ArrayList<MissionCommandInterface> getCommands() {
         ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(COMMANDS, new ArrayList<HashMap>());
-        ArrayList<MissionCommand> res = new ArrayList<>();
+        ArrayList<MissionCommandInterface> res = new ArrayList<>();
         for (HashMap hm : hashArray) {
             res.add(new MissionCommand(hm, mDatabase));
         }

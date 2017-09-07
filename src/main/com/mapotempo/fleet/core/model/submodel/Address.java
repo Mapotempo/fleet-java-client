@@ -20,6 +20,7 @@
 package com.mapotempo.fleet.core.model.submodel;
 
 import com.couchbase.lite.Database;
+import com.mapotempo.fleet.api.model.submodel.AddressInterface;
 import com.mapotempo.fleet.core.base.SubModelBase;
 
 import java.util.HashMap;
@@ -28,8 +29,7 @@ import java.util.Map;
 /**
  * Address.
  */
-public class Address extends SubModelBase
-{
+public class Address extends SubModelBase implements AddressInterface {
     // MAPOTEMPO KEY
     private static final String STREET = "street";
     private static final String POSTALCODE = "postalcode";
@@ -47,7 +47,8 @@ public class Address extends SubModelBase
 
     /**
      * Location.
-     * @param map map
+     *
+     * @param map      map
      * @param database database
      */
     public Address(Map map, Database database) {
@@ -56,32 +57,33 @@ public class Address extends SubModelBase
 
     /**
      * Location.
-     * @param street street
+     *
+     * @param street     street
      * @param postalCode postalCode
-     * @param city city
-     * @param state state
-     * @param country country
-     * @param detail detail
-     * @param database database
+     * @param city       city
+     * @param state      state
+     * @param country    country
+     * @param detail     detail
+     * @param database   database
      */
     public Address(String street, String postalCode, String city, String state, String country, String detail, Database database) {
         super(database);
-        this.mStreet = street;
-        this.mPostalCode = postalCode;
-        this.mCity = city;
-        this.mState = state;
-        this.mCountry = country;
-        this.mDetail = detail;
+        mStreet = street;
+        mPostalCode = postalCode;
+        mCity = city;
+        mState = state;
+        mCountry = country;
+        mDetail = detail;
     }
 
     @Override
     public void fromMap(Map map) {
-        this.mStreet = map.get(STREET).toString();
-        this.mPostalCode = map.get(POSTALCODE).toString();
-        this.mCity = map.get(CITY).toString();
-        this.mState = map.get(STATE).toString();
-        this.mCountry = map.get(COUNTRY).toString();
-        this.mDetail = map.get(DETAIL).toString();
+        mStreet = map.get(STREET).toString();
+        mPostalCode = map.get(POSTALCODE).toString();
+        mCity = map.get(CITY).toString();
+        mState = map.get(STATE).toString();
+        mCountry = map.get(COUNTRY).toString();
+        mDetail = map.get(DETAIL).toString();
     }
 
     @Override
@@ -96,45 +98,70 @@ public class Address extends SubModelBase
         return res;
     }
 
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getStreet() {
         return mStreet;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getPostalcode() {
         return mPostalCode;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getCity() {
         return mCity;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getState() {
         return mState;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getCountry() {
         return mCountry;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public String getDetail() {
         return mDetail;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj != null)
-            if(this.mStreet == ((Address)obj).mStreet)
-                if(this.mPostalCode == ((Address)obj).mPostalCode)
-                    if(this.mCity == ((Address)obj).mCity)
-                        if(this.mState == ((Address)obj).mState)
-                            if(this.mCountry == ((Address)obj).mCountry)
-                                if(this.mDetail == ((Address)obj).mDetail)
+        if (obj != null)
+            if (mStreet == ((Address) obj).mStreet)
+                if (mPostalCode == ((Address) obj).mPostalCode)
+                    if (mCity == ((Address) obj).mCity)
+                        if (mState == ((Address) obj).mState)
+                            if (mCountry == ((Address) obj).mCountry)
+                                if (mDetail == ((Address) obj).mDetail)
                                     return true;
         return false;
     }
 
     @Override
     public String toString() {
-        return mStreet + " " + mCity + ", " + mPostalCode + " " +  mState + " ";
+        return mStreet + " " + mCity + ", " + mPostalCode + " " + mState + " ";
     }
 }

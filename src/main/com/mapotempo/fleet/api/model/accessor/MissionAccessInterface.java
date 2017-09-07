@@ -25,10 +25,49 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * MissionAccessInterface.
+ * The {@link MissionInterface} accessor.
+ * An accessor provide actions on data as well as a notification mechanism.
  */
 public interface MissionAccessInterface extends AccessInterface<MissionInterface> {
 
+    /**
+     * @return The specific {@link MissionInterface}
+     */
+    @Override
+    MissionInterface get(String id);
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return a new {@link MissionInterface} unsaved
+     */
+    @Override
+    MissionInterface getNew();
+
+    /**
+     * @return The list of all {@link MissionInterface}
+     */
+    @Override
+    List<MissionInterface> getAll();
+
+    /**
+     * Get all elements.
+     *
+     * @param before the before {@link Date}
+     * @param after  the after {@link Date}
+     * @return Return all element or empty list
+     */
     List<MissionInterface> getByWindow(final Date before, final Date after);
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void addChangeListener(ChangeListener<MissionInterface> changeListener);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void removeChangeListener(ChangeListener<MissionInterface> changeListener);
 }
