@@ -21,16 +21,18 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
+import com.mapotempo.fleet.api.model.UserInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
+import com.mapotempo.fleet.core.base.MapotempoModelBase;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Company.
  */
 @DocumentBase(type = "user")
-public class User extends MapotempoModelBase {
+public class User extends MapotempoModelBase implements UserInterface {
 
     // MAPOTEMPO KEY
     public static final String USER = "user";
@@ -46,14 +48,14 @@ public class User extends MapotempoModelBase {
     }
 
     public String getUser() {
-        return (String)getProperty(USER, "Unknow");
+        return (String) getProperty(USER, "Unknow");
     }
 
     public String getCompanyId() {
-        return (String)getProperty(COMPANY_ID, "No company id found");
+        return (String) getProperty(COMPANY_ID, "No company id found");
     }
 
     public List<String> getRoles() {
-        return (ArrayList<String>)getProperty(ROLES, new ArrayList<String>());
+        return (ArrayList<String>) getProperty(ROLES, new ArrayList<String>());
     }
 }

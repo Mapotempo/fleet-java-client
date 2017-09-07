@@ -17,18 +17,18 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.api.accessor;
+package com.mapotempo.fleet.api.model;
 
-import com.mapotempo.fleet.api.model.MissionInterface;
-
-import java.util.Date;
 import java.util.List;
 
 /**
- * MissionAccessInterface.
+ * UserInterface.
  */
-public interface MissionAccessInterface extends AccessInterface<MissionInterface> {
+public interface UserInterface extends MapotempoModelBaseInterface {
 
-    List<MissionInterface> getByWindow(final Date before, final Date after);
+    String getUser();
 
+    String getCompanyId();
+
+    List<String> getRoles();
 }

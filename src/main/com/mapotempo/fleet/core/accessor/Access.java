@@ -20,6 +20,8 @@
 package com.mapotempo.fleet.core.accessor;
 
 import com.couchbase.lite.*;
+import com.mapotempo.fleet.api.accessor.AccessInterface;
+import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
@@ -35,7 +37,8 @@ import java.util.Map;
 /**
  * Access.
  */
-public class Access<T extends MapotempoModelBase> {
+public class Access<T extends MapotempoModelBase & MapotempoModelBaseInterface> {
+
     private DatabaseHandler mDatabaseHandler;
 
     private Class<T> mClazz;
@@ -50,11 +53,7 @@ public class Access<T extends MapotempoModelBase> {
 
     private Constructor<T> mConstructorFromDatabase;
 
-    public interface ChangeListener<T> {
-        void changed(List<T> items);
-    }
-
-    private List<ChangeListener> mChangeListenerList;
+    private List<AccessInterface.ChangeListener> mChangeListenerList;
 
     public Access(Class<T> clazz, DatabaseHandler dbHandler, final String sortField) throws CoreException {
         mChangeListenerList = new ArrayList<>();
@@ -84,7 +83,7 @@ public class Access<T extends MapotempoModelBase> {
         mDocumentAnnotation = mClazz.getAnnotation(DocumentBase.class);
 
         // TODO complete
-        if(mDocumentAnnotation == null)
+        if (mDocumentAnnotation == null)
             throw new CoreException("TODO Exception");
 
         mView = mDatabaseHandler.mDatabase.getView(mClazz.getSimpleName());
@@ -92,11 +91,11 @@ public class Access<T extends MapotempoModelBase> {
             @Override
             public void map(Map<String, Object> document, Emitter emitter) {
                 String _sortField = "_id";
-                if(sortField != null)
+                if (sortField != null)
                     _sortField = sortField;
 
                 Object type_found = document.get(mDocumentAnnotation.type_field());
-                if(type_found != null && type_found.toString().equals(mDocumentAnnotation.type()))
+                if (type_found != null && type_found.toString().equals(mDocumentAnnotation.type()))
                     emitter.emit(document, document.get(_sortField));
             }
         }, "2");
@@ -107,7 +106,7 @@ public class Access<T extends MapotempoModelBase> {
             @Override
             public void changed(LiveQuery.ChangeEvent event) {
                 List<T> item = runQuery(event.getRows());
-                for(ChangeListener changeListener : mChangeListenerList) {
+                for (AccessInterface.ChangeListener changeListener : mChangeListenerList) {
                     changeListener.changed(item);
                 }
                 //mLiveQuery.start();
@@ -119,7 +118,7 @@ public class Access<T extends MapotempoModelBase> {
         //mItems = runQuery(event.getRows());
     }
 
-    public T getNew () {
+    public T getNew() {
         T res = null;
         try {
             res = mConstructorFromDatabase.newInstance(mDatabaseHandler.mDatabase);
@@ -134,6 +133,7 @@ public class Access<T extends MapotempoModelBase> {
         }
     }
 
+    //@Override
     public T get(String id) {
         Document doc = mDatabaseHandler.mDatabase.getExistingDocument(id);
         if (doc != null)
@@ -144,9 +144,11 @@ public class Access<T extends MapotempoModelBase> {
     /**
      * getAll.
      * Type view filter
+     *
      * @return all data T in a list
      */
-    public List<T> getAll() {
+    //@Override
+    public List getAll() {
         Query query = mView.createQuery();
         try {
             QueryEnumerator result = query.run();
@@ -158,27 +160,29 @@ public class Access<T extends MapotempoModelBase> {
         }
     }
 
-    public void addChangeListener(Access.ChangeListener<T> changeListener) {
+    //@Override
+    public void addChangeListener(AccessInterface.ChangeListener changeListener) {
         mChangeListenerList.add(changeListener);
     }
 
-    public void removeChangeListener(Access.ChangeListener<T> changeListener) {
+    //@Override
+    public void removeChangeListener(AccessInterface.ChangeListener changeListener) {
         mChangeListenerList.remove(changeListener);
     }
 
     /**
      * runQuery.
+     *
      * @param result the query row enumerator result
      * @return a list of T
      **/
-    protected List<T> runQuery(QueryEnumerator result)//Query query)
-    {
-        List<T> res = new ArrayList<T>();
+    protected List<T> runQuery(QueryEnumerator result) {
+        List<T> res = new ArrayList();
         for (Iterator<QueryRow> it = result; it.hasNext(); ) {
             QueryRow row = it.next();
             Document doc = row.getDocument();
             T data = getInstance(doc);
-            if(data != null)
+            if (data != null)
                 res.add(data);
         }
 

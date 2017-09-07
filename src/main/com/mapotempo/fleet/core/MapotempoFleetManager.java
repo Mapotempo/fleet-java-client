@@ -21,8 +21,8 @@ package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.Context;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
+import com.mapotempo.fleet.api.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
-import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
 import com.mapotempo.fleet.core.model.User;
@@ -131,7 +131,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mDatabaseHandler.setUserChannel(userName);
 
         // Ecoute des Documents User
-        mUserAccess.addChangeListener(new Access.ChangeListener<User>() {
+        mUserAccess.addChangeListener(new AccessInterface.ChangeListener<User>() {
             @Override
             public void changed(List<User> items) {
                 if (items.size() > 0) {
@@ -149,7 +149,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
                 verifyConnexion();
             }
         });
-
         verifyConnexion();
     }
 

@@ -20,7 +20,9 @@
 package com.mapotempo.fleet.core.model.accessor;
 
 import com.couchbase.lite.*;
+import com.mapotempo.fleet.api.accessor.AccessInterface;
 import com.mapotempo.fleet.api.accessor.MissionAccessInterface;
+import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -34,12 +36,11 @@ import java.util.List;
 /**
  * MissionAccess.
  */
-public class MissionAccess extends Access<Mission> implements MissionAccessInterface {
+public class MissionAccess extends Access<Mission> implements MissionAccessInterface, AccessInterface<MissionInterface> {
 
     public MissionAccess(DatabaseHandler dbHandler) throws CoreException {
         super(Mission.class, dbHandler, "name");
     }
-
 
     /**
      * Filter missions trough a time window
@@ -48,8 +49,9 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
      * @param after  End fetching from this date
      * @return List
      */
-    public List<Mission> getByWindow(final Date before, final Date after) {
-        List<Mission> res = new ArrayList<>();
+    @Override
+    public List<MissionInterface> getByWindow(final Date before, final Date after) {
+        List<MissionInterface> res = new ArrayList<>();
 
         Query query = mView.createQuery();
         query.setPostFilter(new Predicate<QueryRow>() {
@@ -67,7 +69,7 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
         QueryEnumerator queryEnumerator;
         try {
             queryEnumerator = query.run();
-            res = runQuery(queryEnumerator);
+            res = new ArrayList<MissionInterface>(runQuery(queryEnumerator));
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         } finally {

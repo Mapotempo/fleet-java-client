@@ -19,15 +19,18 @@
 
 package com.mapotempo.fleet.api.accessor;
 
-import com.mapotempo.fleet.core.accessor.Access;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
+import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 
 import java.util.List;
 
 /**
  * AccessInterface.
  */
-public interface AccessInterface<T extends MapotempoModelBase> {
+public interface AccessInterface<T extends MapotempoModelBaseInterface> {
+
+    interface ChangeListener<T> {
+        void changed(List<T> items);
+    }
 
     /**
      * Get a new instance of ...
@@ -56,13 +59,13 @@ public interface AccessInterface<T extends MapotempoModelBase> {
      *
      * @param changeListener add a change listener
      */
-    void addChangeListener(Access.ChangeListener<T> changeListener);
+    void addChangeListener(ChangeListener<T> changeListener);
 
     /**
      * addRemoveListener.
      *
      * @param changeListener remove the change listener
      */
-    void removeChangeListener(Access.ChangeListener<T> changeListener);
+    void removeChangeListener(ChangeListener<T> changeListener);
 
 }

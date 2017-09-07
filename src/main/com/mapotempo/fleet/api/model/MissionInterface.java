@@ -19,8 +19,65 @@
 
 package com.mapotempo.fleet.api.model;
 
+import com.mapotempo.fleet.core.model.submodel.Address;
+import com.mapotempo.fleet.core.model.submodel.Location;
+import com.mapotempo.fleet.core.model.submodel.TimeWindow;
+
+import java.util.ArrayList;
+import java.util.Date;
+
 /**
  * MissionInterface.
  */
-public interface MissionInterface {
+public interface MissionInterface extends MapotempoModelBaseInterface {
+
+    String getName();
+
+    void setName(String name);
+
+    String getCompanyId();
+
+    void setCompanyId(String companyId);
+
+    Date getDeliveryDate();
+
+    void setDeliveryDate(String isoDate);
+
+    void setDeliveryDate(Date date);
+
+    Location getLocation();
+
+    void setLocation(Location location);
+
+    Address getAddress();
+
+    void setAddress(Address address);
+
+    MissionStatusTypeInterface getStatus();
+
+    void setStatus(MissionStatusTypeInterface missionStatus);
+
+    ArrayList<String> getOwners();
+
+    void setOwners(ArrayList<String> owners);
+
+    String getReference();
+
+    void setReference(String reference);
+
+    String getComment();
+
+    void setComment(String comment);
+
+    String getPhone();
+
+    void setPhone(String phone);
+
+    int getDuration();
+
+    void setDuration(int duration);
+
+    ArrayList<TimeWindow> getTimeWindow();
+
+    void setTimeWindow(ArrayList<TimeWindow> timeWindows);
 }

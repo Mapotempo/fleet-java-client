@@ -52,7 +52,7 @@ task copyJavaDocSupportFiles(type: Copy) {
     into 'build/docs/javadoc/doc-files/'
 }
 
-task generateApiJavadocs(name: 'documentation', type: Javadoc, dependsOn: ['copyJavaDocSupportFiles', 'clean']) {
+task generateApiJavadocs(name: 'documentation', type: Javadoc, dependsOn: ['copyJavaDocSupportFiles']) {
     source = sourceSets.main.allJava
     exclude 'com/mapotempo/fleet/core'
     exclude 'com/mapotempo/fleet/utils'

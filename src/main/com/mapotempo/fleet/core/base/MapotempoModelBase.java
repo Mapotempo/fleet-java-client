@@ -23,6 +23,7 @@ import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.couchbase.lite.UnsavedRevision;
+import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.*;
@@ -30,7 +31,7 @@ import java.util.*;
 /**
  * MapotempoModelBase.
  */
-abstract public class MapotempoModelBase {
+abstract public class MapotempoModelBase implements MapotempoModelBaseInterface {
 
     protected boolean readOnly = false;
 
@@ -68,9 +69,6 @@ abstract public class MapotempoModelBase {
         }
     };
 
-    public interface ChangeListener<T extends MapotempoModelBase> {
-        void changed(T item);
-    }
 
     private List<ChangeListener> mChangeListenerList = new ArrayList<>();
 
@@ -105,6 +103,7 @@ abstract public class MapotempoModelBase {
         updateDocument = mDocument.createRevision();
     }
 
+    @Override
     public boolean delete() {
         try {
             return mDocument.delete();
@@ -114,12 +113,14 @@ abstract public class MapotempoModelBase {
         }
     }
 
+    @Override
     public void addChangeListener(ChangeListener changeListener) {
         if (mChangeListenerList.size() == 0)
             mDocument.addChangeListener(mDocumentChangeListener);
         mChangeListenerList.add(changeListener);
     }
 
+    @Override
     public void removeChangeListener(ChangeListener changeListener) {
         if (mChangeListenerList.size() == 0)
             mDocument.removeChangeListener(mDocumentChangeListener);
@@ -134,6 +135,7 @@ abstract public class MapotempoModelBase {
         return mDocument.getCurrentRevision().getId();
     }
 
+    @Override
     public boolean save() {
         if (!readOnly) {
             try {

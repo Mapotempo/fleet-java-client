@@ -19,10 +19,10 @@
 
 package com.mapotempo.fleet.api.accessor;
 
-import com.mapotempo.fleet.core.model.MissionStatusType;
+import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 
 /**
  * MissionAccessInterface.
  */
-public interface MissionStatusTypeAccessInterface extends AccessInterface<MissionStatusType> {
+public interface MissionStatusTypeAccessInterface extends AccessInterface<MapotempoModelBaseInterface> {
 }

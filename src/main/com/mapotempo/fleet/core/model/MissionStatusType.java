@@ -21,6 +21,7 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
+import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.MapotempoModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -34,7 +35,7 @@ import java.util.HashMap;
  * Read only class
  */
 @DocumentBase(type = "mission_status_type")
-public class MissionStatusType extends MapotempoModelBase {
+public class MissionStatusType extends MapotempoModelBase implements MissionStatusTypeInterface {
     // MAPOTEMPO KEY
     public static final String LABEL = "label";
     public static final String COLOR = "color";
@@ -52,22 +53,27 @@ public class MissionStatusType extends MapotempoModelBase {
         super(id, database);
     }
 
+    @Override
     public String getLabel() {
         return (String) getProperty(LABEL, "Unknow");
     }
 
+    @Override
     public void setLabel(String label) {
         setProperty(LABEL, label);
     }
 
+    @Override
     public String getColor() {
         return (String) getProperty(COLOR, "FF0000");
     }
 
+    @Override
     public void setColor(String hexColor) {
         setProperty(COLOR, hexColor);
     }
 
+    @Override
     public ArrayList<MissionCommand> getCommands() {
         ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(COMMANDS, new ArrayList<HashMap>());
         ArrayList<MissionCommand> res = new ArrayList<>();

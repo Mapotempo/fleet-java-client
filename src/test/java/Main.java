@@ -1,11 +1,11 @@
 import com.couchbase.lite.JavaContext;
 import com.mapotempo.fleet.api.ManagerFactory;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
-import com.mapotempo.fleet.core.accessor.Access;
+import com.mapotempo.fleet.api.accessor.AccessInterface;
+import com.mapotempo.fleet.api.model.CompanyInterface;
+import com.mapotempo.fleet.api.model.MissionInterface;
+import com.mapotempo.fleet.api.model.UserInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.core.model.Company;
-import com.mapotempo.fleet.core.model.Mission;
-import com.mapotempo.fleet.core.model.User;
 
 import java.util.List;
 import java.util.Scanner;
@@ -27,12 +27,12 @@ public class Main {
 
         }
 
-        List<Mission> missions = mMapotempoFleetManager.getMissionAccess().getAll();
+        List<MissionInterface> missions = mMapotempoFleetManager.getMissionAccess().getAll();
 
-        mMapotempoFleetManager.getMissionAccess().addChangeListener(new Access.ChangeListener<Mission>() {
+        mMapotempoFleetManager.getMissionAccess().addChangeListener(new AccessInterface.ChangeListener<MissionInterface>() {
             @Override
-            public void changed(List<Mission> items) {
-                for (Mission m : items) {
+            public void changed(List<MissionInterface> items) {
+                for (MissionInterface m : items) {
                     System.out.println("-----------------");
                     System.out.println(m.getName());
                     System.out.println(m.getCompanyId());
@@ -50,12 +50,12 @@ public class Main {
             if (nextLine.equals("")) {
                 continue;
             } else if (nextLine.equals("company")) {
-                Company c = mMapotempoFleetManager.getCompany();
+                CompanyInterface c = mMapotempoFleetManager.getCompany();
                 System.out.println(c.getName());
             } else if (nextLine.equals("company_up")) {
 
             } else if (nextLine.equals("mission")) {
-                for (Mission m : missions) {
+                for (MissionInterface m : missions) {
                     System.out.println("-----------------");
                     System.out.println(m.getName());
                     System.out.println(m.getCompanyId());
@@ -64,7 +64,7 @@ public class Main {
                     System.out.println(m.getAddress());
                 }
             } else if (nextLine.equals("user")) {
-                User u = mMapotempoFleetManager.getUser();
+                UserInterface u = mMapotempoFleetManager.getUser();
                 System.out.println(u.getUser());
             } else if (nextLine.equals("all")) {
                 //mapotempoFleetManager.mDatabaseHandler.printAllData();

@@ -21,9 +21,9 @@ package com.mapotempo.fleet.api;
 
 import com.mapotempo.fleet.api.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.accessor.MissionStatusTypeAccessInterface;
+import com.mapotempo.fleet.api.model.CompanyInterface;
+import com.mapotempo.fleet.api.model.UserInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
-import com.mapotempo.fleet.core.model.Company;
-import com.mapotempo.fleet.core.model.User;
 
 /**
  * MapotempoFleetManagerInterface is a database model access and synchronisation server manager.
@@ -37,8 +37,10 @@ public interface MapotempoFleetManagerInterface {
      * company.
      * Note : You can use setOnCompanyAvailable to attach a callback
      * for notify when user data is available.
+     *
+     * @return the Company data associated to the user
      */
-    Company getCompany();
+    CompanyInterface getCompany();
 
     /**
      * Return the user data associate to the user.
@@ -49,7 +51,7 @@ public interface MapotempoFleetManagerInterface {
      *
      * @return the User data associated to the user
      */
-    User getUser();
+    UserInterface getUser();
 
     /**
      * OnServerConnexionVerify.

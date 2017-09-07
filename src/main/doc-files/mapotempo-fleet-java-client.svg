@@ -649,9 +649,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.49497475"
-     inkscape:cx="-414.01948"
-     inkscape:cy="495.64653"
+     inkscape:zoom="1.4"
+     inkscape:cx="248.4087"
+     inkscape:cy="594.43526"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -660,7 +660,8 @@
      inkscape:window-x="1920"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:object-paths="true" />
+     inkscape:object-paths="true"
+     showguides="false" />
   <metadata
      id="metadata7">
     <rdf:RDF>
@@ -677,6 +678,54 @@
      inkscape:label="Calque 1"
      inkscape:groupmode="layer"
      id="layer1">
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#d8d8d8;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5796876px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect7619-2"
+       width="230.96947"
+       height="81.506287"
+       x="166.48842"
+       y="309.78879"
+       rx="20.840536"
+       ry="0.62718064"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948" />
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#d8d8d8;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 6;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect7560"
+       width="312.49976"
+       height="80.595901"
+       x="215.79736"
+       y="530.89764"
+       rx="6.5574627"
+       ry="0.15044211"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948" />
+    <g
+       id="g22858"
+       transform="matrix(0.76442754,0,0,0.79641995,111.41224,116.12571)"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
+      <path
+         inkscape:export-ydpi="63.797764"
+         inkscape:export-xdpi="63.797764"
+         inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+         inkscape:connector-curvature="0"
+         id="path4676-6-4"
+         d="m 336.7057,332.29825 -2.65834,189.72742"
+         style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2.78881473;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:5.57762946, 2.78881472999999991;stroke-dashoffset:26.37972994;stroke-opacity:1;marker-start:url(#Arrow2Mstart);marker-end:url(#Arrow2Mend)" />
+      <rect
+         ry="0.3588762"
+         rx="19.397158"
+         y="399.4212"
+         x="256.06506"
+         height="57.94791"
+         width="158.62297"
+         id="rect22772"
+         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#cc0000;stroke-width:2.78881473;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:5.57762946, 2.78881472999999991;stroke-dashoffset:26.37972994;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+    </g>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -684,18 +733,20 @@
        y="135.14627"
        id="text16239"
        sodipodi:linespacing="125%"
-       transform="matrix(0,0.37950661,-2.6350002,0,0,0)"><tspan
+       transform="matrix(0,0.37950661,-2.6350002,0,0,0)"
+       inkscape:export-xdpi="143"
+       inkscape:export-ydpi="143"><tspan
          sodipodi:role="line"
          id="tspan16241"
          x="590.53076"
          y="135.14627" /></text>
     <g
        id="g7758"
-       transform="matrix(0.61361943,0,0,0.61361943,-30.287172,205.10504)"
+       transform="matrix(0.33380144,0,0,0.33380144,153.18226,306.69249)"
        style="stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764">
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <text
          sodipodi:linespacing="125%"
          id="text7678-4"
@@ -706,228 +757,190 @@
            y="-253.2832"
            x="384.85608"
            sodipodi:role="line"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28.51930552px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28.51930618px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
            id="tspan9558">Mapotempo-Fleet-Java-Client library</tspan><tspan
-           y="-222.72681"
+           y="-217.63406"
            x="384.85608"
            sodipodi:role="line"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28.51930552px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28.51930618px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
            id="tspan22742">based application</tspan><tspan
-           y="-192.17041"
+           y="-181.98494"
            x="384.85608"
            sodipodi:role="line"
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28.51930552px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:28.51930618px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
            id="tspan22738" /></text>
     </g>
     <rect
-       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#cc0000;stroke-width:4.13806677;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:16.55226704, 4.13806676;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#cc0000;stroke-width:2.25105762;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:9.00423007, 2.25105752;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect7810"
-       width="453.30637"
-       height="344.74368"
-       x="-20.187042"
-       y="23.120832"
-       rx="15.642487"
-       ry="0.57075208"
+       width="246.59309"
+       height="187.53633"
+       x="158.67661"
+       y="207.69531"
+       rx="8.5093203"
+       ry="0.31048211"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764" />
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948" />
     <rect
-       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:4.55316544;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:18.2126613, 4.55316532;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.38572168;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:9.54288716, 2.38572179;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect7810-4"
-       width="298.18427"
-       height="227.75542"
-       x="465.88971"
-       y="23.571253"
-       rx="10.289604"
-       ry="0.37706813"
+       width="162.29973"
+       height="114.88105"
+       x="423.05081"
+       y="207.89478"
+       rx="5.6005635"
+       ry="0.19019519"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764" />
-    <rect
-       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#d8d8d8;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.5796876px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       id="rect7619-2"
-       width="424.58582"
-       height="142.40335"
-       x="-5.8267698"
-       y="210.79688"
-       rx="38.310673"
-       ry="1.095776"
-       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764" />
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948" />
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:20.18738747px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="2.9937832"
-       y="231.85353"
+       style="font-style:normal;font-weight:normal;font-size:10.98169136px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="171.2867"
+       y="321.24335"
        id="text7613-0-2"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764"><tspan
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
          sodipodi:role="line"
          id="tspan7615-6-6"
-         x="2.9937832"
-         y="231.85353"
-         style="font-size:17.5px">Mapotempo-Fleet-Java-Client library</tspan></text>
+         x="171.2867"
+         y="321.24335"
+         style="font-size:9.51978493px">Mapotempo-Fleet-Java-Client library</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:100%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="4.7113128"
-       y="259.98474"
+       style="font-style:normal;font-weight:normal;font-size:4.07990789px;line-height:100%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="172.22101"
+       y="336.54636"
        id="text16069"
-       sodipodi:linespacing="100%"
+       sodipodi:linespacing="85%"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764"><tspan
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
          sodipodi:role="line"
          id="tspan16071"
-         x="4.7113128"
-         y="259.98474"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1">Provide :</tspan><tspan
+         x="172.22101"
+         y="336.54636"
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1">Provide :</tspan><tspan
          sodipodi:role="line"
-         x="4.7113128"
-         y="273.48474"
+         x="172.22101"
+         y="350.04636"
          id="tspan16337"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1"> - User</tspan><tspan
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1"> - User</tspan><tspan
          sodipodi:role="line"
-         x="4.7113128"
-         y="286.98471"
+         x="172.22101"
+         y="363.54636"
          id="tspan16075"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1"> - Company</tspan><tspan
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1"> - Company</tspan><tspan
          sodipodi:role="line"
-         x="4.7113128"
-         y="300.48471"
+         x="172.22101"
+         y="377.04636"
          id="tspan16073"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1"> - Missions</tspan><tspan
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1"> - Missions</tspan><tspan
          sodipodi:role="line"
-         x="4.7113128"
-         y="313.98471"
+         x="172.22101"
+         y="390.54636"
          id="tspan16077"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1"> - MissionStatus</tspan><tspan
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1"> - MissionStatus</tspan><tspan
          sodipodi:role="line"
-         x="4.7113128"
-         y="327.48471"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1"
+         x="172.22101"
+         y="404.04636"
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1"
          id="tspan22758"> - Custom User Data</tspan><tspan
          sodipodi:role="line"
-         x="4.7113128"
-         y="340.98471"
+         x="172.22101"
+         y="417.54636"
          id="tspan16079"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1"> - Etc ...</tspan><tspan
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1"> - Etc ...</tspan><tspan
          sodipodi:role="line"
-         x="4.7113128"
-         y="354.48471"
+         x="172.22101"
+         y="431.04636"
          id="tspan16081"
-         style="font-size:15px;line-height:89.99999762%;fill:#cc0000;fill-opacity:1" /></text>
-    <path
-       style="opacity:0.95999995;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:5.84951115;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:50;stroke-opacity:1;marker-start:url(#Arrow2Mstart-2);marker-end:url(#Arrow2Mend-5)"
-       d="M 594.17296,188.08181 494.99848,561.51058"
-       id="path4676-6-4-7"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764" />
+         style="font-size:10px;line-height:85%;fill:#cc0000;fill-opacity:1" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:89.99999762%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="573.52441"
-       y="335.72638"
+       style="font-style:normal;font-weight:normal;font-size:3.03573418px;line-height:89.99999762%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="508.86917"
+       y="355.21268"
        id="text16069-0"
        sodipodi:linespacing="89.999998%"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764"><tspan
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
          sodipodi:role="line"
          id="tspan16071-4"
-         x="573.52441"
-         y="335.72638"
-         style="font-size:15px;line-height:89.99999762%">Provide :</tspan><tspan
+         x="508.86917"
+         y="355.21268"
+         style="font-size:7.44069338px;line-height:89.99999762%">Provide :</tspan><tspan
          sodipodi:role="line"
-         x="573.52441"
-         y="349.22638"
+         x="508.86917"
+         y="361.9093"
          id="tspan16337-8"
-         style="font-size:15px;line-height:89.99999762%"> - User</tspan><tspan
+         style="font-size:7.44069338px;line-height:89.99999762%"> - User</tspan><tspan
          sodipodi:role="line"
-         x="573.52441"
-         y="362.72638"
+         x="508.86917"
+         y="368.60593"
          id="tspan16075-7"
-         style="font-size:15px;line-height:89.99999762%"> - Company</tspan><tspan
+         style="font-size:7.44069338px;line-height:89.99999762%"> - Company</tspan><tspan
          sodipodi:role="line"
-         x="573.52441"
-         y="376.22638"
+         x="508.86917"
+         y="375.30255"
          id="tspan16073-0"
-         style="font-size:15px;line-height:89.99999762%"> - Missions</tspan><tspan
+         style="font-size:7.44069338px;line-height:89.99999762%"> - Missions</tspan><tspan
          sodipodi:role="line"
-         x="573.52441"
-         y="389.72638"
+         x="508.86917"
+         y="381.99918"
          id="tspan16077-8"
-         style="font-size:15px;line-height:89.99999762%"> - MissionStatus</tspan><tspan
+         style="font-size:7.44069338px;line-height:89.99999762%"> - MissionStatus</tspan><tspan
          sodipodi:role="line"
-         x="573.52441"
-         y="403.22638"
-         style="font-size:15px;line-height:89.99999762%"
+         x="508.86917"
+         y="388.6958"
+         style="font-size:7.44069338px;line-height:89.99999762%"
          id="tspan22760"> - Custom User Data</tspan><tspan
          sodipodi:role="line"
-         x="573.52441"
-         y="416.72638"
+         x="508.86917"
+         y="395.39243"
          id="tspan16079-6"
-         style="font-size:15px;line-height:89.99999762%"> - Etc ...</tspan><tspan
+         style="font-size:7.44069338px;line-height:89.99999762%"> - Etc ...</tspan><tspan
          sodipodi:role="line"
-         x="573.52441"
-         y="430.22638"
+         x="508.86917"
+         y="402.08905"
          id="tspan16081-2"
-         style="font-size:15px;line-height:89.99999762%" /></text>
-    <g
-       id="g22858"
-       transform="matrix(1.4052294,0,0,1.4640403,-107.07203,-145.20944)">
-      <path
-         inkscape:export-ydpi="63.797764"
-         inkscape:export-xdpi="63.797764"
-         inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-         inkscape:connector-curvature="0"
-         id="path4676-6-4"
-         d="m 336.72225,332.35011 -2.69144,192.0901"
-         style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2.78875179;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:5.57750358,2.78875179;stroke-dashoffset:26.05467348;stroke-opacity:1;marker-start:url(#Arrow2Mstart);marker-end:url(#Arrow2Mend)" />
-      <rect
-         ry="0.3588762"
-         rx="19.397158"
-         y="399.4212"
-         x="256.06506"
-         height="57.94791"
-         width="158.62297"
-         id="rect22772"
-         style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#cc0000;stroke-width:2.78875184;stroke-linecap:butt;stroke-linejoin:bevel;stroke-miterlimit:4;stroke-dasharray:5.57750358, 2.78875179;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
-    </g>
+         style="font-size:7.44069338px;line-height:89.99999762%" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:10.75750065px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="372.03052"
-       y="455.55881"
+       style="font-style:normal;font-weight:normal;font-size:5.85194826px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="375.55197"
+       y="438.97711"
        id="text22724"
        sodipodi:linespacing="125%"
-       transform="scale(0.97970896,1.0207113)"><tspan
+       transform="scale(0.97970896,1.0207113)"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
          sodipodi:role="line"
          id="tspan22726"
-         x="375.05002"
-         y="455.55881"
-         style="font-size:18.96914101px">Automatic </tspan><tspan
+         x="378.57147"
+         y="438.97711"
+         style="font-size:10.31898022px">Automatic </tspan><tspan
          sodipodi:role="line"
-         x="372.03052"
-         y="479.27023"
+         x="375.55197"
+         y="462.68854"
          id="tspan22730"
-         style="font-size:18.96914101px">synchronisation on</tspan><tspan
+         style="font-size:10.31898022px">synchronisation on</tspan><tspan
          sodipodi:role="line"
-         x="372.03052"
-         y="502.98166"
-         style="font-size:18.96914101px"
+         x="375.55197"
+         y="486.39996"
+         style="font-size:10.31898022px"
          id="tspan22734">available connexion</tspan></text>
     <g
        id="g25408"
-       transform="matrix(0.98361574,0,0,0.98361574,-59.448403,-343.1708)"
+       transform="matrix(0.53507489,0,0,0.53507489,137.31891,8.43716)"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63"
-       inkscape:export-ydpi="63">
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <g
          inkscape:export-ydpi="63.797764"
          inkscape:export-xdpi="63.797764"
@@ -1076,53 +1089,44 @@
     <text
        sodipodi:linespacing="125%"
        id="text7678-4-4"
-       y="600.98376"
-       x="238.87886"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.17662525px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;opacity:0.95;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.33400249;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0;stroke-opacity:1"
+       y="522.04565"
+       x="273.24146"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:7.1679225px;line-height:125%;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;opacity:0.95;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.33400249;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63"
-       inkscape:export-ydpi="63"><tspan
-         y="600.98376"
-         x="238.87886"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
+         y="522.04565"
+         x="273.24146"
          sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:17.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.51978493px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
          id="tspan5558">Mapotempo-Fleet-API</tspan><tspan
-         y="619.73376"
-         x="238.87886"
+         y="533.94537"
+         x="273.24146"
          sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:17.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.51978493px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
          id="tspan22738-3" /></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:7.5px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="178.63303"
-       y="829.50507"
+       style="font-style:normal;font-weight:normal;font-size:4.07990789px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="266.27444"
+       y="646.35846"
        id="text4912"
-       sodipodi:linespacing="125%"><tspan
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
          sodipodi:role="line"
          id="tspan4914"
-         x="178.63303"
-         y="829.50507"
-         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:25px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold Italic'">Mapotempo Fleet Workflow</tspan></text>
-    <rect
-       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#d8d8d8;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 6;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
-       id="rect7560"
-       width="464.16443"
-       height="137.65314"
-       x="139.96503"
-       y="627.76062"
-       rx="9.7399788"
-       ry="0.25694641"
-       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764" />
+         x="266.27444"
+         y="646.35846"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.5996933px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold Italic'">Mapotempo Fleet Workflow</tspan></text>
     <g
        id="g9499"
-       transform="matrix(0.71609466,0,0,0.71609466,7.8004453,356.41964)"
+       transform="matrix(0.3895467,0,0,0.3895467,203.34361,384.72006)"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764">
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <rect
          ry="0.35023198"
          rx="18.772091"
@@ -1146,25 +1150,25 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:28.64378548px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="256.42081"
-       y="753.01941"
+       style="font-style:normal;font-weight:normal;font-size:15.58186722px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="309.14789"
+       y="604.75116"
        id="text7613"
        sodipodi:linespacing="125%"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764"><tspan
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
          sodipodi:role="line"
          id="tspan7615"
-         x="256.42081"
-         y="753.01941"
-         style="font-size:18.75px">Mapotempo Fleet Server</tspan></text>
+         x="309.14789"
+         y="604.75116"
+         style="font-size:10.19976997px">Mapotempo Fleet Server</tspan></text>
     <g
        id="g25384"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63"
-       inkscape:export-ydpi="63"
-       transform="matrix(1.2420484,0,0,1.2420484,-79.802813,-88.239214)">
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"
+       transform="matrix(0.67565908,0,0,0.67565908,126.24636,147.11681)">
       <g
          inkscape:export-ydpi="63.797764"
          inkscape:export-xdpi="63.797764"
@@ -1311,45 +1315,48 @@
            sodipodi:role="line">Database</tspan></text>
     </g>
     <rect
-       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:4;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:16, 4;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:0.95;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:none;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:2.42387271;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:9.6954904, 2.4238726;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
        id="rect7810-4-6"
-       width="494.24597"
-       height="210.41031"
-       x="124.92426"
-       y="573.96423"
-       rx="17.055212"
-       ry="0.34835187"
+       width="334.33014"
+       height="114.21275"
+       x="204.88217"
+       y="507.47128"
+       rx="11.536911"
+       ry="0.18908876"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63.797764"
-       inkscape:export-ydpi="63.797764" />
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948" />
     <text
        sodipodi:linespacing="125%"
        id="text7678-4-4-3"
-       y="49.685547"
-       x="614.98187"
-       style="font-style:normal;font-weight:normal;font-size:13.17662525px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;opacity:0.95;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.33400249;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0;stroke-opacity:1"
+       y="222.14619"
+       x="504.20068"
+       style="font-style:normal;font-weight:normal;font-size:7.1679225px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;opacity:0.95;fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.33400249;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0;stroke-opacity:1"
        xml:space="preserve"
        inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
-       inkscape:export-xdpi="63"
-       inkscape:export-ydpi="63"><tspan
-         y="49.685547"
-         x="614.98187"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948"><tspan
+         y="222.14619"
+         x="504.20068"
          sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:17.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.51978493px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
          id="tspan22742-9-5">Mapotempo-Fleet-Rest-API</tspan><tspan
-         y="68.435547"
-         x="614.98187"
+         y="244.02119"
+         x="504.20068"
          sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:17.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.51978493px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
          id="tspan23113-6">based application</tspan><tspan
-         y="87.185547"
-         x="614.98187"
+         y="265.89618"
+         x="504.20068"
          sodipodi:role="line"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:17.5px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256000000006;stroke-dashoffset:0"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:9.51978493px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold';text-align:center;text-anchor:middle;stroke-width:2.33400249;stroke-miterlimit:4;stroke-dasharray:9.33601023, 2.33400256;stroke-dashoffset:0"
          id="tspan22738-3-2" /></text>
     <g
        id="g5630"
-       transform="translate(-4.183972,26.207955)">
+       transform="matrix(0.54398772,0,0,0.54398772,167.38208,209.37467)"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <g
          inkscape:export-ydpi="63.797764"
          inkscape:export-xdpi="63.797764"
@@ -1387,7 +1394,10 @@
     </g>
     <g
        id="g5682"
-       transform="translate(-3.7877318,13.280124)">
+       transform="matrix(0.54398772,0,0,0.54398772,167.59763,202.34209)"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <rect
          ry="0.48144472"
          rx="19.808699"
@@ -1422,7 +1432,10 @@
     </g>
     <g
        id="g5689"
-       transform="translate(-3.7877318,24.285714)">
+       transform="matrix(0.54398772,0,0,0.54398772,167.59763,208.32899)"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <g
          style="fill:#8cbfff;fill-opacity:1"
          inkscape:export-ydpi="63.797764"
@@ -1478,7 +1491,10 @@
     </g>
     <g
        id="g5630-9"
-       transform="translate(102.89172,26.252679)">
+       transform="matrix(0.54398772,0,0,0.54398772,225.62994,209.399)"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <g
          inkscape:export-ydpi="63.797764"
          inkscape:export-xdpi="63.797764"
@@ -1516,7 +1532,10 @@
     </g>
     <g
        id="g5689-6"
-       transform="translate(565.34401,0)">
+       transform="matrix(0.54398772,0,0,0.54398772,477.19831,195.11786)"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948">
       <g
          style="fill:#8cbfff;fill-opacity:1"
          inkscape:export-ydpi="63.797764"
@@ -1570,5 +1589,13 @@
            x="122.18694"
            sodipodi:role="line">Application</tspan></text>
     </g>
+    <path
+       style="opacity:0.95999995;fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:3.14607525;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:50;stroke-opacity:1;marker-start:url(#Arrow2Mstart-2);marker-end:url(#Arrow2Mend-5)"
+       d="m 501.84286,297.04378 0.45128,211.81025"
+       id="path4676-6-4-7"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/maxime/mapotempo-fleet-java-client.png"
+       inkscape:export-xdpi="143.07948"
+       inkscape:export-ydpi="143.07948" />
   </g>
 </svg>
