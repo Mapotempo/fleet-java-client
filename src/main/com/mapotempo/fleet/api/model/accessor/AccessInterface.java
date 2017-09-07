@@ -17,7 +17,7 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.api.accessor;
+package com.mapotempo.fleet.api.model.accessor;
 
 import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 

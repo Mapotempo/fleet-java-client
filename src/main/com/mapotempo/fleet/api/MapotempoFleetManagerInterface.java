@@ -19,10 +19,10 @@
 
 package com.mapotempo.fleet.api;
 
-import com.mapotempo.fleet.api.accessor.MissionAccessInterface;
-import com.mapotempo.fleet.api.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.CompanyInterface;
 import com.mapotempo.fleet.api.model.UserInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 
 /**

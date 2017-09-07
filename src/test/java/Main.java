@@ -1,10 +1,10 @@
 import com.couchbase.lite.JavaContext;
 import com.mapotempo.fleet.api.ManagerFactory;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
-import com.mapotempo.fleet.api.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.CompanyInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.UserInterface;
+import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.util.List;

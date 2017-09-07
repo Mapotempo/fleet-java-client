@@ -21,7 +21,7 @@ package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.Context;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
-import com.mapotempo.fleet.api.accessor.AccessInterface;
+import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;

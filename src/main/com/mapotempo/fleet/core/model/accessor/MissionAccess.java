@@ -20,9 +20,9 @@
 package com.mapotempo.fleet.core.model.accessor;
 
 import com.couchbase.lite.*;
-import com.mapotempo.fleet.api.accessor.AccessInterface;
-import com.mapotempo.fleet.api.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
+import com.mapotempo.fleet.api.model.accessor.AccessInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
