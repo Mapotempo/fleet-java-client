@@ -57,6 +57,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
     private static final String PHONE = "phone";
     private static final String DURATION = "duration";
     private static final String TIME_WINDOWS = "time_windows";
+    private static final String CUSTOM_DATA = "custom_data";
 
     public Mission(Database database) {
         super(database);
@@ -288,5 +289,23 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
         for (TimeWindow tm : (ArrayList<TimeWindow>) timeWindows)
             hashArray.add(new TimeWindow(tm.toMap(), mDatabase));
         setProperty(TIME_WINDOWS, hashArray);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HashMap<String, String> getCustomData() {
+        HashMap<String, String> default_hash = new HashMap<String, String>();
+        HashMap<String, String> res = (HashMap<String, String>) getProperty(CUSTOM_DATA, default_hash);
+        return res;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setCustomData(HashMap<String, String> data) {
+        setProperty(CUSTOM_DATA, data);
     }
 }

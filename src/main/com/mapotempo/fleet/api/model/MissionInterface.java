@@ -25,6 +25,7 @@ import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * MissionInterface.
@@ -134,7 +135,7 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
      *
      * @param owners A {@link ArrayList} of owner
      */
-    void setOwners(ArrayList owners);
+    void setOwners(ArrayList<String> owners);
 
     /**
      * Get the reference.
@@ -205,4 +206,18 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
      * @param timeWindows An {@link ArrayList}
      */
     void setTimeWindow(ArrayList<TimeWindowsInterface> timeWindows);
+
+    /**
+     * Get custom data.
+     *
+     * @return
+     */
+    HashMap<String, String> getCustomData();
+
+    /**
+     * Set the custom data.
+     *
+     * @param data
+     */
+    void setCustomData(HashMap<String, String> data);
 }
