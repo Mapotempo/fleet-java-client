@@ -36,7 +36,7 @@ public class Main {
                     System.out.println("-----------------");
                     System.out.println(m.getName());
                     System.out.println(m.getCompanyId());
-                    System.out.println(m.getDeliveryDate());
+                    System.out.println(m.getDate());
                     System.out.println(m.getLocation());
                 }
             }
@@ -59,7 +59,7 @@ public class Main {
                     System.out.println("-----------------");
                     System.out.println(m.getName());
                     System.out.println(m.getCompanyId());
-                    System.out.println(m.getDeliveryDate());
+                    System.out.println(m.getDate());
                     System.out.println(m.getLocation());
                     System.out.println(m.getAddress());
                 }

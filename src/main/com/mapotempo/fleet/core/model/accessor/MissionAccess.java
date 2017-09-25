@@ -59,7 +59,7 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
             public boolean apply(QueryRow queryRow) {
                 Mission mission = new Mission(queryRow.getDocument());
 
-                if (mission.getDeliveryDate().after(before) && mission.getDeliveryDate().before(after)) {
+                if (mission.getDate().after(before) && mission.getDate().before(after)) {
                     return true;
                 }
                 return false;

@@ -61,25 +61,25 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
     void setCompanyId(String companyId);
 
     /**
-     * Get the mission delivery date.
+     * Get the mission date.
      *
      * @return A date
      */
-    Date getDeliveryDate();
+    Date getDate();
 
     /**
-     * Set the delivery date by iso8601 date {@link String}.
+     * Set the mission date by iso8601 date {@link String}.
      *
      * @param isoDate An iso {@link String}
      */
-    void setDeliveryDate(String isoDate);
+    void setDate(String isoDate);
 
     /**
-     * Set the delivery date.
+     * Set the mission date.
      *
      * @param date A {@link Date}
      */
-    void setDeliveryDate(Date date);
+    void setDate(Date date);
 
     /**
      * Get the mission location.

@@ -47,7 +47,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
     // MAPOTEMPO KEY
     private static final String NAME = "name";
     private static final String COMPANY_ID = "company_id";
-    private static final String DELIVERY_DATE = "delivery_date";
+    private static final String DATE = "date";
     private static final String LOCATION = "location";
     private static final String ADDRESS = "address";
     private static final String OWNERS = "owners";
@@ -106,8 +106,8 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public Date getDeliveryDate() {
-        String dataType = (String) getProperty(DELIVERY_DATE, "0");
+    public Date getDate() {
+        String dataType = (String) getProperty(DATE, "0");
         return DateHelper.fromStringISO8601(dataType);
     }
 
@@ -115,16 +115,16 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public void setDeliveryDate(String isoDate) {
-        setProperty(DELIVERY_DATE, isoDate);
+    public void setDate(String isoDate) {
+        setProperty(DATE, isoDate);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setDeliveryDate(Date date) {
-        setProperty(DELIVERY_DATE, DateHelper.toStringISO8601(date));
+    public void setDate(Date date) {
+        setProperty(DATE, DateHelper.toStringISO8601(date));
     }
 
     /**
