@@ -38,12 +38,12 @@ abstract public class MapotempoModelBase implements MapotempoModelBaseInterface 
     private MapotempoModelBase INSTANCE = this;
 
     private UnsavedRevision updateDocument;
+
     private HashMap<String, Boolean> readInUpdateDocument = new HashMap<>();
 
     protected Document mDocument;
 
     protected Database mDatabase;
-
 
     // TODO
     private Document.ChangeListener mConflictSolver = new Document.ChangeListener() {
@@ -64,7 +64,7 @@ abstract public class MapotempoModelBase implements MapotempoModelBaseInterface 
         @Override
         public void changed(Document.ChangeEvent event) {
             for (ChangeListener changeListener : mChangeListenerList) {
-                changeListener.changed(INSTANCE);
+                changeListener.changed(INSTANCE, mDocument.isDeleted());
             }
         }
     };

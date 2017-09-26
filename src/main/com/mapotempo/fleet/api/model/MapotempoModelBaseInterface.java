@@ -15,7 +15,7 @@ public interface MapotempoModelBaseInterface {
      * @param <T> The template type
      */
     interface ChangeListener<T extends MapotempoModelBaseInterface> {
-        void changed(T item);
+        void changed(T item, boolean onDeletion);
     }
 
     /**
