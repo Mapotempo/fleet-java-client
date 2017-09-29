@@ -59,7 +59,7 @@ public class MissionStatusType extends MapotempoModelBase implements MissionStat
      */
     @Override
     public String getLabel() {
-        return (String) getProperty(LABEL, "Unknow");
+        return getProperty(LABEL, String.class, "Unknow");
     }
 
     /**
@@ -75,7 +75,7 @@ public class MissionStatusType extends MapotempoModelBase implements MissionStat
      */
     @Override
     public String getColor() {
-        return (String) getProperty(COLOR, "FF0000");
+        return getProperty(COLOR, String.class, "FF0000");
     }
 
     /**
@@ -91,7 +91,7 @@ public class MissionStatusType extends MapotempoModelBase implements MissionStat
      */
     @Override
     public ArrayList<MissionCommandInterface> getCommands() {
-        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(COMMANDS, new ArrayList<HashMap>());
+        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(COMMANDS, ArrayList.class, new ArrayList<HashMap>());
         ArrayList<MissionCommandInterface> res = new ArrayList<>();
         for (HashMap hm : hashArray) {
             res.add(new MissionCommand(hm, mDatabase));

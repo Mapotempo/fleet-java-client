@@ -23,6 +23,7 @@ import com.mapotempo.fleet.api.model.CompanyInterface;
 import com.mapotempo.fleet.api.model.UserInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
+import com.mapotempo.fleet.api.model.accessor.TrackAccessInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 
 /**
@@ -78,7 +79,7 @@ public interface MapotempoFleetManagerInterface {
     }
 
     /**
-     * MissionAccessInterface
+     * MissionAccessInterface.
      * Return the {@link MissionAccessInterface} or null
      *
      * @return {@link MissionAccessInterface}
@@ -86,12 +87,20 @@ public interface MapotempoFleetManagerInterface {
     MissionAccessInterface getMissionAccess();
 
     /**
-     * MissionStatusTypeAccessInterface
+     * MissionStatusTypeAccessInterface.
      * Return the {@link MissionStatusTypeAccessInterface}
      *
      * @return MissionStatusTypeAccessInterface
      */
     MissionStatusTypeAccessInterface getMissionStatusTypeAccessInterface();
+
+    /**
+     * TrackAccessInterface.
+     * Return the {@link TrackAccessInterface} or null
+     *
+     * @return {@link TrackAccessInterface}
+     */
+    TrackAccessInterface getTrackAccess();
 
     /**
      * Return the submodel factory.

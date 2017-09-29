@@ -21,6 +21,7 @@ package com.mapotempo.fleet.core.model.submodel;
 
 import com.couchbase.lite.Database;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.model.MissionStatusType;
 
@@ -43,6 +44,23 @@ public class SubModelFactory implements SubModelFactoryInterface {
     @Override
     public Location CreateNewLocation(double lat, double lon) {
         Location res = new Location(lat, lon, mDatabase);
+        return res;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocationDetailsInterface CreateNewLocationDetails(double lat, double lon,
+                                                             Date date,
+                                                             double accuracy,
+                                                             double speed,
+                                                             double bearing,
+                                                             double elevation,
+                                                             int signalStrength,
+                                                             String cid, String lac,
+                                                             String mcc, String mnc) {
+        LocationDetails res = new LocationDetails(lat, lon, date, accuracy, speed, bearing, elevation, signalStrength, cid, lac, mcc, mnc, mDatabase);
         return res;
     }
 

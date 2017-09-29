@@ -76,7 +76,7 @@ abstract public class MapotempoModelBase implements MapotempoModelBaseInterface 
         DocumentBase documentAnnotation = getClass().getAnnotation(DocumentBase.class);
 
         mDatabase = database;
-        mDocument = mDatabase.getDocument(documentAnnotation.type() + "_" + UUID.randomUUID().toString());
+        mDocument = mDatabase.getDocument("FIX" + documentAnnotation.type() + "_" + UUID.randomUUID().toString());
         updateDocument = mDocument.createRevision();
         Map map = new HashMap();
         map.put(documentAnnotation.type_field(), documentAnnotation.type());
@@ -171,7 +171,7 @@ abstract public class MapotempoModelBase implements MapotempoModelBaseInterface 
         }
     }
 
-    protected Object getProperty(String key, Object def) {
+    protected <T> T getProperty(String key, Class<T> clazz, T def) {
         Object data;
         if (readInUpdateDocument.get(key) == null)
             data = mDocument.getProperty(key);
@@ -180,8 +180,17 @@ abstract public class MapotempoModelBase implements MapotempoModelBaseInterface 
 
         if (data == null) {
             System.err.println("WARNING : in " + getClass().getName() + " The key " + key + " is absent from document " + mDocument.getId());
-            data = def;
+            return def;
         }
-        return data;
+        try {
+            return clazz.cast(data);
+        } catch (ClassCastException e) {
+            class Local {
+            }
+            ;
+            String funcName = Local.class.getEnclosingMethod().getName();
+            System.err.println("WARNING : in " + funcName + " find type : " + data.getClass().getName() + " in the document " + mDocument.getId() + ", " + clazz.getName() + " expected");
+        }
+        return def;
     }
 }

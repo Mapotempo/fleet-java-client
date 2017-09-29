@@ -50,7 +50,7 @@ public class Company extends MapotempoModelBase implements CompanyInterface {
      * {@inheritDoc}
      */
     public String getName() {
-        return (String) getProperty(NAME, "unknow");
+        return getProperty(NAME, String.class, "unknow");
     }
 
     /**
@@ -58,7 +58,7 @@ public class Company extends MapotempoModelBase implements CompanyInterface {
      */
     public Location getLocation() {
         Location defaultLocation = new Location(0, 0, mDatabase);
-        Map dataType = (Map) getProperty(COMPANY_ID, defaultLocation.toMap());
+        Map dataType = getProperty(COMPANY_ID, Map.class, defaultLocation.toMap());
         Location res = new Location(dataType, mDatabase);
         return res;
     }

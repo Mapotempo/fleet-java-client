@@ -26,10 +26,7 @@ import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
 import com.mapotempo.fleet.core.model.User;
-import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
-import com.mapotempo.fleet.core.model.accessor.MissionAccess;
-import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
-import com.mapotempo.fleet.core.model.accessor.UserAccess;
+import com.mapotempo.fleet.core.model.accessor.*;
 import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
 import com.mapotempo.fleet.utils.DateHelper;
 
@@ -49,6 +46,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private UserAccess mUserAccess;
 
     private MissionAccess mMissionAccess;
+
+    private TrackAccess mTrackAccess;
 
     private MissionStatusTypeAccess mMissionStatusTypeAccess;
 
@@ -100,6 +99,15 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     @Override
     public MissionStatusTypeAccess getMissionStatusTypeAccessInterface() {
         return mMissionStatusTypeAccess;
+    }
+
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public TrackAccess getTrackAccess() {
+        return mTrackAccess;
     }
 
     /**
@@ -214,6 +222,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
+            mTrackAccess = new TrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
         } catch (CoreException e) {
@@ -241,6 +250,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
+            mTrackAccess = new TrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels
@@ -268,9 +278,11 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
         try {
             mDatabaseHandler = new DatabaseHandler(user, password, mContext, onCatchLoginError);
+            mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
+            mTrackAccess = new TrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
 
             // Set channels

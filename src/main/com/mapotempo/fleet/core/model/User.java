@@ -52,7 +52,7 @@ public class User extends MapotempoModelBase implements UserInterface {
      */
     @Override
     public String getUser() {
-        return (String) getProperty(USER, "Unknow");
+        return getProperty(USER, String.class, "Unknow");
     }
 
     /**
@@ -60,7 +60,7 @@ public class User extends MapotempoModelBase implements UserInterface {
      */
     @Override
     public String getCompanyId() {
-        return (String) getProperty(COMPANY_ID, "No company id found");
+        return getProperty(COMPANY_ID, String.class, "No company id found");
     }
 
     /**
@@ -68,6 +68,6 @@ public class User extends MapotempoModelBase implements UserInterface {
      */
     @Override
     public List<String> getRoles() {
-        return (ArrayList<String>) getProperty(ROLES, new ArrayList<String>());
+        return (ArrayList<String>) getProperty(ROLES, ArrayList.class, new ArrayList<String>());
     }
 }

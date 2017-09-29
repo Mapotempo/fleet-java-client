@@ -38,6 +38,35 @@ public interface SubModelFactoryInterface {
     LocationInterface CreateNewLocation(double lat, double lon);
 
     /**
+     * Create a new allocated location.
+     *
+     * @param lat            lattide
+     * @param lon            longitude
+     * @param date           date
+     * @param accuracy       accuracy
+     * @param speed          speed
+     * @param bearing        bearing
+     * @param elevation      elevation
+     * @param signalStrength signal strength
+     * @param cid            cell id
+     * @param lac            location area code
+     * @param mcc            mobile country code
+     * @param mnc            mobile network code
+     */
+    LocationDetailsInterface CreateNewLocationDetails(double lat,
+                                                      double lon,
+                                                      Date date,
+                                                      double accuracy,
+                                                      double speed,
+                                                      double bearing,
+                                                      double elevation,
+                                                      int signalStrength,
+                                                      String cid,
+                                                      String lac,
+                                                      String mcc,
+                                                      String mnc);
+
+    /**
      * Create a new allocated address.
      *
      * @param street     street
@@ -48,7 +77,12 @@ public interface SubModelFactoryInterface {
      * @param detail     detail
      * @return a new allocated Address
      */
-    AddressInterface CreateNewAddress(String street, String postalCode, String city, String state, String country, String detail);
+    AddressInterface CreateNewAddress(String street,
+                                      String postalCode,
+                                      String city,
+                                      String state,
+                                      String country,
+                                      String detail);
 
     /**
      * Create a new allocated mission.
@@ -58,7 +92,9 @@ public interface SubModelFactoryInterface {
      * @param group             group
      * @return a new allocated MissionCommand
      */
-    MissionCommandInterface CreateNewMissionCommand(String label, MissionStatusTypeInterface missionStatusType, String group);
+    MissionCommandInterface CreateNewMissionCommand(String label,
+                                                    MissionStatusTypeInterface missionStatusType,
+                                                    String group);
 
     /**
      * Create a new allocated TimeWindow

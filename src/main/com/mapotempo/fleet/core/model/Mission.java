@@ -67,15 +67,13 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
         super(document);
     }
 
-
     /**
      * {@inheritDoc}
      */
     @Override
     public String getName() {
-        return (String) getProperty(NAME, "Unknow");
+        return getProperty(NAME, String.class, "Unknow");
     }
-
 
     /**
      * {@inheritDoc}
@@ -91,7 +89,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public String getCompanyId() {
-        return (String) getProperty(COMPANY_ID, "No company id found");
+        return getProperty(COMPANY_ID, String.class, "No company id found");
     }
 
     /**
@@ -107,7 +105,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public Date getDate() {
-        String dataType = (String) getProperty(DATE, "0");
+        String dataType = getProperty(DATE, String.class, "0");
         return DateHelper.fromStringISO8601(dataType);
     }
 
@@ -133,7 +131,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
     @Override
     public Location getLocation() {
         Location defaultLocation = new Location(0, 0, mDatabase);
-        Map dataType = (Map) getProperty(LOCATION, defaultLocation.toMap());
+        Map dataType = getProperty(LOCATION, Map.class, defaultLocation.toMap());
         return new Location(dataType, mDatabase);
     }
 
@@ -151,7 +149,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
     @Override
     public Address getAddress() {
         Address defaultAddress = new Address("", "", "", "", "", "", mDatabase);
-        Map dataType = (Map) getProperty(ADDRESS, defaultAddress.toMap());
+        Map dataType = getProperty(ADDRESS, Map.class, defaultAddress.toMap());
         return new Address(dataType, mDatabase);
     }
 
@@ -168,7 +166,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public MissionStatusTypeInterface getStatus() {
-        String status_id = (String) getProperty(MISSION_STATUS_TYPE_ID, "0");
+        String status_id = getProperty(MISSION_STATUS_TYPE_ID, String.class, "0");
         try {
             return new MissionStatusType(status_id, mDatabase);
         } catch (CoreException e) {
@@ -193,7 +191,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public ArrayList<String> getOwners() {
-        return (ArrayList<String>) getProperty(OWNERS, new ArrayList<String>());
+        return getProperty(OWNERS, ArrayList.class, new ArrayList<String>());
     }
 
     /**
@@ -209,7 +207,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public String getReference() {
-        return (String) getProperty(REFERENCE, "");
+        return getProperty(REFERENCE, String.class, "");
     }
 
     /**
@@ -225,7 +223,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public String getComment() {
-        return (String) getProperty(COMMENT, "");
+        return (String) getProperty(COMMENT, String.class, "");
     }
 
     /**
@@ -241,7 +239,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public String getPhone() {
-        return (String) getProperty(PHONE, "");
+        return getProperty(PHONE, String.class, "");
     }
 
     /**
@@ -257,7 +255,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public int getDuration() {
-        return (int) getProperty(DURATION, 0);
+        return getProperty(DURATION, Integer.class, 0);
     }
 
     /**
@@ -265,7 +263,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public void setDuration(int duration) {
-        getProperty(DURATION, duration);
+        setProperty(DURATION, duration);
     }
 
     /**
@@ -273,7 +271,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public ArrayList getTimeWindow() {
-        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(TIME_WINDOWS, new ArrayList<HashMap>());
+        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(TIME_WINDOWS, ArrayList.class, new ArrayList<HashMap>());
         ArrayList<TimeWindow> res = new ArrayList<>();
         for (HashMap hm : hashArray)
             res.add(new TimeWindow(hm, mDatabase));
@@ -285,9 +283,9 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
      */
     @Override
     public void setTimeWindow(ArrayList timeWindows) {
-        ArrayList<TimeWindow> hashArray = new ArrayList<>();
+        ArrayList<Map> hashArray = new ArrayList<>();
         for (TimeWindow tm : (ArrayList<TimeWindow>) timeWindows)
-            hashArray.add(new TimeWindow(tm.toMap(), mDatabase));
+            hashArray.add(tm.toMap());
         setProperty(TIME_WINDOWS, hashArray);
     }
 
@@ -297,7 +295,7 @@ public class Mission extends MapotempoModelBase implements MissionInterface {
     @Override
     public HashMap<String, String> getCustomData() {
         HashMap<String, String> default_hash = new HashMap<String, String>();
-        HashMap<String, String> res = (HashMap<String, String>) getProperty(CUSTOM_DATA, default_hash);
+        HashMap<String, String> res = (HashMap<String, String>) getProperty(CUSTOM_DATA, HashMap.class, default_hash);
         return res;
     }
 
