@@ -23,7 +23,7 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.mapotempo.fleet.api.model.UserInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
+import com.mapotempo.fleet.core.base.ModelBase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +32,7 @@ import java.util.List;
  * Company.
  */
 @DocumentBase(type = "user")
-public class User extends MapotempoModelBase implements UserInterface {
+public class User extends ModelBase implements UserInterface {
 
     // MAPOTEMPO KEY
     public static final String USER = "user";

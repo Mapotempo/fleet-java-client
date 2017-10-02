@@ -23,7 +23,9 @@ import com.couchbase.lite.Database;
 
 import java.util.Map;
 
-/** The abstract submodel base.*/
+/**
+ * The abstract submodel base.
+ */
 public abstract class SubModelBase {
 
     protected Database mDatabase;
@@ -42,4 +44,24 @@ public abstract class SubModelBase {
     abstract protected void fromMap(Map map);
 
     abstract public Map<String, String> toMap();
+
+    protected <T> T getProperty(String key, Class<T> clazz, T def, Map source) {
+        Object data;
+        data = source.get(key);
+
+        if (data == null) {
+            System.err.println("WARNING : in " + getClass().getName() + " The key " + key + " is absent");
+            return def;
+        }
+        try {
+            return clazz.cast(data);
+        } catch (ClassCastException e) {
+            class Local {
+            }
+            ;
+            String funcName = Local.class.getEnclosingMethod().getName();
+            System.err.println("WARNING : in " + funcName + " find type : " + data.getClass().getName() + ", " + clazz.getName() + " expected");
+        }
+        return def;
+    }
 }

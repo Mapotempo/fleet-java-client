@@ -23,7 +23,7 @@ import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.mapotempo.fleet.api.model.CompanyInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
+import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.model.submodel.Location;
 
 import java.util.Map;
@@ -32,7 +32,7 @@ import java.util.Map;
  * Company.
  */
 @DocumentBase(type = "company")
-public class Company extends MapotempoModelBase implements CompanyInterface {
+public class Company extends ModelBase implements CompanyInterface {
 
     // MAPOTEMPO KEY
     public static final String NAME = "name";

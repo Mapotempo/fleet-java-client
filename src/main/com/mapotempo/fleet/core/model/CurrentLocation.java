@@ -21,23 +21,21 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.api.model.TrackInterface;
+import com.mapotempo.fleet.api.model.CurrentLocationInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
 import com.mapotempo.fleet.utils.DateHelper;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Track.
+ * CurrentLocation.
  */
-@DocumentBase(type = "track")
-public class Track extends ModelBase implements TrackInterface {
+@DocumentBase(type = "current_location")
+public class CurrentLocation extends ModelBase implements CurrentLocationInterface {
 
     private static final String LOCATIONS = "locations";
 
@@ -47,11 +45,11 @@ public class Track extends ModelBase implements TrackInterface {
 
     private static final String DATE = "date";
 
-    public Track(Database database) {
+    public CurrentLocation(Database database) {
         super(database);
     }
 
-    public Track(Document doc) {
+    public CurrentLocation(Document doc) {
         super(doc);
     }
 
@@ -91,12 +89,9 @@ public class Track extends ModelBase implements TrackInterface {
      * {@inheritDoc}
      */
     @Override
-    public ArrayList<LocationDetailsInterface> getLocations() {
-        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(LOCATIONS, ArrayList.class, new ArrayList<HashMap>());
-        ArrayList<LocationDetailsInterface> res = new ArrayList<>();
-        for (HashMap hm : hashArray) {
-            res.add(new LocationDetails(hm, mDatabase));
-        }
+    public LocationDetailsInterface getLocation() {
+        HashMap map = getProperty(LOCATIONS, HashMap.class, new HashMap());
+        LocationDetailsInterface res = new LocationDetails(map, mDatabase);
         return res;
     }
 
@@ -104,12 +99,8 @@ public class Track extends ModelBase implements TrackInterface {
      * {@inheritDoc}
      */
     @Override
-    public void setLocations(ArrayList locations) {
-        ArrayList<Map> hashArray = new ArrayList<>();
-        for (LocationDetails loc : (ArrayList<LocationDetails>) locations) {
-            hashArray.add(loc.toMap());
-        }
-        setProperty(LOCATIONS, hashArray);
+    public void setLocation(LocationDetailsInterface location) {
+        setProperty(LOCATIONS, ((LocationDetails) location).toMap());
     }
 
     /**

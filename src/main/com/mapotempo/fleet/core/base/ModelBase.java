@@ -29,13 +29,13 @@ import com.mapotempo.fleet.core.exception.CoreException;
 import java.util.*;
 
 /**
- * MapotempoModelBase.
+ * ModelBase.
  */
-abstract public class MapotempoModelBase implements MapotempoModelBaseInterface {
+abstract public class ModelBase implements MapotempoModelBaseInterface {
 
     protected boolean readOnly = false;
 
-    private MapotempoModelBase INSTANCE = this;
+    private ModelBase INSTANCE = this;
 
     private UnsavedRevision updateDocument;
 
@@ -72,25 +72,24 @@ abstract public class MapotempoModelBase implements MapotempoModelBaseInterface 
 
     private List<ChangeListener> mChangeListenerList = new ArrayList<>();
 
-    public MapotempoModelBase(Database database) {
+    public ModelBase(Database database) {
         DocumentBase documentAnnotation = getClass().getAnnotation(DocumentBase.class);
-
         mDatabase = database;
-        mDocument = mDatabase.getDocument("FIX" + documentAnnotation.type() + "_" + UUID.randomUUID().toString());
+        mDocument = mDatabase.getDocument(documentAnnotation.type() + "_" + UUID.randomUUID().toString());
         updateDocument = mDocument.createRevision();
         Map map = new HashMap();
         map.put(documentAnnotation.type_field(), documentAnnotation.type());
         updateDocument.setProperties(map);
     }
 
-    public MapotempoModelBase(Document doc) {
+    public ModelBase(Document doc) {
         mDocument = doc;
         mDatabase = mDocument.getDatabase();
         updateDocument = mDocument.createRevision();
     }
 
     // USE THIS WITH CAUTION FOR THE MOMENT !
-    public MapotempoModelBase(String id, Database database) throws CoreException {
+    public ModelBase(String id, Database database) throws CoreException {
         mDatabase = database;
         // getExistingDocument return null value if document isn't found in database,
         // maybe i could use getDocument, i don't know for the moment, sorry =/ !

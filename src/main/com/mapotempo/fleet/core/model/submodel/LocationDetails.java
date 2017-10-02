@@ -123,10 +123,10 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
         //mBearing = (int) map.get(BEARING);
         //mElevation = (int) map.get(ALTITUDE);
         //mSignalStrength = (int) map.get(SIGNAL_STRENGTH);
-        mCid = (String) map.get(CID);
-        mLac = (String) map.get(LAC);
-        mMcc = (String) map.get(MCC);
-        mMnc = (String) map.get(MNC);
+        mCid = getProperty(CID, String.class, "-1", map);
+        mLac = getProperty(LAC, String.class, "-1", map);
+        mMcc = getProperty(MCC, String.class, "-1", map);
+        mMnc = getProperty(MNC, String.class, "-1", map);
     }
 
     @Override

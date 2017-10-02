@@ -24,7 +24,7 @@ import com.couchbase.lite.Document;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.api.model.submodel.MissionCommandInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
+import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.submodel.MissionCommand;
 
@@ -36,7 +36,7 @@ import java.util.HashMap;
  * Read only class
  */
 @DocumentBase(type = "mission_status_type")
-public class MissionStatusType extends MapotempoModelBase implements MissionStatusTypeInterface {
+public class MissionStatusType extends ModelBase implements MissionStatusTypeInterface {
     // MAPOTEMPO KEY
     public static final String LABEL = "label";
     public static final String COLOR = "color";

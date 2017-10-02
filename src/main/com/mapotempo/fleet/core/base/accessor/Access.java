@@ -24,7 +24,7 @@ import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
+import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.lang.reflect.Constructor;
@@ -37,7 +37,7 @@ import java.util.Map;
 /**
  * Access.
  */
-public class Access<T extends MapotempoModelBase & MapotempoModelBaseInterface> {
+public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
 
     private DatabaseHandler mDatabaseHandler;
 

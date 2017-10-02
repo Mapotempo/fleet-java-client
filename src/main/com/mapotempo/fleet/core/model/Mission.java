@@ -26,7 +26,7 @@ import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.api.model.submodel.AddressInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
-import com.mapotempo.fleet.core.base.MapotempoModelBase;
+import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.submodel.Address;
 import com.mapotempo.fleet.core.model.submodel.Location;
@@ -42,7 +42,7 @@ import java.util.Map;
  * Company.
  */
 @DocumentBase(type = "mission")
-public class Mission extends MapotempoModelBase implements MissionInterface {
+public class Mission extends ModelBase implements MissionInterface {
 
     // MAPOTEMPO KEY
     private static final String NAME = "name";
