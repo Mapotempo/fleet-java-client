@@ -63,7 +63,7 @@ public class DatabaseHandler {
 
     private Replication mPusher, mPuller;
 
-    public interface OnCatchLoginError{
+    public interface OnCatchLoginError {
         void CatchLoginError();
     }
 
@@ -73,12 +73,12 @@ public class DatabaseHandler {
         mOnCatchLoginError = onCatchLoginError;
 
         Handler handler = new StreamHandler(System.out, new SimpleFormatter());
-        this.mPassword = password;
+        mPassword = password;
 
-        this.mUser = user;
-        this.mContext = context;
+        mUser = user;
+        mContext = context;
         try {
-            this.mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
+            mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
         } catch (IOException e) {
             e.printStackTrace();
             // TODO
@@ -90,7 +90,7 @@ public class DatabaseHandler {
             DatabaseOptions passwordDatabaseOption = new DatabaseOptions();
             passwordDatabaseOption.setEncryptionKey(mPassword);
             passwordDatabaseOption.setCreate(true);
-            this.mDatabase = mManager.openDatabase(mDbname.toLowerCase(), passwordDatabaseOption);
+            mDatabase = mManager.openDatabase(mDbname.toLowerCase(), passwordDatabaseOption);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
             // TODO
@@ -100,12 +100,11 @@ public class DatabaseHandler {
 
     final private String PASSWORD = "password";
 
-    public void initConnexion(String syncGatewayUrl) throws CoreException
-    {
+    public void initConnexion(String syncGatewayUrl) throws CoreException {
         // CONNEXION
-        try{
+        try {
             url = new URL(syncGatewayUrl);
-        } catch (MalformedURLException e){
+        } catch (MalformedURLException e) {
             e.printStackTrace();
             // TODO
             throw new CoreException("TODO");
@@ -137,14 +136,14 @@ public class DatabaseHandler {
                 Replication.ReplicationStatus a = changeEvent.getStatus();
                 System.out.println("puller changed listener " + changeEvent.getStatus());
                 System.out.println("> *************");
-                if(changeEvent.getError() != null){
+                if (changeEvent.getError() != null) {
                     System.out.println(changeEvent.toString());
-                    if(changeEvent.getError() instanceof RemoteRequestResponseException){
-                        RemoteRequestResponseException ex = (RemoteRequestResponseException)changeEvent.getError();
+                    if (changeEvent.getError() instanceof RemoteRequestResponseException) {
+                        RemoteRequestResponseException ex = (RemoteRequestResponseException) changeEvent.getError();
                         System.out.println("HTTP Error: " + ex.getCode() + ": " + ex.getMessage());
                         System.out.println("            " + ex.getUserInfo());
                         System.out.println(" hash code  " + ex.hashCode());
-                        if(new Integer(401).equals(ex.getCode())) {
+                        if (new Integer(401).equals(ex.getCode())) {
                             System.out.println("401 !!");
                             mOnCatchLoginError.CatchLoginError();
                         }
@@ -168,7 +167,7 @@ public class DatabaseHandler {
 
     public void onlineStatus(boolean status) {
         mConnexionStatus = status;
-        if(status) {
+        if (status) {
             mPusher.goOnline();
             mPuller.goOnline();
         } else {
@@ -181,8 +180,7 @@ public class DatabaseHandler {
         return mConnexionStatus;
     }
 
-    public void printAllData()
-    {
+    public void printAllData() {
         try {
             // Let's find the documents that have conflicts so we can resolve them:
             Query query = mDatabase.createAllDocumentsQuery();
@@ -192,7 +190,7 @@ public class DatabaseHandler {
             for (Iterator<QueryRow> it = result; it.hasNext(); ) {
                 QueryRow row = it.next();
                 String docId = row.getDocumentId();
-                Document doc = mDatabase.getDocument(docId );
+                Document doc = mDatabase.getDocument(docId);
                 System.out.println(doc.getProperties().toString());
             }
         } catch (CouchbaseLiteException e) {
@@ -206,7 +204,7 @@ public class DatabaseHandler {
     }
 
     public void setUserChannel(String userName) throws CoreException {
-        if(mPuller != null) {
+        if (mPuller != null) {
             List<String> channels = mPuller.getChannels();
             channels.add("user:" + userName);
             mPuller.setChannels(channels);
@@ -230,19 +228,26 @@ public class DatabaseHandler {
     public void setMissionStatusTypeChannel(String company_id) {
         List<String> channels = mPuller.getChannels();
         channels.add("mission_status_type:" + company_id);
+        System.out.println("mission_status_type:" + company_id);
+        mPuller.setChannels(channels);
+    }
+
+    public void setCurrentLocationChannel(String user) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("current_location" + ":" + user);
         mPuller.setChannels(channels);
     }
 
     public void release(boolean delete_db) {
-        if(mReleaseStatus)
+        if (mReleaseStatus)
             return;
 
-        if(mPusher != null) {
+        if (mPusher != null) {
             mPusher.stop();
             mPusher = null;
         }
 
-        if(mPuller != null) {
+        if (mPuller != null) {
             mPuller.stop();
             mPuller = null;
         }
@@ -262,7 +267,7 @@ public class DatabaseHandler {
             }
         });
 
-        if(delete_db) {
+        if (delete_db) {
             File databaseDirectory = mManager.getDirectory();
             if (databaseDirectory != null) {
                 File databaseFile = new File(databaseDirectory, mDbname + ".cblite2"); // Or ".cblite"...

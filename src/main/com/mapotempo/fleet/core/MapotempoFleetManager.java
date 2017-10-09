@@ -25,6 +25,7 @@ import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
+import com.mapotempo.fleet.core.model.CurrentLocation;
 import com.mapotempo.fleet.core.model.User;
 import com.mapotempo.fleet.core.model.accessor.*;
 import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
@@ -50,6 +51,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private TrackAccess mTrackAccess;
 
     private MissionStatusTypeAccess mMissionStatusTypeAccess;
+
+    private CurrentLocationAccess mCurrentLocationAccess;
 
     private boolean mConnexionIsVerify = false;
 
@@ -82,7 +85,15 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             return users.get(0);
         else
             return null;
-        // return mUserAccess.getNew();
+    }
+
+    //
+    public CurrentLocation getCurrentLocation() {
+        List<CurrentLocation> currentLocations = mCurrentLocationAccess.getAll();
+        if (currentLocations.size() > 0)
+            return currentLocations.get(0);
+        else
+            return null;
     }
 
     /**
@@ -181,6 +192,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(2));
         mDatabaseHandler.setCompanyChannel(user.getCompanyId());
         mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
+        //mDatabaseHandler.setCurrentLocationChannel(user.getUser());
         mChannelInit = true;
         mDatabaseHandler.restartPuller();
     }
@@ -224,7 +236,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mUserAccess = new UserAccess(mDatabaseHandler);
             mTrackAccess = new TrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
-
+            mCurrentLocationAccess = new CurrentLocationAccess(mDatabaseHandler);
         } catch (CoreException e) {
             e.printStackTrace();
         }
@@ -252,6 +264,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mUserAccess = new UserAccess(mDatabaseHandler);
             mTrackAccess = new TrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
+            mCurrentLocationAccess = new CurrentLocationAccess(mDatabaseHandler);
 
             // Set channels
             mDatabaseHandler.initConnexion("http://localhost:4984/db");
@@ -284,6 +297,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mUserAccess = new UserAccess(mDatabaseHandler);
             mTrackAccess = new TrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
+            mCurrentLocationAccess = new CurrentLocationAccess(mDatabaseHandler);
 
             // Set channels
             mDatabaseHandler.initConnexion(url);

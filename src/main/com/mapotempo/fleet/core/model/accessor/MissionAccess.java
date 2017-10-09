@@ -39,7 +39,7 @@ import java.util.List;
 public class MissionAccess extends Access<Mission> implements MissionAccessInterface, AccessInterface<MissionInterface> {
 
     public MissionAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(Mission.class, dbHandler, "name");
+        super(Mission.class, dbHandler, "date");
     }
 
     /**

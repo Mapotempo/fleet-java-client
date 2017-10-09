@@ -21,8 +21,6 @@ package com.mapotempo.fleet.api.model;
 
 import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 
-import java.util.Date;
-
 /**
  * CurrentLocationInterface.
  */
@@ -35,21 +33,11 @@ public interface CurrentLocationInterface extends MapotempoModelBaseInterface {
     String getOwnerId();
 
     /**
-     * Set the owner name.
-     */
-    void setOwnerId(String owner);
-
-    /**
      * Get the company id.
      *
      * @return The company id
      */
     String getCompanyId();
-
-    /**
-     * Set the company id.
-     */
-    void setCompanyId(String company_id);
 
     /**
      * Get the location.
@@ -64,25 +52,4 @@ public interface CurrentLocationInterface extends MapotempoModelBaseInterface {
      * @param location A {@link LocationDetailsInterface}
      */
     void setLocation(LocationDetailsInterface location);
-
-    /**
-     * Get the mission date.
-     *
-     * @return A date
-     */
-    Date getDate();
-
-    /**
-     * Set the mission date by iso8601 date {@link String}.
-     *
-     * @param isoDate An iso {@link String}
-     */
-    void setDate(String isoDate);
-
-    /**
-     * Set the mission date.
-     *
-     * @param date A {@link Date}
-     */
-    void setDate(Date date);
 }

@@ -25,6 +25,7 @@ import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.TrackAccessInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
+import com.mapotempo.fleet.core.model.CurrentLocation;
 
 /**
  * MapotempoFleetManagerInterface is a database model access and synchronisation server manager.
@@ -33,26 +34,31 @@ public interface MapotempoFleetManagerInterface {
 
     /**
      * Return the company associate to the user.
-     * If user havn't company or company isn't
-     * syncronisated getCompany return a default
+     * If user have no company or company isn't
+     * synchronised getCompany return a default
      * company.
-     * Note : You can use setOnCompanyAvailable to attach a callback
-     * for notify when user data is available.
      *
      * @return the Company data associated to the user
      */
     CompanyInterface getCompany();
 
     /**
-     * Return the user data associate to the user.
-     * If user havn't data or data isn't
-     * syncronisated getUser return null.
-     * Note : You can use setOnUserAvailable to attach a callback
-     * for notify when user data is available.
+     * Return the user data associate to the user
+     * If user have no data or data isn't
+     * synchronised getUser return null.
      *
      * @return the User data associated to the user
      */
     UserInterface getUser();
+
+    /**
+     * Return the currentLocation data associate to the user.
+     * If user have no data or data isn't
+     * synchronised getCurrentLocation return null.
+     *
+     * @return the User data associated to the user
+     */
+    CurrentLocation getCurrentLocation();
 
     /**
      * OnServerConnexionVerify.
@@ -122,7 +128,6 @@ public interface MapotempoFleetManagerInterface {
      * @return the synchronisation status
      */
     boolean isOnline();
-
 
     /**
      * Release connexion.
