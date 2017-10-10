@@ -20,7 +20,10 @@ repositories {
 dependencies {
     compile 'com.couchbase.lite:couchbase-lite-java-core:1.4.0'
     testCompile 'com.couchbase.lite:couchbase-lite-java:1.4.0'
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'com.couchbase.lite:couchbase-lite-java-sqlcipher:+'
+    testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
+    testCompile("org.opentest4j:opentest4j:1.0.0")
+    testCompile("org.junit.platform:junit-platform-commons:1.0.0")
 }
 
 sourceSets {

@@ -1,0 +1,11 @@
+{
+  "company_id": "company_dazd456dza456daz234d4a6daz",
+  "type": "user",
+  "user": "user_login",
+  "roles": [
+    "mission-update",
+    "mission-deleting",
+    "mission-creating"
+  ],
+  "_id": "user_de20ef854f96c00fe46089d16f0554be"
+}

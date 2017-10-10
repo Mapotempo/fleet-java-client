@@ -65,7 +65,7 @@ public class TimeWindow extends SubModelBase implements TimeWindowsInterface {
         String str = (String) map.get(START);
         mStart = DateHelper.fromStringISO8601(str);
         str = (String) map.get(END);
-        mStart = DateHelper.fromStringISO8601(str);
+        mEnd = DateHelper.fromStringISO8601(str);
     }
 
     @Override
@@ -79,10 +79,12 @@ public class TimeWindow extends SubModelBase implements TimeWindowsInterface {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null)
-            if (mStart == ((TimeWindow) obj).mStart)
-                if (mEnd == ((TimeWindow) obj).mEnd)
+        if (obj != null) {
+            TimeWindow tmp = (TimeWindow) obj;
+            if (mStart.equals(tmp.mStart))
+                if (mEnd.equals(tmp.mEnd))
                     return true;
+        }
         return false;
     }
 

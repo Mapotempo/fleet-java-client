@@ -40,7 +40,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private Context mContext;
 
-    private DatabaseHandler mDatabaseHandler;
+    public DatabaseHandler mDatabaseHandler;
 
     private CompanyAccess mCompanyAccess;
 

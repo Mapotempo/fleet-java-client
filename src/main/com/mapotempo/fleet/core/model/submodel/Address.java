@@ -147,16 +147,16 @@ public class Address extends SubModelBase implements AddressInterface {
         return mDetail;
     }
 
-    @Override
     public boolean equals(Object obj) {
-        if (obj != null)
-            if (mStreet == ((Address) obj).mStreet)
-                if (mPostalCode == ((Address) obj).mPostalCode)
-                    if (mCity == ((Address) obj).mCity)
-                        if (mState == ((Address) obj).mState)
-                            if (mCountry == ((Address) obj).mCountry)
-                                if (mDetail == ((Address) obj).mDetail)
-                                    return true;
+        if (super.equals(obj))
+            return true;
+        Address cmp = (Address) obj;
+        if (mStreet.equals(cmp.mStreet))
+            if (mPostalCode.equals(cmp.mPostalCode))
+                if (mCity.equals(cmp.mCity))
+                    if (mState.equals(cmp.mState))
+                        if (mDetail.equals(cmp.mDetail))
+                            return true;
         return false;
     }
 

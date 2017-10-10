@@ -111,4 +111,16 @@ public class MissionCommand extends SubModelBase implements MissionCommandInterf
         res.put(MISSION_STATUS_TYPE_ID, mMissionStatusType.getId());
         return res;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj != null) {
+            MissionCommand tmp = (MissionCommand) obj;
+            if (mLabel.equals(tmp.mLabel))
+                if (mGroup.equals(tmp.mGroup))
+                    if (mMissionStatusType.getId().equals(tmp.getMissionStatusType().getId()))
+                        return true;
+        }
+        return false;
+    }
 }
