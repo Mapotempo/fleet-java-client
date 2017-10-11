@@ -31,8 +31,8 @@ public class Location extends SubModelBase implements LocationInterface {
     public static final String LAT = "lat";
     public static final String LON = "lon";
 
-    private double mLat;
-    private double mLon;
+    private Double mLat;
+    private Double mLon;
 
     /**
      * Location.
@@ -59,15 +59,15 @@ public class Location extends SubModelBase implements LocationInterface {
 
     @Override
     public void fromMap(Map map) {
-        mLat = Double.valueOf(map.get(LAT).toString());
-        mLon = Double.valueOf(map.get(LON).toString());
+        mLat = getProperty(LAT, Double.class, 0., map);
+        mLon = getProperty(LON, Double.class, 0., map);
     }
 
     @Override
-    public Map<String, String> toMap() {
-        HashMap<String, String> res = new HashMap<>();
-        res.put(LAT, Double.toString(mLat));
-        res.put(LON, Double.toString(mLon));
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> res = new HashMap<>();
+        res.put(LAT, mLat);
+        res.put(LON, mLon);
         return res;
     }
 

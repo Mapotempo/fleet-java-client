@@ -104,8 +104,8 @@ public class MissionCommand extends SubModelBase implements MissionCommandInterf
     }
 
     @Override
-    public Map<String, String> toMap() {
-        HashMap<String, String> res = new HashMap<>();
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> res = new HashMap<>();
         res.put(LABEL, mLabel);
         res.put(GROUP, mGroup);
         res.put(MISSION_STATUS_TYPE_ID, mMissionStatusType.getId());

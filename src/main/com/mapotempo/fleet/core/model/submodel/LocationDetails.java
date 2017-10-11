@@ -130,7 +130,7 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
     }
 
     @Override
-    public Map<String, String> toMap() {
+    public Map<String, Object> toMap() {
         Map res = super.toMap();
         res.put(TIME, DateHelper.toStringISO8601(mDate));
         res.put(ACCURACY, mAccuracy);

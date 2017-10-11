@@ -447,6 +447,7 @@ class MissionTest {
             });
             mission.setName("toto");
             mission.save();
+            Thread.sleep(20);
             Assertions.assertTrue(check);
         }
     }
@@ -477,6 +478,96 @@ class MissionTest {
             mission.delete();
             mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
             Assertions.assertTrue(mission == null);
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("Uncompleted couchbase document Test")
+    class UncompletedDocumentTest extends BaseTest {
+        @Test
+        @DisplayName("missing type name")
+        void testMissingName() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getName().equals("Unknow"));
+        }
+
+        @Test
+        @DisplayName("missing type time")
+        void testMissingTime() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getDate().getTime() == 0);
+        }
+
+        @Test
+        @DisplayName("missing type time windows")
+        void testMissingTimeWindows() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            //Assertions.assertTrue(mission.getStatus();
+            Assertions.assertTrue(mission.getTimeWindow().equals(new ArrayList<>()));
+        }
+
+        @Test
+        @DisplayName("missing type location")
+        void testMissingLocation() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getLocation().equals(new Location(0., 0., mDatabaseHandler.mDatabase)));
+        }
+
+        @Test
+        @DisplayName("missing type address")
+        void testMissingAddress() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getAddress().equals(new Address("Unknow", "Unknow", "Unknow", "Unknow", "Unknow", "", mDatabaseHandler.mDatabase)));
+        }
+
+        @Test
+        @DisplayName("missing type owners")
+        void testMissingOwners() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getOwners().equals(new ArrayList<>()));
+        }
+
+        @Test
+        @DisplayName("missing type custom data")
+        void testMissingCustomData() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getCustomData().equals(new HashMap<String, String>()));
+        }
+
+        @Test
+        @DisplayName("missing type company id")
+        void testMissingCustomId() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getCompanyId().equals("No company id"));
+        }
+
+        @Test
+        @DisplayName("missing type duration")
+        void testMissingDuration() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getDuration() == 0);
+        }
+
+        @Test
+        @DisplayName("missing type reference")
+        void testMissingReference() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getReference().equals(""));
+        }
+
+        @Test
+        @DisplayName("missing type phone")
+        void testMissingPhone() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getPhone().equals(""));
+        }
+
+        @Test
+        @DisplayName("missing type comment")
+        void testMissingComment() throws Exception {
+            MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            Assertions.assertTrue(mission.getComment().equals(""));
         }
     }
 }

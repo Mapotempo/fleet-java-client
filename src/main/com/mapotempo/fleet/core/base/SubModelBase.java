@@ -43,7 +43,7 @@ public abstract class SubModelBase {
 
     abstract protected void fromMap(Map map);
 
-    abstract public Map<String, String> toMap();
+    abstract public Map<String, Object> toMap();
 
     protected <T> T getProperty(String key, Class<T> clazz, T def, Map source) {
         Object data;

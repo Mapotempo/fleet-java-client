@@ -86,7 +86,7 @@ public class Mission extends ModelBase implements MissionInterface {
      */
     @Override
     public String getCompanyId() {
-        return getProperty(COMPANY_ID, String.class, "No company id found");
+        return getProperty(COMPANY_ID, String.class, "No company id");
     }
 
     /**
@@ -137,7 +137,7 @@ public class Mission extends ModelBase implements MissionInterface {
      */
     @Override
     public Address getAddress() {
-        Address defaultAddress = new Address("", "", "", "", "", "", mDatabase);
+        Address defaultAddress = new Address("Unknow", "Unknow", "Unknow", "Unknow", "Unknow", "", mDatabase);
         Map dataType = getProperty(ADDRESS, Map.class, defaultAddress.toMap());
         return new Address(dataType, mDatabase);
     }
@@ -159,8 +159,8 @@ public class Mission extends ModelBase implements MissionInterface {
         try {
             return new MissionStatusType(status_id, mDatabase);
         } catch (CoreException e) {
-            e.printStackTrace();
-            System.out.println("WARNING : return a non saved MissionStatusType");
+            //e.printStackTrace();
+            System.err.println("WARNING : return a non saved MissionStatusType");
             MissionStatusType missionStatus = new MissionStatusType(mDatabase);
             missionStatus.setLabel(status_id);
             return missionStatus;
@@ -252,7 +252,7 @@ public class Mission extends ModelBase implements MissionInterface {
      */
     @Override
     public List getTimeWindow() {
-        List<Map> mapArray = (List<Map>) getProperty(TIME_WINDOWS, List.class, new ArrayList<HashMap>());
+        ArrayList<Map> mapArray = (ArrayList<Map>) getProperty(TIME_WINDOWS, List.class, new ArrayList<HashMap>());
         List<TimeWindow> res = new ArrayList<>();
         for (Map hm : mapArray)
             res.add(new TimeWindow(hm, mDatabase));

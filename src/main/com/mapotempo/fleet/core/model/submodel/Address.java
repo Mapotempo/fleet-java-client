@@ -87,8 +87,8 @@ public class Address extends SubModelBase implements AddressInterface {
     }
 
     @Override
-    public Map<String, String> toMap() {
-        HashMap<String, String> res = new HashMap<>();
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> res = new HashMap<>();
         res.put(STREET, mStreet);
         res.put(POSTALCODE, mPostalCode);
         res.put(CITY, mCity);

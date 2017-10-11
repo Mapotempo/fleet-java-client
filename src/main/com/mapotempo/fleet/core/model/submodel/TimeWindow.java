@@ -69,8 +69,8 @@ public class TimeWindow extends SubModelBase implements TimeWindowsInterface {
     }
 
     @Override
-    public Map<String, String> toMap() {
-        HashMap<String, String> res = new HashMap<>();
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> res = new HashMap<>();
         res.put(START, DateHelper.toStringISO8601(mStart));
         res.put(END, DateHelper.toStringISO8601(mEnd));
         return res;
