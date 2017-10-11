@@ -90,8 +90,8 @@ public class Location extends SubModelBase implements LocationInterface {
     @Override
     public boolean equals(Object obj) {
         if (obj != null)
-            if (mLat == ((Location) obj).mLat)
-                if (mLon == ((Location) obj).mLon)
+            if (mLat.equals(((Location) obj).mLat))
+                if (mLon.equals(((Location) obj).mLon))
                     return true;
         return false;
     }
