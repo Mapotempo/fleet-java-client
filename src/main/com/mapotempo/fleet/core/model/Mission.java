@@ -33,10 +33,7 @@ import com.mapotempo.fleet.core.model.submodel.Location;
 import com.mapotempo.fleet.core.model.submodel.TimeWindow;
 import com.mapotempo.fleet.utils.DateHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Company.
@@ -90,14 +87,6 @@ public class Mission extends ModelBase implements MissionInterface {
     @Override
     public String getCompanyId() {
         return getProperty(COMPANY_ID, String.class, "No company id found");
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setCompanyId(String companyId) {
-        setProperty(COMPANY_ID, companyId);
     }
 
     /**
@@ -198,14 +187,6 @@ public class Mission extends ModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public void setOwners(ArrayList<String> owners) {
-        setProperty(OWNERS, owners);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public String getReference() {
         return getProperty(REFERENCE, String.class, "");
     }
@@ -270,10 +251,10 @@ public class Mission extends ModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public ArrayList getTimeWindow() {
-        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(TIME_WINDOWS, ArrayList.class, new ArrayList<HashMap>());
-        ArrayList<TimeWindow> res = new ArrayList<>();
-        for (HashMap hm : hashArray)
+    public List getTimeWindow() {
+        List<Map> mapArray = (List<Map>) getProperty(TIME_WINDOWS, List.class, new ArrayList<HashMap>());
+        List<TimeWindow> res = new ArrayList<>();
+        for (Map hm : mapArray)
             res.add(new TimeWindow(hm, mDatabase));
         return res;
     }
@@ -282,9 +263,9 @@ public class Mission extends ModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public void setTimeWindow(ArrayList timeWindows) {
-        ArrayList<Map> hashArray = new ArrayList<>();
-        for (TimeWindow tm : (ArrayList<TimeWindow>) timeWindows)
+    public void setTimeWindow(List timeWindows) {
+        List<Map> hashArray = new ArrayList<>();
+        for (TimeWindow tm : (List<TimeWindow>) timeWindows)
             hashArray.add(tm.toMap());
         setProperty(TIME_WINDOWS, hashArray);
     }
@@ -293,9 +274,9 @@ public class Mission extends ModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public HashMap<String, String> getCustomData() {
-        HashMap<String, String> default_hash = new HashMap<String, String>();
-        HashMap<String, String> res = (HashMap<String, String>) getProperty(CUSTOM_DATA, HashMap.class, default_hash);
+    public Map<String, String> getCustomData() {
+        Map<String, String> default_hash = new HashMap<String, String>();
+        Map<String, String> res = (Map<String, String>) getProperty(CUSTOM_DATA, Map.class, default_hash);
         return res;
     }
 
@@ -303,7 +284,7 @@ public class Mission extends ModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public void setCustomData(HashMap<String, String> data) {
+    public void setCustomData(Map<String, String> data) {
         setProperty(CUSTOM_DATA, data);
     }
 }

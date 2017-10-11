@@ -25,7 +25,8 @@ import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * MissionInterface.
@@ -52,13 +53,6 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
      * @return A {@link String}
      */
     String getCompanyId();
-
-    /**
-     * Set the company id.
-     *
-     * @param companyId The new company
-     */
-    void setCompanyId(String companyId);
 
     /**
      * Get the mission date.
@@ -131,13 +125,6 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
     ArrayList<String> getOwners();
 
     /**
-     * Set owners.
-     *
-     * @param owners A {@link ArrayList} of owner
-     */
-    void setOwners(ArrayList<String> owners);
-
-    /**
      * Get the reference.
      *
      * @return A {@link String}
@@ -198,26 +185,26 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
      *
      * @return An {@link ArrayList}
      */
-    ArrayList<TimeWindowsInterface> getTimeWindow();
+    List<TimeWindowsInterface> getTimeWindow();
 
     /**
      * Set the mission time windows.
      *
      * @param timeWindows An {@link ArrayList}
      */
-    void setTimeWindow(ArrayList<TimeWindowsInterface> timeWindows);
+    void setTimeWindow(List<TimeWindowsInterface> timeWindows);
 
     /**
      * Get custom data.
      *
      * @return
      */
-    HashMap<String, String> getCustomData();
+    Map<String, String> getCustomData();
 
     /**
      * Set the custom data.
      *
      * @param data
      */
-    void setCustomData(HashMap<String, String> data);
+    void setCustomData(Map<String, String> data);
 }
