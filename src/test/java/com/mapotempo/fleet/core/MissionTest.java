@@ -2,6 +2,7 @@ package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.JavaContext;
+import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.api.model.submodel.AddressInterface;
@@ -407,7 +408,7 @@ class MissionTest {
         @DisplayName("custom data modified after save")
         void testSaveCustomData() throws Exception {
             MissionInterface mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
-            Map<String, String> customData = new HashMap();
+            Map<String, String> customData = new HashMap<>();
             customData.put("supertest", "test");
             mission.setCustomData(customData);
             mission.save();
@@ -419,11 +420,63 @@ class MissionTest {
         @DisplayName("can't modify custom data without save")
         void testUnsaveCustomData() throws Exception {
             MissionInterface mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
-            Map<String, String> customData = new HashMap();
+            Map<String, String> customData = new HashMap<>();
             customData.put("machin", "bidule");
             mission.setCustomData(customData);
             mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
             Assertions.assertFalse(mission.getCustomData().equals(customData));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("Delete Test")
+    class CallbackTest extends BaseTest {
+        boolean check = false;
+
+        @Test
+        @DisplayName("callback addChangeListener test")
+        void testCallack() throws Exception {
+            check = false;
+            MissionInterface mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
+            mission.addChangeListener(new MapotempoModelBaseInterface.ChangeListener() {
+                @Override
+                public void changed(MapotempoModelBaseInterface item, boolean onDeletion) {
+                    check = true;
+                }
+            });
+            mission.setName("toto");
+            mission.save();
+            Assertions.assertTrue(check);
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("Create, Delete Test")
+    class CreateDeleteTest extends BaseTest {
+        boolean check = false;
+
+        @Test
+        @DisplayName("create test")
+        void testCreate() throws Exception {
+            check = false;
+            MissionInterface mission = mMissionAccess.getNew();
+            mission.setName("toto");
+            mission.setPhone("0602023565");
+            mission.save();
+            mission = mMissionAccess.get(mission.getId());
+            Assertions.assertTrue(mission != null);
+        }
+
+        @Test
+        @DisplayName("delete test")
+        void testDelete() throws Exception {
+            check = false;
+            MissionInterface mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
+            mission.delete();
+            mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
+            Assertions.assertTrue(mission == null);
         }
     }
 }
