@@ -192,4 +192,13 @@ abstract public class ModelBase implements MapotempoModelBaseInterface {
         }
         return def;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (super.equals(obj))
+            return true;
+        if (getId().equals(((ModelBase) obj).getId()))
+            return true;
+        return false;
+    }
 }

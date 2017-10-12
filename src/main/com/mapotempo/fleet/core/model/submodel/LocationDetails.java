@@ -42,23 +42,23 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
 
     private Date mDate;
 
-    private double mAccuracy;
+    private Double mAccuracy;
 
-    private double mSpeed;
+    private Double mSpeed;
 
-    private double mBearing;
+    private Double mBearing;
 
-    private double mElevation;
+    private Double mAltitude;
 
-    private double mSignalStrength;
+    private Integer mSignalStrength;
 
-    private String mCid;
+    private Integer mCid;
 
-    private String mLac;
+    private Integer mLac;
 
-    private String mMcc;
+    private Integer mMcc;
 
-    private String mMnc;
+    private Integer mMnc;
 
     /**
      * LocationDetails.
@@ -87,25 +87,25 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
      * @param mnc            mobile network code
      * @param database       database
      */
-    public LocationDetails(double lat,
-                           double lon,
+    public LocationDetails(Double lat,
+                           Double lon,
                            Date date,
-                           double accuracy,
-                           double speed,
-                           double bearing,
-                           double elevation,
-                           int signalStrength,
-                           String cid,
-                           String lac,
-                           String mcc,
-                           String mnc,
+                           Double accuracy,
+                           Double speed,
+                           Double bearing,
+                           Double elevation,
+                           Integer signalStrength,
+                           Integer cid,
+                           Integer lac,
+                           Integer mcc,
+                           Integer mnc,
                            Database database) {
         super(lat, lon, database);
         mDate = date;
         mAccuracy = accuracy;
         mSpeed = speed;
         mBearing = bearing;
-        mElevation = elevation;
+        mAltitude = elevation;
         mSignalStrength = signalStrength;
         mCid = cid;
         mLac = lac;
@@ -116,17 +116,17 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
     @Override
     public void fromMap(Map map) {
         super.fromMap(map);
-        String str = (String) map.get(TIME);
+        String str = getProperty(TIME, String.class, "", map);
         mDate = DateHelper.fromStringISO8601(str);
-        //mAccuracy = (int) map.get(ACCURACY);
-        //mSpeed = (int) map.get(SPEED);
-        //mBearing = (int) map.get(BEARING);
-        //mElevation = (int) map.get(ALTITUDE);
-        //mSignalStrength = (int) map.get(SIGNAL_STRENGTH);
-        mCid = getProperty(CID, String.class, "-1", map);
-        mLac = getProperty(LAC, String.class, "-1", map);
-        mMcc = getProperty(MCC, String.class, "-1", map);
-        mMnc = getProperty(MNC, String.class, "-1", map);
+        mAccuracy = getProperty(ACCURACY, Double.class, 0., map);
+        mSpeed = getProperty(SPEED, Double.class, 0., map);
+        mBearing = getProperty(BEARING, Double.class, 0., map);
+        mAltitude = getProperty(ALTITUDE, Double.class, 0., map);
+        mSignalStrength = getProperty(SIGNAL_STRENGTH, Integer.class, 0, map);
+        mCid = getProperty(CID, Integer.class, -1, map);
+        mLac = getProperty(LAC, Integer.class, -1, map);
+        mMcc = getProperty(MCC, Integer.class, -1, map);
+        mMnc = getProperty(MNC, Integer.class, -1, map);
     }
 
     @Override
@@ -136,7 +136,7 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
         res.put(ACCURACY, mAccuracy);
         res.put(SPEED, mSpeed);
         res.put(BEARING, mBearing);
-        res.put(ALTITUDE, mElevation);
+        res.put(ALTITUDE, mAltitude);
         res.put(SIGNAL_STRENGTH, mSignalStrength);
         res.put(CID, mCid);
         res.put(LAC, mLac);
@@ -153,8 +153,55 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
         return mDate;
     }
 
+    public Double getmAccuracy() {
+        return mAccuracy;
+    }
+
+    public Double getSpeed() {
+        return mSpeed;
+    }
+
+    public Double getBearing() {
+        return mBearing;
+    }
+
+    public Double getAltitude() {
+        return mAltitude;
+    }
+
+    public Integer getSignalStrength() {
+        return mSignalStrength;
+    }
+
+    public Integer getCid() {
+        return mCid;
+    }
+
+    public Integer getLac() {
+        return mLac;
+    }
+
+    public Integer getMcc() {
+        return mMcc;
+    }
+
+    public Integer getMnc() {
+        return mMnc;
+    }
+
     @Override
     public String toString() {
         return "(" + mDate + " ; " + super.toString() + ")";
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (super.equals(obj)) {
+            LocationDetails cmp = (LocationDetails) obj;
+            if (cmp.toMap().equals(((LocationDetails) obj).toMap()))
+                return true;
+        }
+        return false;
     }
 }

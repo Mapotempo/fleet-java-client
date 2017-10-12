@@ -61,10 +61,10 @@ public interface SubModelFactoryInterface {
                                                       double bearing,
                                                       double elevation,
                                                       int signalStrength,
-                                                      String cid,
-                                                      String lac,
-                                                      String mcc,
-                                                      String mnc);
+                                                      Integer cid,
+                                                      Integer lac,
+                                                      Integer mcc,
+                                                      Integer mnc);
 
     /**
      * Create a new allocated address.

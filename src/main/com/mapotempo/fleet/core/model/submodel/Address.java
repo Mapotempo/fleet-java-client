@@ -78,12 +78,12 @@ public class Address extends SubModelBase implements AddressInterface {
 
     @Override
     public void fromMap(Map map) {
-        mStreet = map.get(STREET).toString();
-        mPostalCode = map.get(POSTALCODE).toString();
-        mCity = map.get(CITY).toString();
-        mState = map.get(STATE).toString();
-        mCountry = map.get(COUNTRY).toString();
-        mDetail = map.get(DETAIL).toString();
+        mStreet = getProperty(STREET, String.class, "", map);
+        mPostalCode = getProperty(POSTALCODE, String.class, "", map);
+        mCity = getProperty(CITY, String.class, "", map);
+        mState = getProperty(STATE, String.class, "", map);
+        mCountry = getProperty(COUNTRY, String.class, "", map);
+        mDetail = getProperty(DETAIL, String.class, "", map);
     }
 
     @Override

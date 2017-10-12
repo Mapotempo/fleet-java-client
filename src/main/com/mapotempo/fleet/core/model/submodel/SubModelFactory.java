@@ -58,8 +58,8 @@ public class SubModelFactory implements SubModelFactoryInterface {
                                                              double bearing,
                                                              double elevation,
                                                              int signalStrength,
-                                                             String cid, String lac,
-                                                             String mcc, String mnc) {
+                                                             Integer cid, Integer lac,
+                                                             Integer mcc, Integer mnc) {
         LocationDetails res = new LocationDetails(lat, lon, date, accuracy, speed, bearing, elevation, signalStrength, cid, lac, mcc, mnc, mDatabase);
         return res;
     }

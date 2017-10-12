@@ -29,5 +29,6 @@ import java.lang.annotation.*;
 @Inherited
 public @interface DocumentBase {
     String type();
+
     String type_field() default "type";
 }

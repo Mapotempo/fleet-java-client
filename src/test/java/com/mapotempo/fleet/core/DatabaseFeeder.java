@@ -1,4 +1,4 @@
-package json;
+package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +15,17 @@ import java.util.Map;
 public class DatabaseFeeder {
     private static String path = "src/test/java/json";
 
+    public enum Dataset {
+        DATASET_1("dataset_1"),
+        DATASET_2("dataset_2");
+
+        String mPath = "dataset_1";
+
+        Dataset(String path) {
+            mPath = path;
+        }
+    }
+
     private static FileFilter jsonfilter = new FileFilter() {
         @Override
         public boolean accept(File pathname) {
@@ -23,8 +34,8 @@ public class DatabaseFeeder {
         }
     };
 
-    public static void Feed(Database database) throws CouchbaseLiteException, IOException {
-        Path json_dir_path = Paths.get("src/test/java/json");
+    public static void Feed(Database database, Dataset dataset) throws CouchbaseLiteException, IOException {
+        Path json_dir_path = Paths.get("src/test/java/json/" + dataset.mPath);
         File json_dir = json_dir_path.toFile();
         File[] files = json_dir.listFiles(jsonfilter);
         if (files != null) {

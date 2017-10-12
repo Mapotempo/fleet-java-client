@@ -1,0 +1,40 @@
+{
+  "type": "mission",
+  "company_id": "company_dazd456dza456daz234d4a6daz",
+  "name": "Mission-49",
+  "date": "2017-08-22T18:43:56.150Z",
+  "owners": [
+    "user_login"
+  ],
+  "address": {
+    "city": "Bordeaux",
+    "country": "France",
+    "detail": "Pépinière éco-créative",
+    "postalcode": "33000",
+    "state": "Gironde",
+    "street": "9 Rue André Darbon"
+  },
+  "comment": "blablabla.",
+  "location": {
+    "lat": -0.5680988,
+    "lon": 44.8547927
+  },
+  "phone": "0600000001",
+  "reference": "ABCDEF",
+  "duration": 240,
+  "mission_status_type_id": "status_pending:2ba5b8ea56d2dazadzadadza645dzadaz",
+  "time_windows": [
+    {
+      "start": "2017-08-23T8:00:00.000Z",
+      "end": "2017-08-23T12:00:00.000Z"
+    },
+    {
+      "start": "2017-08-23T13:00:00.000Z",
+      "end": "2017-08-23T17:00:00.000Z"
+    }
+  ],
+  "custom_data": {
+    "test": "test"
+  },
+  "_id": "mission_b89d5ag45h66c00fd4a56zda5z354be"
+}

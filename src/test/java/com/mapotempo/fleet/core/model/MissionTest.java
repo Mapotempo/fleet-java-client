@@ -1,7 +1,5 @@
-package com.mapotempo.fleet.core;
+package com.mapotempo.fleet.core.model;
 
-import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.JavaContext;
 import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
@@ -9,18 +7,14 @@ import com.mapotempo.fleet.api.model.submodel.AddressInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.api.model.submodel.MissionCommandInterface;
 import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
-import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.core.model.MissionStatusType;
-import com.mapotempo.fleet.core.model.accessor.MissionAccess;
-import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
+import com.mapotempo.fleet.core.BaseNestedTest;
+import com.mapotempo.fleet.core.DatabaseFeeder;
 import com.mapotempo.fleet.core.model.submodel.Address;
 import com.mapotempo.fleet.core.model.submodel.Location;
 import com.mapotempo.fleet.core.model.submodel.MissionCommand;
 import com.mapotempo.fleet.core.model.submodel.TimeWindow;
-import json.DatabaseFeeder;
 import org.junit.jupiter.api.*;
 
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -28,46 +22,15 @@ import java.util.*;
  */
 @DisplayName("Mission")
 class MissionTest {
-
-    private static DatabaseHandler mDatabaseHandler;
-
-    private static MissionAccess mMissionAccess;
-
-    private static MissionStatusTypeAccess mMissionStatusTypeAccess;
-
-    class BaseTest {
-        @BeforeAll
-        void BeforeAll() throws CoreException, CouchbaseLiteException, IOException {
-            System.out.println("Create the data base");
-            mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", new JavaContext(), new DatabaseHandler.OnCatchLoginError() {
-                @Override
-                public void CatchLoginError() {
-                }
-            });
-            System.out.println(" - Database successfull created");
-            mMissionAccess = new MissionAccess(mDatabaseHandler);
-            System.out.println(" - MissionAccess successfull created");
-            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
-            System.out.println(" - MissionStatusTypeAccess successfull created");
-            DatabaseFeeder.Feed(mDatabaseHandler.mDatabase);
-            System.out.println(" - Database successfull feeded");
-
-        }
-
-        @AfterAll
-        void AfterAll() throws CouchbaseLiteException, IOException, InterruptedException {
-            // Wait one second for async task
-            Thread.sleep(1000);
-            System.out.println("Remove the database");
-            mDatabaseHandler.mDatabase.delete();
-            System.out.println(" - Database successfull removed");
-        }
-    }
-
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("Get Test")
-    class GetTest extends BaseTest {
+    class GetTest extends BaseNestedTest {
+        @Override
+        public DatabaseFeeder.Dataset getDataset() {
+            return DatabaseFeeder.Dataset.DATASET_1;
+        }
+
         @Test
         @DisplayName("get mission company_id")
         void testGetCompanyId() throws Exception {
@@ -189,7 +152,12 @@ class MissionTest {
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("Set Test")
-    class SetTest extends BaseTest {
+    class SetTest extends BaseNestedTest {
+        @Override
+        public DatabaseFeeder.Dataset getDataset() {
+            return DatabaseFeeder.Dataset.DATASET_1;
+        }
+
         @Test
         @DisplayName("name modify after save")
         void testSaveName() throws Exception {
@@ -430,8 +398,13 @@ class MissionTest {
 
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    @DisplayName("Delete Test")
-    class CallbackTest extends BaseTest {
+    @DisplayName("Callback Test")
+    class CallbackTest extends BaseNestedTest {
+        @Override
+        public DatabaseFeeder.Dataset getDataset() {
+            return DatabaseFeeder.Dataset.DATASET_1;
+        }
+
         boolean check = false;
 
         @Test
@@ -455,13 +428,15 @@ class MissionTest {
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("Create, Delete Test")
-    class CreateDeleteTest extends BaseTest {
-        boolean check = false;
+    class CreateDeleteTest extends BaseNestedTest {
+        @Override
+        public DatabaseFeeder.Dataset getDataset() {
+            return DatabaseFeeder.Dataset.DATASET_1;
+        }
 
         @Test
         @DisplayName("create test")
         void testCreate() throws Exception {
-            check = false;
             MissionInterface mission = mMissionAccess.getNew();
             mission.setName("toto");
             mission.setPhone("0602023565");
@@ -473,7 +448,6 @@ class MissionTest {
         @Test
         @DisplayName("delete test")
         void testDelete() throws Exception {
-            check = false;
             MissionInterface mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
             mission.delete();
             mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
@@ -484,7 +458,12 @@ class MissionTest {
     @Nested
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @DisplayName("Uncompleted couchbase document Test")
-    class UncompletedDocumentTest extends BaseTest {
+    class UncompletedDocumentTest extends BaseNestedTest {
+        @Override
+        public DatabaseFeeder.Dataset getDataset() {
+            return DatabaseFeeder.Dataset.DATASET_2;
+        }
+
         @Test
         @DisplayName("missing type name")
         void testMissingName() throws Exception {
@@ -518,6 +497,7 @@ class MissionTest {
         @DisplayName("missing type address")
         void testMissingAddress() throws Exception {
             MissionInterface mission = mMissionAccess.get("mission_de20ef8dazdazdazdazd45d6az74d68az746f0554be");
+            System.out.println(mission.getAddress().getStreet());
             Assertions.assertTrue(mission.getAddress().equals(new Address("Unknow", "Unknow", "Unknow", "Unknow", "Unknow", "", mDatabaseHandler.mDatabase)));
         }
 

@@ -96,7 +96,7 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
 
                 Object type_found = document.get(mDocumentAnnotation.type_field());
                 if (type_found != null && type_found.toString().equals(mDocumentAnnotation.type()))
-                    emitter.emit(document.get(_sortField), null);
+                    emitter.emit(document.get(_sortField), document);
             }
         }, "2");
 
