@@ -2,6 +2,8 @@ package com.mapotempo.fleet.core.model.submodel;
 
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.JavaContext;
+import com.mapotempo.fleet.core.BaseNestedTest;
+import com.mapotempo.fleet.core.DatabaseFeeder;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.utils.DateHelper;
@@ -55,7 +57,7 @@ class SubmodelTest {
     class AddressTest {
         @Test
         @DisplayName("Full Field")
-        void testAddressFullField() throws Exception {
+        void testFullField() throws Exception {
             mMap.put("street", "test-0");
             mMap.put("postalcode", "test-1");
             mMap.put("city", "test-2");
@@ -73,7 +75,7 @@ class SubmodelTest {
 
         @Test
         @DisplayName("Empty Field")
-        void testAddressEmptyField() throws Exception {
+        void testEmptyField() throws Exception {
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertNotEquals(location.getLat(), 45.);
             Assertions.assertEquals(location.getLat(), 0.);
@@ -81,7 +83,7 @@ class SubmodelTest {
 
         @Test
         @DisplayName("Field Type Error")
-        void testAddressFieldTypeError() throws Exception {
+        void testFieldTypeError() throws Exception {
             mMap.put("street", 1);
             mMap.put("postalcode", 2);
             mMap.put("city", 2);
@@ -103,18 +105,17 @@ class SubmodelTest {
     class LocationTest {
         @Test
         @DisplayName("Full Field")
-        void testLocationFullField() throws Exception {
-            mMap.put("lon", new Double(-0.53));
-            mMap.put("lat", new Double(45.));
+        void testFullField() throws Exception {
+            mMap.put("lon", -0.53);
+            mMap.put("lat", 45.);
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertEquals(location.getLon(), -0.53);
             Assertions.assertEquals(location.getLat(), 45.);
-            Assertions.assertTrue(true);
         }
 
         @Test
         @DisplayName("Empty Field")
-        void testLocationLon() throws Exception {
+        void testEmptyField() throws Exception {
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertNotEquals(location.getLon(), -0.53);
             Assertions.assertEquals(location.getLon(), 0.);
@@ -122,7 +123,7 @@ class SubmodelTest {
 
         @Test
         @DisplayName("Field Type Error")
-        void testLocationFieldTypeError() throws Exception {
+        void testFieldTypeError() throws Exception {
             mMap.put("lon", "-0.53");
             mMap.put("lat", "45.");
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
@@ -136,7 +137,7 @@ class SubmodelTest {
     class LocationDetailsTest {
         @Test
         @DisplayName("Full Field")
-        void testLocationFullField() throws Exception {
+        void testFullField() throws Exception {
             Date d = new Date();
             mMap.put("lon", -0.53);
             mMap.put("lat", 45.);
@@ -167,7 +168,7 @@ class SubmodelTest {
 
         @Test
         @DisplayName("Empty Field")
-        void testLocationLon() throws Exception {
+        void testEmptyField() throws Exception {
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertNotEquals(location.getLon(), -0.53);
             Assertions.assertEquals(location.getLon(), 0.);
@@ -175,8 +176,7 @@ class SubmodelTest {
 
         @Test
         @DisplayName("Field Type Error")
-        void testLocationFieldTypeError() throws Exception {
-            Date d = new Date();
+        void testFieldTypeError() throws Exception {
             mMap.put("lon", "");
             mMap.put("lat", "");
             mMap.put("time", "");
@@ -202,6 +202,85 @@ class SubmodelTest {
             Assertions.assertEquals(locationDetails.getLac(), (Integer) (-1));
             Assertions.assertEquals(locationDetails.getMcc(), (Integer) (-1));
             Assertions.assertEquals(locationDetails.getMnc(), (Integer) (-1));
+        }
+    }
+
+    @Nested
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @DisplayName("Mission Command")
+    class MissionCommandTest extends BaseNestedTest {
+        @Override
+        protected DatabaseFeeder.Dataset getDataset() {
+            return DatabaseFeeder.Dataset.DATASET_1;
+        }
+
+        @Test
+        @DisplayName("Full Field")
+        void testFullField() throws Exception {
+            mMap.put("label", "test_group");
+            mMap.put("mission_status_type_id", "status_completed:2ba5b8eadce2f0035adzadaz456456daz");
+            mMap.put("group", "test_group");
+
+            MissionCommand command = new MissionCommand(mMap, mDatabaseHandler.mDatabase);
+            Assertions.assertEquals(command.getLabel(), "test_group");
+            Assertions.assertEquals(command.getMissionStatusType().getId(), "status_completed:2ba5b8eadce2f0035adzadaz456456daz");
+            Assertions.assertEquals(command.getGroup(), "test_group");
+        }
+
+        @Test
+        @DisplayName("Empty Field")
+        void testEmptyField() throws Exception {
+            MissionCommand command = new MissionCommand(mMap, mDatabaseHandler.mDatabase);
+            Assertions.assertEquals(command.getLabel(), "");
+            Assertions.assertTrue(command.getMissionStatusType() != null);
+            Assertions.assertEquals(command.getGroup(), "");
+        }
+
+        @Test
+        @DisplayName("Field Type Error")
+        void testFieldTypeError() throws Exception {
+            mMap.put("label", 1);
+            mMap.put("mission_status_type_id", 2);
+            mMap.put("group", 3);
+
+            MissionCommand command = new MissionCommand(mMap, mDatabaseHandler.mDatabase);
+            Assertions.assertEquals(command.getLabel(), "");
+            Assertions.assertTrue(command.getMissionStatusType() != null);
+            Assertions.assertEquals(command.getGroup(), "");
+        }
+    }
+
+    @Nested
+    @DisplayName("TimeWindow Command")
+    class TimeWindowTest {
+        @Test
+        @DisplayName("Full Field")
+        void testFullField() throws Exception {
+            Date start = new Date();
+            Date end = new Date();
+            mMap.put("start", DateHelper.toStringISO8601(start));
+            mMap.put("end", DateHelper.toStringISO8601(end));
+            TimeWindow timeWindow = new TimeWindow(mMap, mDatabaseHandler.mDatabase);
+            Assertions.assertEquals(timeWindow.getStart(), start);
+            Assertions.assertEquals(timeWindow.getEnd(), end);
+        }
+
+        @Test
+        @DisplayName("Empty Field")
+        void testEmptyField() throws Exception {
+            TimeWindow timeWindow = new TimeWindow(mMap, mDatabaseHandler.mDatabase);
+            Assertions.assertEquals(timeWindow.getStart(), new Date(0));
+            Assertions.assertEquals(timeWindow.getEnd(), new Date(0));
+        }
+
+        @Test
+        @DisplayName("Field Type Error")
+        void testFieldTypeError() throws Exception {
+            mMap.put("start", 0);
+            mMap.put("end", "");
+            TimeWindow timeWindow = new TimeWindow(mMap, mDatabaseHandler.mDatabase);
+            Assertions.assertEquals(timeWindow.getStart(), new Date(0));
+            Assertions.assertEquals(timeWindow.getEnd(), new Date(0));
         }
     }
 }

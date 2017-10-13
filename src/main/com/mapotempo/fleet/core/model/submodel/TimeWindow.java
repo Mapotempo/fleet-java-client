@@ -61,10 +61,9 @@ public class TimeWindow extends SubModelBase implements TimeWindowsInterface {
 
     @Override
     public void fromMap(Map map) {
-        // TODO FIXME CHECK ISO
-        String str = (String) map.get(START);
+        String str = getProperty(START, String.class, "", map);
         mStart = DateHelper.fromStringISO8601(str);
-        str = (String) map.get(END);
+        str = getProperty(END, String.class, "", map);
         mEnd = DateHelper.fromStringISO8601(str);
     }
 

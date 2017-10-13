@@ -89,13 +89,13 @@ public class MissionCommand extends SubModelBase implements MissionCommandInterf
 
     @Override
     public void fromMap(Map map) {
-        mLabel = map.get(LABEL).toString();
-        mGroup = map.get(GROUP).toString();
-        String status_id = map.get(MISSION_STATUS_TYPE_ID).toString();
+        mLabel = getProperty(LABEL, String.class, "", map);
+        mGroup = getProperty(GROUP, String.class, "", map);
+        String status_id = getProperty(MISSION_STATUS_TYPE_ID, String.class, "", map);
         try {
             mMissionStatusType = new MissionStatusType(status_id, mDatabase);
         } catch (CoreException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             System.out.println("WARNING : return a non saved MissionStatusType");
             MissionStatusType missionStatus = new MissionStatusType(mDatabase);
             missionStatus.setLabel(status_id);
