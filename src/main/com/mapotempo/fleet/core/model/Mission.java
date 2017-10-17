@@ -47,7 +47,7 @@ public class Mission extends ModelBase implements MissionInterface {
     private static final String DATE = "date";
     private static final String LOCATION = "location";
     private static final String ADDRESS = "address";
-    private static final String OWNERS = "owners";
+    private static final String SYNC_USER = "sync_user";
     private static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
     private static final String REFERENCE = "reference";
     private static final String COMMENT = "comment";
@@ -179,8 +179,8 @@ public class Mission extends ModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public ArrayList<String> getOwners() {
-        return getProperty(OWNERS, ArrayList.class, new ArrayList<String>());
+    public String getSyncUser() {
+        return getProperty(SYNC_USER, String.class, "");
     }
 
     /**

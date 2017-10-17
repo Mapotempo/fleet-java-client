@@ -20,10 +20,9 @@
 package com.mapotempo.fleet.api.model;
 
 /**
- * A MissionStatusTypeInterface describe an actual mission status.
- * Every MissionStatusTypeInterface correspond to a specific status describe by their company.
+ * MissionStatusActionInterface
  */
-public interface MissionStatusTypeInterface extends MapotempoModelBaseInterface {
+public interface MissionStatusActionInterface extends MapotempoModelBaseInterface {
 
     /**
      * Get the status label.
@@ -33,23 +32,23 @@ public interface MissionStatusTypeInterface extends MapotempoModelBaseInterface 
     String getLabel();
 
     /**
-     * Set the status label.
-     *
-     * @param label A {@link String}
-     */
-    void setLabel(String label);
-
-    /**
      * Get the status color to display.
      *
      * @return An hexa {@link String}
      */
-    String getColor();
+    String getGroup();
 
     /**
-     * Set the color.
+     * Get the previous status.
      *
-     * @param hexColor A hexa {@link String}
+     * @return An hexa {@link String}
      */
-    void setColor(String hexColor);
+    MissionStatusTypeInterface getPreviousStatus();
+
+    /**
+     * Get the next status status.
+     *
+     * @return An hexa {@link String}
+     */
+    MissionStatusTypeInterface getNextStatus();
 }

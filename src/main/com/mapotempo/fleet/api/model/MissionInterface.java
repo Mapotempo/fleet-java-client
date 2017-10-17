@@ -118,11 +118,11 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
     void setStatus(MissionStatusTypeInterface missionStatus);
 
     /**
-     * Get all owners.
+     * Get user's mission.
      *
-     * @return An {@link ArrayList} of owner
+     * @return An {@link String}
      */
-    ArrayList<String> getOwners();
+    String getSyncUser();
 
     /**
      * Get the reference.

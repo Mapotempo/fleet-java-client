@@ -87,7 +87,7 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
             throw new CoreException("TODO Exception");
 
         mView = mDatabaseHandler.mDatabase.getView(mClazz.getSimpleName());
-        boolean test = mView.setMap(new Mapper() {
+        mView.setMap(new Mapper() {
             @Override
             public void map(Map<String, Object> document, Emitter emitter) {
                 String _sortField = "_id";

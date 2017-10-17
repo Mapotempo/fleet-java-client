@@ -35,7 +35,7 @@ import java.util.List;
 public class User extends ModelBase implements UserInterface {
 
     // MAPOTEMPO KEY
-    public static final String USER = "user";
+    public static final String SYNC_USER = "sync_user";
     public static final String COMPANY_ID = "company_id";
     public static final String ROLES = "roles";
 
@@ -52,7 +52,7 @@ public class User extends ModelBase implements UserInterface {
      */
     @Override
     public String getUser() {
-        return getProperty(USER, String.class, "Unknow");
+        return getProperty(SYNC_USER, String.class, "Unknow");
     }
 
     /**

@@ -1,0 +1,9 @@
+{
+  "type": "mission_status_action",
+  "previous_mission_status_type_id": "status_completed:2ba5b8eadce2f0035adzadaz456456daz",
+  "next_mission_status_type_id": "status_uncompleted:2ba5b8ed756az4d3azd4132az876j455d",
+  "company_id": "company_dazd456dza456daz234d4a6daz",
+  "label": "To Uncompleted",
+  "group": "default",
+  "_id": "status_action_2f0052ba56d2dazadzadadzazadzadaz"
+}

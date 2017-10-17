@@ -22,14 +22,9 @@ package com.mapotempo.fleet.core.model;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
-import com.mapotempo.fleet.api.model.submodel.MissionCommandInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.core.model.submodel.MissionCommand;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * MissionStatusType.
@@ -89,8 +84,9 @@ public class MissionStatusType extends ModelBase implements MissionStatusTypeInt
     /**
      * {@inheritDoc}
      */
+    /* Todo
     @Override
-    public ArrayList<MissionCommandInterface> getCommands() {
+    public ArrayList<MissionCommandInterface> getAction() {
         ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(COMMANDS, ArrayList.class, new ArrayList<HashMap>());
         ArrayList<MissionCommandInterface> res = new ArrayList<>();
         for (HashMap hm : hashArray) {
@@ -98,4 +94,5 @@ public class MissionStatusType extends ModelBase implements MissionStatusTypeInt
         }
         return res;
     }
+    */
 }

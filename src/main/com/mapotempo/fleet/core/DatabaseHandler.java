@@ -228,7 +228,12 @@ public class DatabaseHandler {
     public void setMissionStatusTypeChannel(String company_id) {
         List<String> channels = mPuller.getChannels();
         channels.add("mission_status_type:" + company_id);
-        System.out.println("mission_status_type:" + company_id);
+        mPuller.setChannels(channels);
+    }
+
+    public void setMissionStatusActionChannel(String company_id) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("mission_status_action:" + company_id);
         mPuller.setChannels(channels);
     }
 

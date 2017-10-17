@@ -3,9 +3,7 @@
   "company_id": "company_dazd456dza456daz234d4a6daz",
   "name": "Mission-48",
   "date": "2017-08-23T18:43:56.150Z",
-  "owners": [
-    "user_login"
-  ],
+  "sync_user": "user_login",
   "address": {
     "city": "Bordeaux",
     "country": "France",
