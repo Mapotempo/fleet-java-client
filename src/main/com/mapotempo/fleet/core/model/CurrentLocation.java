@@ -35,7 +35,7 @@ import java.util.HashMap;
 @DocumentBase(type = "current_location")
 public class CurrentLocation extends ModelBase implements CurrentLocationInterface {
 
-    private static final String LOCATION = "location";
+    private static final String LOCATION_DETAIL = "locationDetail";
 
     public static final String COMPANY_ID = "company_id";
 
@@ -70,7 +70,7 @@ public class CurrentLocation extends ModelBase implements CurrentLocationInterfa
      */
     @Override
     public LocationDetailsInterface getLocation() {
-        HashMap map = getProperty(LOCATION, HashMap.class, new HashMap());
+        HashMap map = getProperty(LOCATION_DETAIL, HashMap.class, new HashMap());
         LocationDetailsInterface res = new LocationDetails(map, mDatabase);
         return res;
     }
@@ -80,6 +80,6 @@ public class CurrentLocation extends ModelBase implements CurrentLocationInterfa
      */
     @Override
     public void setLocation(LocationDetailsInterface location) {
-        setProperty(LOCATION, ((LocationDetails) location).toMap());
+        setProperty(LOCATION_DETAIL, ((LocationDetails) location).toMap());
     }
 }

@@ -73,7 +73,7 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
     /**
      * LocationDetails.
      *
-     * @param lat            lattide
+     * @param lat            latitude
      * @param lon            longitude
      * @param date           date
      * @param accuracy       accuracy

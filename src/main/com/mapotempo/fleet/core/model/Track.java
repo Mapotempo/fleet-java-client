@@ -39,7 +39,7 @@ import java.util.Map;
 @DocumentBase(type = "track")
 public class Track extends ModelBase implements TrackInterface {
 
-    private static final String LOCATIONS = "locations";
+    private static final String LOCATION_DETAILS = "locations";
 
     public static final String COMPANY_ID = "company_id";
 
@@ -92,7 +92,7 @@ public class Track extends ModelBase implements TrackInterface {
      */
     @Override
     public ArrayList<LocationDetailsInterface> getLocations() {
-        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(LOCATIONS, ArrayList.class, new ArrayList<HashMap>());
+        ArrayList<HashMap> hashArray = (ArrayList<HashMap>) getProperty(LOCATION_DETAILS, ArrayList.class, new ArrayList<HashMap>());
         ArrayList<LocationDetailsInterface> res = new ArrayList<>();
         for (HashMap hm : hashArray) {
             res.add(new LocationDetails(hm, mDatabase));
@@ -109,7 +109,7 @@ public class Track extends ModelBase implements TrackInterface {
         for (LocationDetails loc : (ArrayList<LocationDetails>) locations) {
             hashArray.add(loc.toMap());
         }
-        setProperty(LOCATIONS, hashArray);
+        setProperty(LOCATION_DETAILS, hashArray);
     }
 
     /**
