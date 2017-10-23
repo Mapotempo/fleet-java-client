@@ -41,7 +41,7 @@ public class DateHelper {
     // ####################################
     // ISO8601 date String
     // ####################################
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
     public static String toStringISO8601(Date value) {
         return sdf.format(value);
