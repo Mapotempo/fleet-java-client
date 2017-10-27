@@ -16,6 +16,7 @@ repositories {
         url "http://files.couchbase.com/maven2/"
     }
 }
+repositories { jcenter() }
 
 dependencies {
     compile 'com.couchbase.lite:couchbase-lite-java-core:1.4.0'
@@ -24,6 +25,7 @@ dependencies {
     testCompile("org.junit.jupiter:junit-jupiter-api:5.0.0")
     testCompile("org.opentest4j:opentest4j:1.0.0")
     testCompile("org.junit.platform:junit-platform-commons:1.0.0")
+    testCompile "org.mockito:mockito-core:2.+"
 }
 
 sourceSets {

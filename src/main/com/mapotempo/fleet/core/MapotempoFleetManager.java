@@ -22,14 +22,17 @@ package com.mapotempo.fleet.core;
 import com.couchbase.lite.Context;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.api.model.accessor.AccessInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
 import com.mapotempo.fleet.core.model.CurrentLocation;
 import com.mapotempo.fleet.core.model.User;
 import com.mapotempo.fleet.core.model.accessor.*;
+import com.mapotempo.fleet.core.model.submodel.LocationDetails;
 import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
 import com.mapotempo.fleet.utils.DateHelper;
+import com.mapotempo.fleet.utils.LocationManager;
 
 import java.util.List;
 
@@ -55,6 +58,9 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private MissionStatusActionAccess mMissionStatusActionAccess;
 
     private CurrentLocationAccess mCurrentLocationAccess;
+
+    private static int LOCATION_TIMEOUT = 1000;
+    private LocationManager mLocationManager = new LocationManager(null, LOCATION_TIMEOUT);
 
     private boolean mConnexionIsVerify = false;
 
@@ -89,12 +95,18 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             return null;
     }
 
-    public CurrentLocation getCurrentLocation() {
+    private CurrentLocation getCurrentLocation() {
         List<CurrentLocation> currentLocations = mCurrentLocationAccess.getAll();
         if (currentLocations.size() > 0)
             return currentLocations.get(0);
         else
             return null;
+    }
+
+    @Override
+    public void setCurrentLocationDetails(LocationDetailsInterface locationDetailsInterface) {
+        mLocationManager.updateLocation((LocationDetails) locationDetailsInterface);
+
     }
 
     /**
@@ -181,9 +193,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private void verifyConnexion() {
         User user = getUser();
-        if (user != null) {
+        CurrentLocation currentLocation = getCurrentLocation();
+
+        if (user != null && currentLocation != null) {
             if (!mChannelInit) {
                 tryToInitchannels(user);
+                // Set current location into location manager
+                mLocationManager.setCurrentLocation(currentLocation);
             }
 
             if (!mConnexionIsVerify) {
@@ -201,7 +217,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mDatabaseHandler.setCompanyChannel(user.getCompanyId());
         mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
         mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
-        //mDatabaseHandler.setCurrentLocationChannel(user.getUser());
+        mDatabaseHandler.setCurrentLocationChannel(user.getUser());
         mChannelInit = true;
         mDatabaseHandler.restartPuller();
     }

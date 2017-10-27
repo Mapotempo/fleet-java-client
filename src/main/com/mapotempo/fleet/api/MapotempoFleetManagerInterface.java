@@ -25,8 +25,8 @@ import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusActionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.TrackAccessInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
-import com.mapotempo.fleet.core.model.CurrentLocation;
 
 /**
  * MapotempoFleetManagerInterface is a database model access and synchronisation server manager.
@@ -53,13 +53,9 @@ public interface MapotempoFleetManagerInterface {
     UserInterface getUser();
 
     /**
-     * Return the currentLocation data associate to the user.
-     * If user have no data or data isn't
-     * synchronised getCurrentLocation return null.
-     *
-     * @return the User data associated to the user
+     * Set the currentLocationDetails data associate to the user.
      */
-    CurrentLocation getCurrentLocation();
+    void setCurrentLocationDetails(LocationDetailsInterface locationDetailsInterface);
 
     /**
      * OnServerConnexionVerify.
@@ -107,6 +103,7 @@ public interface MapotempoFleetManagerInterface {
      *
      * @return MissionStatusActionAccessInterface
      */
+
     public MissionStatusActionAccessInterface getMissionStatusActionAccessInterface();
 
     /**
