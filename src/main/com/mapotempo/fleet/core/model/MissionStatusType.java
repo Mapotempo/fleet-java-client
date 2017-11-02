@@ -70,7 +70,7 @@ public class MissionStatusType extends ModelBase implements MissionStatusTypeInt
      */
     @Override
     public String getColor() {
-        return getProperty(COLOR, String.class, "FF0000");
+        return getProperty(COLOR, String.class, "#FF0000");
     }
 
     /**

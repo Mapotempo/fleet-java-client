@@ -196,10 +196,11 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         CurrentLocation currentLocation = getCurrentLocation();
 
         if (user != null && currentLocation != null) {
+            mLocationManager.setCurrentLocation(currentLocation);
+
             if (!mChannelInit) {
                 tryToInitchannels(user);
                 // Set current location into location manager
-                mLocationManager.setCurrentLocation(currentLocation);
             }
 
             if (!mConnexionIsVerify) {
