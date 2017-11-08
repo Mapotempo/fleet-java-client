@@ -23,6 +23,7 @@ import com.mapotempo.fleet.api.model.submodel.AddressInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -207,4 +208,11 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
      * @param data
      */
     void setCustomData(Map<String, String> data);
+
+    /**
+     * Set inputStream attachment
+     *
+     * @param inputStream
+     */
+    void setAttachment(String name, String contentType, InputStream inputStream);
 }

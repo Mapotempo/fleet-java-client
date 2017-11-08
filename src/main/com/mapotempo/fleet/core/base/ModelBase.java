@@ -19,13 +19,11 @@
 
 package com.mapotempo.fleet.core.base;
 
-import com.couchbase.lite.CouchbaseLiteException;
-import com.couchbase.lite.Database;
-import com.couchbase.lite.Document;
-import com.couchbase.lite.UnsavedRevision;
+import com.couchbase.lite.*;
 import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 
+import java.io.InputStream;
 import java.util.*;
 
 /**
@@ -132,6 +130,15 @@ abstract public class ModelBase implements MapotempoModelBaseInterface {
 
     public String getRef() {
         return mDocument.getCurrentRevision().getId();
+    }
+
+    protected Attachment getAttachment(String name) {
+        Attachment res = mDocument.getCurrentRevision().getAttachment(name);
+        return res;
+    }
+
+    public void setAttachment(String name, String contentType, InputStream inputStream) {
+        updateDocument.setAttachment(name, contentType, inputStream);
     }
 
     @Override
