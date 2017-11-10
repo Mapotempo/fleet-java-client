@@ -38,7 +38,7 @@ import java.util.List;
  */
 public class MissionStatusAccess extends Access<MissionStatus> implements MissionStatusAccessInterface {
     public MissionStatusAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(MissionStatus.class, dbHandler, null);
+        super(MissionStatus.class, dbHandler, "date");
     }
 
     public MissionStatus getNew(Mission mission, MissionStatusType statusType) {
