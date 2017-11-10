@@ -26,7 +26,7 @@ public class MissionAccessTest extends BaseTest {
 
     @Test
     @DisplayName("Mission access right order")
-    void testLocation() throws Exception {
+    void testMissionAccess() throws Exception {
         List<Mission> missions = mMissionAccess.getAll();
         List<Mission> expectedMissions = new ArrayList<>();
         Document doc = mDatabaseHandler.mDatabase.getDocument("mission_b89d5ag45h66c00fd4a56zda5z354be");

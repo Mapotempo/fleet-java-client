@@ -64,6 +64,10 @@ public class Mission extends ModelBase implements MissionInterface {
         super(document);
     }
 
+    public Mission(String id, Database database) throws CoreException {
+        super(id, database);
+    }
+
     /**
      * {@inheritDoc}
      */

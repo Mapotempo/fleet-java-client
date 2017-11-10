@@ -4,6 +4,7 @@ import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.JavaContext;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionStatusAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusActionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 
@@ -13,6 +14,8 @@ public abstract class BaseTest {
     protected static DatabaseHandler mDatabaseHandler;
 
     protected static MissionAccess mMissionAccess;
+
+    protected static MissionStatusAccess mMissionStatusAccess;
 
     protected static MissionStatusTypeAccess mMissionStatusTypeAccess;
 
@@ -30,6 +33,8 @@ public abstract class BaseTest {
         System.out.println(" - Database successfull created");
         mMissionAccess = new MissionAccess(mDatabaseHandler);
         System.out.println(" - MissionAccess successfull created");
+        mMissionStatusAccess = new MissionStatusAccess(mDatabaseHandler);
+        System.out.println(" - MissionStatusAccess successfull created");
         mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
         System.out.println(" - MissionStatusTypeAccess successfull created");
         mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);

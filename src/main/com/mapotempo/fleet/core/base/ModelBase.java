@@ -132,9 +132,14 @@ abstract public class ModelBase implements MapotempoModelBaseInterface {
         return mDocument.getCurrentRevision().getId();
     }
 
-    protected Attachment getAttachment(String name) {
+    public InputStream getAttachment(String name) {
         Attachment res = mDocument.getCurrentRevision().getAttachment(name);
-        return res;
+        try {
+            return res.getContent();
+        } catch (CouchbaseLiteException e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
     public void setAttachment(String name, String contentType, InputStream inputStream) {
