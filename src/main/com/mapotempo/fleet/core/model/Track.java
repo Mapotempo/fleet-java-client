@@ -43,7 +43,7 @@ public class Track extends ModelBase implements TrackInterface {
 
     public static final String COMPANY_ID = "company_id";
 
-    private static final String OWNER = "owner";
+    private static final String SYNC_USER = "sync_user";
 
     private static final String DATE = "date";
 
@@ -60,7 +60,7 @@ public class Track extends ModelBase implements TrackInterface {
      */
     @Override
     public String getOwnerId() {
-        return getProperty(OWNER, String.class, "Unknow");
+        return getProperty(SYNC_USER, String.class, "Unknow");
     }
 
     /**
@@ -68,7 +68,7 @@ public class Track extends ModelBase implements TrackInterface {
      */
     @Override
     public void setOwnerId(String owner) {
-        setProperty(OWNER, owner);
+        setProperty(SYNC_USER, owner);
     }
 
     /**

@@ -103,6 +103,17 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             return null;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public LocationDetailsInterface getCurrentLocationDetails() {
+        return getCurrentLocation().getLocation();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void setCurrentLocationDetails(LocationDetailsInterface locationDetailsInterface) {
         mLocationManager.updateLocation((LocationDetails) locationDetailsInterface);
@@ -211,6 +222,9 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     private void tryToInitchannels(User user) {
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-4));
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-3));
+        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-2));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-1));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(0));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(1));

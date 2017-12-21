@@ -24,13 +24,13 @@ public class MissionStatusAccessTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Mission access right order")
+    @DisplayName("Mission access correct order")
     void testMissionStatusAccess() throws Exception {
-        MissionInterface mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
+        MissionInterface mission = mMissionAccess.get("mission_b89d5ag45h66c00fd4a56zda5z354be");
         List<MissionStatusInterface> missionStatuses = mMissionStatusAccess.getByMission(mission);
-        Assertions.assertEquals(missionStatuses.size(), 2);
-        mission = mMissionAccess.get("mission_b89d5ag45h66c00fd4a56zda5z354be");
+        Assertions.assertEquals(1, missionStatuses.size());
+        mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
         missionStatuses = mMissionStatusAccess.getByMission(mission);
-        Assertions.assertEquals(missionStatuses.size(), 1);
+        Assertions.assertEquals(2, missionStatuses.size());
     }
 }

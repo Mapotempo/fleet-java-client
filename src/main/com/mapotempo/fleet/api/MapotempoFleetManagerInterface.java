@@ -53,6 +53,11 @@ public interface MapotempoFleetManagerInterface {
     UserInterface getUser();
 
     /**
+     * Get the currentLocationDetails data associate to the user.
+     */
+    LocationDetailsInterface getCurrentLocationDetails();
+
+    /**
      * Set the currentLocationDetails data associate to the user.
      */
     void setCurrentLocationDetails(LocationDetailsInterface locationDetailsInterface);

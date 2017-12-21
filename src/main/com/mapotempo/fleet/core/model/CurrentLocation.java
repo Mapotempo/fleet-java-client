@@ -39,7 +39,7 @@ public class CurrentLocation extends ModelBase implements CurrentLocationInterfa
 
     public static final String COMPANY_ID = "company_id";
 
-    private static final String OWNER = "owner";
+    private static final String SYNC_USER = "sync_user";
 
     public CurrentLocation(Database database) {
         super(database);
@@ -54,7 +54,7 @@ public class CurrentLocation extends ModelBase implements CurrentLocationInterfa
      */
     @Override
     public String getOwnerId() {
-        return getProperty(OWNER, String.class, "Unknow");
+        return getProperty(SYNC_USER, String.class, "Unknow");
     }
 
     /**
