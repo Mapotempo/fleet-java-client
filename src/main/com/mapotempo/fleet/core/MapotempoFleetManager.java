@@ -27,6 +27,7 @@ import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
 import com.mapotempo.fleet.core.model.CurrentLocation;
+import com.mapotempo.fleet.core.model.Mission;
 import com.mapotempo.fleet.core.model.User;
 import com.mapotempo.fleet.core.model.accessor.*;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
@@ -233,6 +234,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
         mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
         mDatabaseHandler.setCurrentLocationChannel(user.getUser());
+
+        // Synchronise all mission present in the database.
+        List<Mission> missions = mMissionAccess.getAll();
+        for (Mission mission : missions) {
+            mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(mission.getDate()));
+        }
+
         mChannelInit = true;
         mDatabaseHandler.restartPuller();
     }
