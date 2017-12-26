@@ -68,6 +68,10 @@ public class DateHelper {
         return sdf_for_channel.format(calendar.getTime());
     }
 
+    public static String dateForChannel(Date date) {
+        return sdf_for_channel.format(date.getTime());
+    }
+
     // #########################
     // Date String for the debug
     // #########################

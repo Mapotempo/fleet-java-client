@@ -21,31 +21,25 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.api.model.CurrentLocationInterface;
-import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
+import com.mapotempo.fleet.api.model.UserPreferenceInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
-import com.mapotempo.fleet.core.model.submodel.LocationDetails;
-
-import java.util.HashMap;
 
 /**
- * CurrentLocation.
+ * UserPreference.
  */
-@DocumentBase(type = "current_location")
-public class CurrentLocation extends ModelBase implements CurrentLocationInterface {
+@DocumentBase(type = "user_preference")
+public class UserPreference extends ModelBase implements UserPreferenceInterface {
 
-    private static final String LOCATION_DETAIL = "locationDetail";
-
+    // MAPOTEMPO KEY
+    public static final String SYNC_USER = "sync_user";
     public static final String COMPANY_ID = "company_id";
 
-    private static final String SYNC_USER = "sync_user";
-
-    public CurrentLocation(Database database) {
+    public UserPreference(Database database) {
         super(database);
     }
 
-    public CurrentLocation(Document doc) {
+    public UserPreference(Document doc) {
         super(doc);
     }
 
@@ -53,7 +47,7 @@ public class CurrentLocation extends ModelBase implements CurrentLocationInterfa
      * {@inheritDoc}
      */
     @Override
-    public String getOwnerId() {
+    public String getUser() {
         return getProperty(SYNC_USER, String.class, "Unknow");
     }
 
@@ -62,24 +56,22 @@ public class CurrentLocation extends ModelBase implements CurrentLocationInterfa
      */
     @Override
     public String getCompanyId() {
-        return getProperty(COMPANY_ID, String.class, "Unknow");
+        return getProperty(COMPANY_ID, String.class, "No company id found");
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public LocationDetailsInterface getLocation() {
-        HashMap map = getProperty(LOCATION_DETAIL, HashMap.class, new HashMap());
-        LocationDetailsInterface res = new LocationDetails(map, mDatabase);
-        return res;
+    public Boolean getBoolPreference(Preference preference) {
+        return getProperty(preference.toString(), Boolean.class, true);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setLocation(LocationDetailsInterface location) {
-        setProperty(LOCATION_DETAIL, ((LocationDetails) location).toMap());
+    public void setBoolPreference(Preference preference, Boolean status) {
+        setProperty(preference.toString(), preference);
     }
 }

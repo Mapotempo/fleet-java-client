@@ -34,10 +34,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Track.
+ * UserTrack.
  */
-@DocumentBase(type = "track")
-public class Track extends ModelBase implements TrackInterface {
+@DocumentBase(type = "user_track")
+public class UserTrack extends ModelBase implements TrackInterface {
 
     private static final String LOCATION_DETAILS = "locations";
 
@@ -47,11 +47,11 @@ public class Track extends ModelBase implements TrackInterface {
 
     private static final String DATE = "date";
 
-    public Track(Database database) {
+    public UserTrack(Database database) {
         super(database);
     }
 
-    public Track(Document doc) {
+    public UserTrack(Document doc) {
         super(doc);
     }
 

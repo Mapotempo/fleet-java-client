@@ -26,10 +26,18 @@ import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
-import com.mapotempo.fleet.core.model.CurrentLocation;
 import com.mapotempo.fleet.core.model.Mission;
 import com.mapotempo.fleet.core.model.User;
-import com.mapotempo.fleet.core.model.accessor.*;
+import com.mapotempo.fleet.core.model.UserCurrentLocation;
+import com.mapotempo.fleet.core.model.UserPreference;
+import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionStatusActionAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
+import com.mapotempo.fleet.core.model.accessor.UserAccess;
+import com.mapotempo.fleet.core.model.accessor.UserCurrentLocationAccess;
+import com.mapotempo.fleet.core.model.accessor.UserPreferenceAccess;
+import com.mapotempo.fleet.core.model.accessor.UserTrackAccess;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
 import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
 import com.mapotempo.fleet.utils.DateHelper;
@@ -50,15 +58,17 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private UserAccess mUserAccess;
 
+    private UserPreferenceAccess mUserPreferenceAccess;
+
     private MissionAccess mMissionAccess;
 
-    private TrackAccess mTrackAccess;
+    private UserTrackAccess mUserTrackAccess;
 
     private MissionStatusTypeAccess mMissionStatusTypeAccess;
 
     private MissionStatusActionAccess mMissionStatusActionAccess;
 
-    private CurrentLocationAccess mCurrentLocationAccess;
+    private UserCurrentLocationAccess mUserCurrentLocationAccess;
 
     private static int LOCATION_TIMEOUT = 1000;
     private LocationManager mLocationManager = new LocationManager(null, LOCATION_TIMEOUT);
@@ -93,13 +103,25 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         if (users.size() > 0)
             return users.get(0);
         else
+            return mUserAccess.getNew();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public UserPreference getUserPreference() {
+        List<UserPreference> users = mUserPreferenceAccess.getAll();
+        if (users.size() > 0)
+            return users.get(0);
+        else
             return null;
     }
 
-    private CurrentLocation getCurrentLocation() {
-        List<CurrentLocation> currentLocations = mCurrentLocationAccess.getAll();
-        if (currentLocations.size() > 0)
-            return currentLocations.get(0);
+    private UserCurrentLocation getCurrentLocation() {
+        List<UserCurrentLocation> userCurrentLocations = mUserCurrentLocationAccess.getAll();
+        if (userCurrentLocations.size() > 0)
+            return userCurrentLocations.get(0);
         else
             return null;
     }
@@ -149,8 +171,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * {@inheritDoc}
      */
     @Override
-    public TrackAccess getTrackAccess() {
-        return mTrackAccess;
+    public UserTrackAccess getTrackAccess() {
+        return mUserTrackAccess;
     }
 
     /**
@@ -205,10 +227,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private void verifyConnexion() {
         User user = getUser();
-        CurrentLocation currentLocation = getCurrentLocation();
+        UserCurrentLocation userCurrentLocation = getCurrentLocation();
+        UserPreference userPreference = getUserPreference();
 
-        if (user != null && currentLocation != null) {
-            mLocationManager.setCurrentLocation(currentLocation);
+        if (user != null
+                && userCurrentLocation != null
+                && userPreference != null) {
+            mLocationManager.setCurrentLocation(userCurrentLocation);
 
             if (!mChannelInit) {
                 tryToInitchannels(user);
@@ -251,6 +276,32 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mDatabaseHandler.release(false);
     }
 
+    private void InitMapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
+        mContext = context;
+        mOnServerConnexionVerify = onServerConnexionVerify;
+
+        try {
+            mDatabaseHandler = new DatabaseHandler(user, password, mContext, onCatchLoginError);
+            mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
+            mMissionAccess = new MissionAccess(mDatabaseHandler);
+            mCompanyAccess = new CompanyAccess(mDatabaseHandler);
+            mUserAccess = new UserAccess(mDatabaseHandler);
+            mUserPreferenceAccess = new UserPreferenceAccess(mDatabaseHandler);
+            mUserTrackAccess = new UserTrackAccess(mDatabaseHandler);
+            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
+            mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
+            mUserCurrentLocationAccess = new UserCurrentLocationAccess(mDatabaseHandler);
+
+            // Set channels
+            mDatabaseHandler.initConnexion(url);
+
+            initChannelsConfigurationSequence(user);
+        } catch (CoreException e) {
+            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
+            e.printStackTrace();
+        }
+    }
+
     /**
      * todo
      *
@@ -282,16 +333,14 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
-            mTrackAccess = new TrackAccess(mDatabaseHandler);
+            mUserTrackAccess = new UserTrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
             mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
-            mCurrentLocationAccess = new CurrentLocationAccess(mDatabaseHandler);
+            mUserCurrentLocationAccess = new UserCurrentLocationAccess(mDatabaseHandler);
         } catch (CoreException e) {
             e.printStackTrace();
         }
-        ;
     }
-
 
     /**
      * TODO
@@ -302,28 +351,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param onServerConnexionVerify
      */
     public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
-        mContext = context;
-        mOnServerConnexionVerify = onServerConnexionVerify;
-
-        try {
-            mDatabaseHandler = new DatabaseHandler(user, password, mContext, onCatchLoginError);
-            mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
-            mMissionAccess = new MissionAccess(mDatabaseHandler);
-            mCompanyAccess = new CompanyAccess(mDatabaseHandler);
-            mUserAccess = new UserAccess(mDatabaseHandler);
-            mTrackAccess = new TrackAccess(mDatabaseHandler);
-            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
-            mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
-            mCurrentLocationAccess = new CurrentLocationAccess(mDatabaseHandler);
-
-            // Set channels
-            mDatabaseHandler.initConnexion("http://localhost:4984/db");
-            initChannelsConfigurationSequence(user);
-        } catch (CoreException e) {
-            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
-            e.printStackTrace();
-        }
-        ;
+        InitMapotempoFleetManager(context, user, password, onServerConnexionVerify, "http://localhost:4984/db");
     }
 
     /**
@@ -336,27 +364,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * @param url
      */
     public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
-        mContext = context;
-        mOnServerConnexionVerify = onServerConnexionVerify;
-
-        try {
-            mDatabaseHandler = new DatabaseHandler(user, password, mContext, onCatchLoginError);
-            mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
-            mMissionAccess = new MissionAccess(mDatabaseHandler);
-            mCompanyAccess = new CompanyAccess(mDatabaseHandler);
-            mUserAccess = new UserAccess(mDatabaseHandler);
-            mTrackAccess = new TrackAccess(mDatabaseHandler);
-            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
-            mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
-            mCurrentLocationAccess = new CurrentLocationAccess(mDatabaseHandler);
-
-            // Set channels
-            mDatabaseHandler.initConnexion(url);
-
-            initChannelsConfigurationSequence(user);
-        } catch (CoreException e) {
-            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
-            e.printStackTrace();
-        }
+        InitMapotempoFleetManager(context, user, password, onServerConnexionVerify, url);
     }
 }

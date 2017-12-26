@@ -21,6 +21,7 @@ package com.mapotempo.fleet.api;
 
 import com.mapotempo.fleet.api.model.CompanyInterface;
 import com.mapotempo.fleet.api.model.UserInterface;
+import com.mapotempo.fleet.api.model.UserPreferenceInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusActionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
@@ -51,6 +52,15 @@ public interface MapotempoFleetManagerInterface {
      * @return the User data associated to the user
      */
     UserInterface getUser();
+
+    /**
+     * Return the user preference data associate to the user
+     * If user have no data or data isn't
+     * synchronised getUser return a default document.
+     *
+     * @return the User data associated to the user
+     */
+    UserPreferenceInterface getUserPreference();
 
     /**
      * Get the currentLocationDetails data associate to the user.

@@ -19,16 +19,17 @@
 
 package com.mapotempo.fleet.core.model.accessor;
 
+import com.mapotempo.fleet.api.model.accessor.TrackAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.core.model.CurrentLocation;
+import com.mapotempo.fleet.core.model.UserTrack;
 
 /**
- * CurrentLocationAccess.
+ * UserTrackAccess.
  */
-public class CurrentLocationAccess extends Access<CurrentLocation> {
-    public CurrentLocationAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(CurrentLocation.class, dbHandler, null);
+public class UserTrackAccess extends Access<UserTrack> implements TrackAccessInterface {
+    public UserTrackAccess(DatabaseHandler dbHandler) throws CoreException {
+        super(UserTrack.class, dbHandler, null);
     }
 }

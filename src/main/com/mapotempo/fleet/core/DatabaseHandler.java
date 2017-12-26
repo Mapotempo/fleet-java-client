@@ -19,7 +19,17 @@
 
 package com.mapotempo.fleet.core;
 
-import com.couchbase.lite.*;
+import com.couchbase.lite.AsyncTask;
+import com.couchbase.lite.Context;
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
+import com.couchbase.lite.DatabaseOptions;
+import com.couchbase.lite.Document;
+import com.couchbase.lite.Manager;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
+import com.couchbase.lite.SavedRevision;
 import com.couchbase.lite.auth.Authenticator;
 import com.couchbase.lite.auth.AuthenticatorFactory;
 import com.couchbase.lite.replicator.RemoteRequestResponseException;
@@ -191,7 +201,12 @@ public class DatabaseHandler {
                 QueryRow row = it.next();
                 String docId = row.getDocumentId();
                 Document doc = mDatabase.getDocument(docId);
-                System.out.println(doc.getProperties().toString());
+                System.out.println("----------------------------");
+                System.out.println("id : " + doc.getId());
+                for (SavedRevision savedRevision : doc.getConflictingRevisions())
+                    System.out.println("    - conflict : " + savedRevision.getProperties().get("_rev"));
+                System.out.println("    - " + doc.getProperties().toString());
+
             }
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
@@ -239,7 +254,7 @@ public class DatabaseHandler {
 
     public void setCurrentLocationChannel(String user) {
         List<String> channels = mPuller.getChannels();
-        channels.add("current_location" + ":" + user);
+        channels.add("user_current_location" + ":" + user);
         mPuller.setChannels(channels);
     }
 

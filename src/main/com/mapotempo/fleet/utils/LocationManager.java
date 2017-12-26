@@ -1,6 +1,6 @@
 package com.mapotempo.fleet.utils;
 
-import com.mapotempo.fleet.core.model.CurrentLocation;
+import com.mapotempo.fleet.core.model.UserCurrentLocation;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
 
 import java.util.Date;
@@ -8,7 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class LocationManager {
-    private CurrentLocation mCurrentLocation;
+    private UserCurrentLocation mUserCurrentLocation;
 
     private LocationDetails mLastLocationDetails;
 
@@ -20,8 +20,8 @@ public class LocationManager {
 
     private boolean lock = false;
 
-    public LocationManager(CurrentLocation currentLocation, Integer timeout) {
-        mCurrentLocation = currentLocation;
+    public LocationManager(UserCurrentLocation userCurrentLocation, Integer timeout) {
+        mUserCurrentLocation = userCurrentLocation;
         mLastUpdate = new Date();
         mTimeout = timeout;
         mLastLocationDetails = null;
@@ -31,13 +31,13 @@ public class LocationManager {
 
     public void updateLocation(LocationDetails locationDetails) {
         mLastLocationDetails = locationDetails;
-        if (mCurrentLocation != null && mLastLocationDetails != null) {
-            mCurrentLocation.setLocation(mLastLocationDetails);
+        if (mUserCurrentLocation != null && mLastLocationDetails != null) {
+            mUserCurrentLocation.setLocation(mLastLocationDetails);
             Date timerDate = new Date(mLastUpdate.getTime() + mTimeout);
             if (!lock) {
                 mTimer.schedule(new TimerTask() {
                     public void run() {
-                        mCurrentLocation.save();
+                        mUserCurrentLocation.save();
                         lock = false;
                     }
                 }, timerDate);
@@ -47,8 +47,8 @@ public class LocationManager {
         }
     }
 
-    public void setCurrentLocation(CurrentLocation mCurrentLocation) {
-        this.mCurrentLocation = mCurrentLocation;
+    public void setCurrentLocation(UserCurrentLocation mUserCurrentLocation) {
+        this.mUserCurrentLocation = mUserCurrentLocation;
         if (mLastLocationDetails != null)
             updateLocation(mLastLocationDetails);
     }
