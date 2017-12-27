@@ -22,13 +22,13 @@ package com.mapotempo.fleet.core.model.accessor;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.core.model.UserPreference;
+import com.mapotempo.fleet.core.model.UserSettings;
 
 /**
- * UserPreferenceAccess.
+ * UserSettingsAccess.
  */
-public class UserPreferenceAccess extends Access<UserPreference> {
-    public UserPreferenceAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(UserPreference.class, dbHandler, null);
+public class UserSettingsAccess extends Access<UserSettings> {
+    public UserSettingsAccess(DatabaseHandler dbHandler) throws CoreException {
+        super(UserSettings.class, dbHandler, null);
     }
 }

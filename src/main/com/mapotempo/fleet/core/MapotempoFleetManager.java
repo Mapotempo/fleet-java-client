@@ -29,14 +29,14 @@ import com.mapotempo.fleet.core.model.Company;
 import com.mapotempo.fleet.core.model.Mission;
 import com.mapotempo.fleet.core.model.User;
 import com.mapotempo.fleet.core.model.UserCurrentLocation;
-import com.mapotempo.fleet.core.model.UserPreference;
+import com.mapotempo.fleet.core.model.UserSettings;
 import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusActionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 import com.mapotempo.fleet.core.model.accessor.UserAccess;
 import com.mapotempo.fleet.core.model.accessor.UserCurrentLocationAccess;
-import com.mapotempo.fleet.core.model.accessor.UserPreferenceAccess;
+import com.mapotempo.fleet.core.model.accessor.UserSettingsAccess;
 import com.mapotempo.fleet.core.model.accessor.UserTrackAccess;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
 import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
@@ -58,7 +58,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private UserAccess mUserAccess;
 
-    private UserPreferenceAccess mUserPreferenceAccess;
+    private UserSettingsAccess mUserSettingsAccess;
 
     private MissionAccess mMissionAccess;
 
@@ -71,6 +71,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private UserCurrentLocationAccess mUserCurrentLocationAccess;
 
     private static int LOCATION_TIMEOUT = 1000;
+
     private LocationManager mLocationManager = new LocationManager(null, LOCATION_TIMEOUT);
 
     private boolean mConnexionIsVerify = false;
@@ -110,8 +111,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * {@inheritDoc}
      */
     @Override
-    public UserPreference getUserPreference() {
-        List<UserPreference> users = mUserPreferenceAccess.getAll();
+    public UserSettings getUserPreference() {
+        List<UserSettings> users = mUserSettingsAccess.getAll();
         if (users.size() > 0)
             return users.get(0);
         else
@@ -228,11 +229,11 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private void verifyConnexion() {
         User user = getUser();
         UserCurrentLocation userCurrentLocation = getCurrentLocation();
-        UserPreference userPreference = getUserPreference();
+        UserSettings userSettings = getUserPreference();
 
         if (user != null
                 && userCurrentLocation != null
-                && userPreference != null) {
+                && userSettings != null) {
             mLocationManager.setCurrentLocation(userCurrentLocation);
 
             if (!mChannelInit) {
@@ -286,7 +287,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
-            mUserPreferenceAccess = new UserPreferenceAccess(mDatabaseHandler);
+            mUserSettingsAccess = new UserSettingsAccess(mDatabaseHandler);
             mUserTrackAccess = new UserTrackAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
             mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
@@ -345,10 +346,10 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     /**
      * TODO
      *
-     * @param context
-     * @param user
-     * @param password
-     * @param onServerConnexionVerify
+     * @param context                 context
+     * @param user                    user login
+     * @param password                password
+     * @param onServerConnexionVerify callback
      */
     public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
         InitMapotempoFleetManager(context, user, password, onServerConnexionVerify, "http://localhost:4984/db");
@@ -357,11 +358,11 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     /**
      * TODO
      *
-     * @param context
-     * @param user
-     * @param password
-     * @param onServerConnexionVerify
-     * @param url
+     * @param context                 context
+     * @param user                    user login
+     * @param password                password
+     * @param onServerConnexionVerify callback
+     * @param url                     server
      */
     public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
         InitMapotempoFleetManager(context, user, password, onServerConnexionVerify, url);

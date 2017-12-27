@@ -25,9 +25,9 @@ package com.mapotempo.fleet.api.model;
 public interface UserPreferenceInterface extends MapotempoModelBaseInterface {
 
     enum Preference {
-        MOBILE_DATA_USAGE("mobile_data_usage"),
-        AUTOMATIC_UPDATE("automatic_update"),
-        MAP_DISPLAY_VEHICLE("map_display_vehicle"),
+        MOBILE_DATA_USAGE("data_connection"),
+        AUTOMATIC_DATA_UPDATE("automatic_data_update"),
+        MAP_CURRENT_POSITIOn("map_current_position"),
         MAP_DISPLAY_ZOOM_BUTTON("map_display_zoom_button");
 
         private String preference = "";

@@ -26,20 +26,20 @@ import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
 
 /**
- * UserPreference.
+ * UserSettings.
  */
-@DocumentBase(type = "user_preference")
-public class UserPreference extends ModelBase implements UserPreferenceInterface {
+@DocumentBase(type = "user_settings")
+public class UserSettings extends ModelBase implements UserPreferenceInterface {
 
     // MAPOTEMPO KEY
     public static final String SYNC_USER = "sync_user";
     public static final String COMPANY_ID = "company_id";
 
-    public UserPreference(Database database) {
+    public UserSettings(Database database) {
         super(database);
     }
 
-    public UserPreference(Document doc) {
+    public UserSettings(Document doc) {
         super(doc);
     }
 
