@@ -23,6 +23,7 @@ import com.mapotempo.fleet.api.model.CompanyInterface;
 import com.mapotempo.fleet.api.model.UserInterface;
 import com.mapotempo.fleet.api.model.UserPreferenceInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionStatusAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusActionAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.TrackAccessInterface;
@@ -103,6 +104,14 @@ public interface MapotempoFleetManagerInterface {
      * @return {@link MissionAccessInterface}
      */
     MissionAccessInterface getMissionAccess();
+
+    /**
+     * MissionStatusAccessInterface.
+     * Return the {@link MissionStatusAccessInterface}
+     *
+     * @return MissionStatusAccessInterface
+     */
+    MissionStatusAccessInterface getMissionStatusAccessInterface();
 
     /**
      * MissionStatusTypeAccessInterface.

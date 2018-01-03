@@ -27,7 +27,7 @@ public interface UserPreferenceInterface extends MapotempoModelBaseInterface {
     enum Preference {
         MOBILE_DATA_USAGE("data_connection"),
         AUTOMATIC_DATA_UPDATE("automatic_data_update"),
-        MAP_CURRENT_POSITIOn("map_current_position"),
+        MAP_CURRENT_POSITION("map_current_position"),
         MAP_DISPLAY_ZOOM_BUTTON("map_display_zoom_button");
 
         private String preference = "";
@@ -68,5 +68,44 @@ public interface UserPreferenceInterface extends MapotempoModelBaseInterface {
      * @param preference
      */
     void setBoolPreference(Preference preference, Boolean status);
+
+    enum NightModePreference {
+        AUTOMATIC("automatic"),
+        NIGHT("night"),
+        DAY("day");
+
+        private String preference = "";
+
+        NightModePreference(String name) {
+            preference = name;
+        }
+
+        public String toString() {
+            return preference;
+        }
+
+        static public NightModePreference fromString(String value) {
+            try {
+                return valueOf(value.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                System.out.println("WARNING : fail string to enum conversion : " + e.getMessage());
+                return AUTOMATIC;
+            }
+        }
+    }
+
+    /**
+     * Get the user night mode preference.
+     *
+     * @return A {@link NightModePreference}
+     */
+    NightModePreference getNightModePreference();
+
+    /**
+     * Set the user night mode preference.
+     *
+     * @Boolean status
+     */
+    void setNightModePreference(NightModePreference status);
 
 }

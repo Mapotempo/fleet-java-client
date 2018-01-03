@@ -34,6 +34,7 @@ public class UserSettings extends ModelBase implements UserPreferenceInterface {
     // MAPOTEMPO KEY
     public static final String SYNC_USER = "sync_user";
     public static final String COMPANY_ID = "company_id";
+    public static final String NIGHT_MODE = "night_mode";
 
     public UserSettings(Database database) {
         super(database);
@@ -72,6 +73,21 @@ public class UserSettings extends ModelBase implements UserPreferenceInterface {
      */
     @Override
     public void setBoolPreference(Preference preference, Boolean status) {
-        setProperty(preference.toString(), preference);
+        setProperty(preference.toString(), status);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public NightModePreference getNightModePreference() {
+        String nightMode = getProperty(NIGHT_MODE, String.class, "automatic");
+        return NightModePreference.fromString(nightMode);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setNightModePreference(NightModePreference status) {
+        setProperty(NIGHT_MODE, status);
     }
 }

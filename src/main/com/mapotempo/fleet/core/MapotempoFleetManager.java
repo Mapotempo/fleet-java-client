@@ -32,6 +32,7 @@ import com.mapotempo.fleet.core.model.UserCurrentLocation;
 import com.mapotempo.fleet.core.model.UserSettings;
 import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionStatusAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusActionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 import com.mapotempo.fleet.core.model.accessor.UserAccess;
@@ -63,6 +64,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private MissionAccess mMissionAccess;
 
     private UserTrackAccess mUserTrackAccess;
+
+    private MissionStatusAccess mMissionStatusAccess;
 
     private MissionStatusTypeAccess mMissionStatusTypeAccess;
 
@@ -150,6 +153,14 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     @Override
     public MissionAccess getMissionAccess() {
         return mMissionAccess;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MissionStatusAccess getMissionStatusAccessInterface() {
+        return mMissionStatusAccess;
     }
 
     /**
@@ -335,6 +346,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
             mUserTrackAccess = new UserTrackAccess(mDatabaseHandler);
+            mMissionStatusAccess = new MissionStatusAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
             mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
             mUserCurrentLocationAccess = new UserCurrentLocationAccess(mDatabaseHandler);

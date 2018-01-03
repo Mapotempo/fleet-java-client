@@ -52,4 +52,11 @@ public interface MissionStatusTypeInterface extends MapotempoModelBaseInterface 
      * @param hexColor A hexa {@link String}
      */
     void setColor(String hexColor);
+
+    /**
+     * Get the status SVG path to display.
+     *
+     * @return An hexa {@link String}
+     */
+    String getSVGPath();
 }

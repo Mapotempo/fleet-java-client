@@ -104,7 +104,6 @@ public class MissionStatus extends ModelBase implements MissionStatusInterface {
         return res;
     }
 
-
     /**
      * {@inheritDoc}
      */
