@@ -175,14 +175,15 @@ public class DatabaseHandler {
         onlineStatus(mConnexionStatus);
     }
 
+    // FIXME replace goOnline/goOffline => start/stop
     public void onlineStatus(boolean status) {
         mConnexionStatus = status;
         if (status) {
-            mPusher.goOnline();
-            mPuller.goOnline();
+            mPusher.start();
+            mPuller.start();
         } else {
-            mPusher.goOffline();
-            mPuller.goOffline();
+            mPusher.stop();
+            mPuller.stop();
         }
     }
 
