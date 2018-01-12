@@ -18,4 +18,13 @@ public interface LocationInterface {
      * @return A double
      */
     Double getLat();
+
+    /**
+     * Location is valide.
+     * Check if lon and lat aren't null
+     *
+     * @return boolean verity
+     */
+    boolean isValide();
+
 }

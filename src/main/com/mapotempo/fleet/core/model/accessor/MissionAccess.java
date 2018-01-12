@@ -19,7 +19,11 @@
 
 package com.mapotempo.fleet.core.model.accessor;
 
-import com.couchbase.lite.*;
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Predicate;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
@@ -29,6 +33,7 @@ import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Mission;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +42,28 @@ import java.util.List;
  * MissionAccess.
  */
 public class MissionAccess extends Access<Mission> implements MissionAccessInterface, AccessInterface<MissionInterface> {
+
+    static final int HOUR_OFFSET = -12;
+
+    @Override
+    protected Query getQuery() {
+        Date date = new Date();
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.add(calendar.HOUR, HOUR_OFFSETgit g);
+        Query query = mView.createQuery();
+        query.setPostFilter(new Predicate<QueryRow>() {
+            @Override
+            public boolean apply(QueryRow queryRow) {
+                Mission mission = new Mission(queryRow.getDocument());
+                if (mission.getDate().after(calendar.getTime())) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        return query;
+    }
 
     public MissionAccess(DatabaseHandler dbHandler) throws CoreException {
         super(Mission.class, dbHandler, "date");

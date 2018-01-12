@@ -54,7 +54,7 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
 
     protected View mView;
 
-    private LiveQuery mLiveQuery;
+    protected LiveQuery mLiveQuery;
 
     private DocumentBase mDocumentAnnotation;
 
@@ -62,7 +62,7 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
 
     private Constructor<T> mConstructorFromDatabase;
 
-    private List<AccessInterface.ChangeListener> mChangeListenerList;
+    protected List<AccessInterface.ChangeListener> mChangeListenerList;
 
     public Access(Class<T> clazz, DatabaseHandler dbHandler, final String sortField) throws CoreException {
         mChangeListenerList = new ArrayList<>();
@@ -109,7 +109,7 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
             }
         }, "2");
 
-        mLiveQuery = mView.createQuery().toLiveQuery();
+        mLiveQuery = getQuery().toLiveQuery();
         mLiveQuery.start();
         mLiveQuery.addChangeListener(new LiveQuery.ChangeListener() {
             @Override
@@ -168,7 +168,7 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
      */
     //@Override
     public List getAll() {
-        Query query = mView.createQuery();
+        Query query = getQuery();
         try {
             QueryEnumerator result = query.run();
             List<T> items = runQuery(result);
@@ -187,6 +187,11 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
     //@Override
     public void removeChangeListener(AccessInterface.ChangeListener changeListener) {
         mChangeListenerList.remove(changeListener);
+    }
+
+    // Override this method to change default filter.
+    protected Query getQuery() {
+        return mView.createQuery();
     }
 
     /**

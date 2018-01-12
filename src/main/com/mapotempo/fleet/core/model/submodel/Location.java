@@ -22,10 +22,11 @@ package com.mapotempo.fleet.core.model.submodel;
 import com.couchbase.lite.Database;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.core.base.SubModelBase;
-import com.sun.istack.internal.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class Location extends SubModelBase implements LocationInterface {
     // MAPOTEMPO KEY
@@ -88,6 +89,14 @@ public class Location extends SubModelBase implements LocationInterface {
     @Nullable
     public Double getLat() {
         return mLat;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValide() {
+        return (mLon != null && mLat != null);
     }
 
     @Override
