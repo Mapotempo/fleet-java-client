@@ -76,4 +76,5 @@ public interface AccessInterface<T extends MapotempoModelBaseInterface> {
      */
     void removeChangeListener(ChangeListener<T> changeListener);
 
+    void purgeAll();
 }

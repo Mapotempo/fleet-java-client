@@ -19,7 +19,16 @@
 
 package com.mapotempo.fleet.core.base.accessor;
 
-import com.couchbase.lite.*;
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
+import com.couchbase.lite.Emitter;
+import com.couchbase.lite.LiveQuery;
+import com.couchbase.lite.Mapper;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
+import com.couchbase.lite.View;
 import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
@@ -115,7 +124,17 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
     }
 
     public void purgeAll() {
-        //mItems = runQuery(event.getRows());
+        Query query = mView.createQuery();
+        try {
+            QueryEnumerator result = query.run();
+            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
+                QueryRow row = it.next();
+                Document doc = row.getDocument();
+                doc.purge();
+            }
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
     }
 
     public T getNew() {
@@ -190,6 +209,7 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
     }
 
     private T getInstance(Document document) {
+
         T res = null;
         try {
             res = mConstructorFromDocument.newInstance(document);
