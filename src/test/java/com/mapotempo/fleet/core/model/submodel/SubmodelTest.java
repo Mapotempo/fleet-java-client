@@ -7,7 +7,16 @@ import com.mapotempo.fleet.core.DatabaseFeeder;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.utils.DateHelper;
-import org.junit.jupiter.api.*;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 
 import java.io.IOException;
 import java.util.Date;
@@ -78,7 +87,7 @@ class SubmodelTest {
         void testEmptyField() throws Exception {
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertNotEquals(location.getLat(), 45.);
-            Assertions.assertEquals(location.getLat(), 0.);
+            Assertions.assertEquals(location.getLat(), null);
         }
 
         @Test
@@ -109,8 +118,8 @@ class SubmodelTest {
             mMap.put("lon", -0.53);
             mMap.put("lat", 45.);
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
-            Assertions.assertEquals(location.getLon(), -0.53);
-            Assertions.assertEquals(location.getLat(), 45.);
+            Assertions.assertEquals(location.getLon(), (Double) (-0.53));
+            Assertions.assertEquals(location.getLat(), (Double) 45.);
         }
 
         @Test
@@ -118,7 +127,7 @@ class SubmodelTest {
         void testEmptyField() throws Exception {
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertNotEquals(location.getLon(), -0.53);
-            Assertions.assertEquals(location.getLon(), 0.);
+            Assertions.assertEquals(location.getLon(), null);
         }
 
         @Test
@@ -128,7 +137,7 @@ class SubmodelTest {
             mMap.put("lat", "45.");
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertNotEquals(location.getLat(), 45.);
-            Assertions.assertEquals(location.getLat(), 0.);
+            Assertions.assertEquals(location.getLat(), null);
         }
     }
 
@@ -152,8 +161,8 @@ class SubmodelTest {
             mMap.put("mcc", 3);
             mMap.put("mnc", 4);
             LocationDetails locationDetails = new LocationDetails(mMap, mDatabaseHandler.mDatabase);
-            Assertions.assertEquals(locationDetails.getLon(), -0.53);
-            Assertions.assertEquals(locationDetails.getLat(), 45.);
+            Assertions.assertEquals(locationDetails.getLon(), (Double) (-0.53));
+            Assertions.assertEquals(locationDetails.getLat(), (Double) 45.);
             Assertions.assertEquals(locationDetails.getDate(), d);
             Assertions.assertEquals(locationDetails.getmAccuracy(), (Double) 45.);
             Assertions.assertEquals(locationDetails.getSpeed(), (Double) 0.1);
@@ -171,7 +180,7 @@ class SubmodelTest {
         void testEmptyField() throws Exception {
             Location location = new Location(mMap, mDatabaseHandler.mDatabase);
             Assertions.assertNotEquals(location.getLon(), -0.53);
-            Assertions.assertEquals(location.getLon(), 0.);
+            Assertions.assertEquals(location.getLon(), null);
         }
 
         @Test
@@ -190,8 +199,8 @@ class SubmodelTest {
             mMap.put("mcc", "");
             mMap.put("mnc", "");
             LocationDetails locationDetails = new LocationDetails(mMap, mDatabaseHandler.mDatabase);
-            Assertions.assertEquals(locationDetails.getLon(), 0.);
-            Assertions.assertEquals(locationDetails.getLat(), 0.);
+            Assertions.assertEquals(locationDetails.getLon(), null);
+            Assertions.assertEquals(locationDetails.getLat(), null);
             Assertions.assertEquals(locationDetails.getDate(), new Date(0));
             Assertions.assertEquals(locationDetails.getmAccuracy(), (Double) 0.);
             Assertions.assertEquals(locationDetails.getSpeed(), (Double) 0.);

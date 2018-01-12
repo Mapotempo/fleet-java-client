@@ -22,6 +22,7 @@ package com.mapotempo.fleet.core.model.submodel;
 import com.couchbase.lite.Database;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.core.base.SubModelBase;
+import com.sun.istack.internal.Nullable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -59,8 +60,8 @@ public class Location extends SubModelBase implements LocationInterface {
 
     @Override
     public void fromMap(Map map) {
-        mLat = getProperty(LAT, Double.class, 0., map);
-        mLon = getProperty(LON, Double.class, 0., map);
+        mLat = getProperty(LAT, Double.class, null, map);
+        mLon = getProperty(LON, Double.class, null, map);
     }
 
     @Override
@@ -74,8 +75,9 @@ public class Location extends SubModelBase implements LocationInterface {
     /**
      * {@inheritDoc}
      */
+    @Nullable
     @Override
-    public double getLon() {
+    public Double getLon() {
         return mLon;
     }
 
@@ -83,7 +85,8 @@ public class Location extends SubModelBase implements LocationInterface {
      * {@inheritDoc}
      */
     @Override
-    public double getLat() {
+    @Nullable
+    public Double getLat() {
         return mLat;
     }
 

@@ -12,14 +12,14 @@ public interface LocationDetailsInterface {
      *
      * @return A double
      */
-    double getLon();
+    Double getLon();
 
     /**
      * Get the latitude.
      *
      * @return A double
      */
-    double getLat();
+    Double getLat();
 
     /**
      * Get the Date.
