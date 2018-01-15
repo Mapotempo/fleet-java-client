@@ -29,13 +29,14 @@ import java.util.Date;
  */
 public class DateHelper {
 
+    // Date formats need to be synchronized.
+    // TODO It is recommended to create separate format instances for each thread.
+    // If multiple threads access a format concurrently, it must be synchronized externally."
+
     private static DateHelper ourInstance = new DateHelper();
 
     public static DateHelper getInstance() {
         return ourInstance;
-    }
-
-    private DateHelper() {
     }
 
     // ####################################
@@ -48,10 +49,13 @@ public class DateHelper {
     }
 
     public static Date fromStringISO8601(String value) {
-        try {
-            return sdf.parse(value);
-        } catch (ParseException e) {
-            return new Date(0);
+        synchronized (sdf) {
+            try {
+                return sdf.parse(value);
+
+            } catch (ParseException e) {
+                return new Date(0);
+            }
         }
     }
 
@@ -61,11 +65,13 @@ public class DateHelper {
     private static SimpleDateFormat sdf_for_channel = new SimpleDateFormat("yyyyMMdd");
 
     public static String dateForChannel(int dayOffset) {
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        calendar.add(calendar.DATE, dayOffset);
-        return sdf_for_channel.format(calendar.getTime());
+        synchronized (sdf_for_channel) {
+            Date date = new Date();
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            calendar.add(calendar.DATE, dayOffset);
+            return sdf_for_channel.format(calendar.getTime());
+        }
     }
 
     public static String dateForChannel(Date date) {
@@ -78,9 +84,11 @@ public class DateHelper {
     private static SimpleDateFormat sdf_for_display = new SimpleDateFormat("dd MMMMMMM yyyy ':' hh'H' mm'M' ss's' SSS'ms'");
 
     public static String displayDate(Date value) {
-        if (value != null)
-            return sdf_for_display.format(value);
-        else
-            return null;
+        synchronized (sdf_for_display) {
+            if (value != null)
+                return sdf_for_display.format(value);
+            else
+                return null;
+        }
     }
 }
