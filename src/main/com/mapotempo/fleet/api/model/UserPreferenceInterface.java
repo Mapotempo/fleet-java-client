@@ -27,6 +27,7 @@ public interface UserPreferenceInterface extends MapotempoModelBaseInterface {
     enum Preference {
         MOBILE_DATA_USAGE("data_connection"),
         AUTOMATIC_DATA_UPDATE("automatic_data_update"),
+        TRACKING_ENABLE("tracking_enable"),
         MAP_CURRENT_POSITION("map_current_position"),
         MAP_DISPLAY_ZOOM_BUTTON("map_display_zoom_button");
 
