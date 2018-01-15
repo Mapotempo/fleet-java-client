@@ -45,10 +45,15 @@ public interface MissionAccessInterface extends AccessInterface<MissionInterface
     MissionInterface getNew();
 
     /**
-     * @return The list of all {@link MissionInterface}
+     * @return The list of all with filter {@link MissionInterface}
      */
     @Override
     List<MissionInterface> getAll();
+
+    /**
+     * @return The list of all {@link MissionInterface}
+     */
+    List<MissionInterface> getAllWithoutFilter();
 
     /**
      * Get all elements.

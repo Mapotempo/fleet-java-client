@@ -45,17 +45,22 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
 
     static final int HOUR_OFFSET = -12;
 
+    public MissionAccess(DatabaseHandler dbHandler) throws CoreException {
+        super(Mission.class, dbHandler, "date");
+    }
+
     @Override
     protected Query getQuery() {
         Date date = new Date();
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(calendar.HOUR, HOUR_OFFSETgit g);
+        calendar.add(calendar.HOUR, HOUR_OFFSET);
         Query query = mView.createQuery();
         query.setPostFilter(new Predicate<QueryRow>() {
             @Override
             public boolean apply(QueryRow queryRow) {
                 Mission mission = new Mission(queryRow.getDocument());
+                System.out.println(mission.getDate());
                 if (mission.getDate().after(calendar.getTime())) {
                     return true;
                 }
@@ -65,8 +70,17 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
         return query;
     }
 
-    public MissionAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(Mission.class, dbHandler, "date");
+    @Override
+    public List getAllWithoutFilter() {
+        Query query = mView.createQuery();
+        try {
+            QueryEnumerator result = query.run();
+            List<Mission> items = runQuery(result);
+            return items;
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
     }
 
     /**

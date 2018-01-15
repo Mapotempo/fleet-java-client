@@ -260,9 +260,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     private void tryToInitchannels(User user) {
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-4));
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-3));
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-2));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-1));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(0));
         mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(1));
@@ -272,8 +269,9 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
         mDatabaseHandler.setCurrentLocationChannel(user.getUser());
 
-        // Synchronise all mission present in the database.
-        List<Mission> missions = mMissionAccess.getAll();
+        // Synchronise all mission present in the database, use getAllWithoutFilter instead of getAll.
+        List<Mission> missions = mMissionAccess.getAllWithoutFilter();
+        // List<Mission> missions = mMissionAccess.getAll();
         for (Mission mission : missions) {
             mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(mission.getDate()));
         }
