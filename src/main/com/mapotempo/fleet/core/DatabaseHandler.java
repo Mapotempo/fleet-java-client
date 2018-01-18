@@ -44,9 +44,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.SimpleFormatter;
-import java.util.logging.StreamHandler;
 
 /**
  * DatabaseHandler.
@@ -80,13 +77,13 @@ public class DatabaseHandler {
     private OnCatchLoginError mOnCatchLoginError;
 
     public DatabaseHandler(String user, String password, Context context, OnCatchLoginError onCatchLoginError) throws CoreException {
+        mContext = context;
         mOnCatchLoginError = onCatchLoginError;
 
-        Handler handler = new StreamHandler(System.out, new SimpleFormatter());
+        // FIXME
+        mUser = user;
         mPassword = password;
 
-        mUser = user;
-        mContext = context;
         try {
             mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
         } catch (IOException e) {
@@ -94,7 +91,7 @@ public class DatabaseHandler {
             // TODO
             throw new CoreException("TODO");
         }
-        mDbname = mUser + "_database";
+        mDbname = "database_" + mUser;
 
         try {
             DatabaseOptions passwordDatabaseOption = new DatabaseOptions();

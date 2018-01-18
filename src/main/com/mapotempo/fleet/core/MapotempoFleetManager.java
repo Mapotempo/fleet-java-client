@@ -42,6 +42,7 @@ import com.mapotempo.fleet.core.model.accessor.UserTrackAccess;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
 import com.mapotempo.fleet.core.model.submodel.SubModelFactory;
 import com.mapotempo.fleet.utils.DateHelper;
+import com.mapotempo.fleet.utils.HashHelper;
 import com.mapotempo.fleet.utils.LocationManager;
 
 import java.util.List;
@@ -50,6 +51,10 @@ import java.util.List;
  * {@inheritDoc}
  */
 public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
+
+    private String mUser;
+
+    private String mPassword;
 
     private Context mContext;
 
@@ -289,9 +294,10 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private void InitMapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
         mContext = context;
         mOnServerConnexionVerify = onServerConnexionVerify;
-
         try {
-            mDatabaseHandler = new DatabaseHandler(user, password, mContext, onCatchLoginError);
+            mUser = HashHelper.emailHasher(user); // Hash user to cover email case, 'see HashHelper.emailHasher for more explication'.
+            mPassword = password;
+            mDatabaseHandler = new DatabaseHandler(mUser, password, mContext, onCatchLoginError);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
@@ -305,7 +311,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             // Set channels
             mDatabaseHandler.initConnexion(url);
 
-            initChannelsConfigurationSequence(user);
+            initChannelsConfigurationSequence(mUser);
         } catch (CoreException e) {
             mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
             e.printStackTrace();
