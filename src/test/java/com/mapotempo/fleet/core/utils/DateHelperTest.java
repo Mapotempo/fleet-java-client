@@ -6,14 +6,16 @@ import com.mapotempo.fleet.core.model.UserCurrentLocation;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
 import com.mapotempo.fleet.utils.LocationManager;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
 
 public class DateHelperTest {
-    static int TIMEOUT = 400;
+    static int TIMEOUT = 10000; // Time configuration for location manager
     static UserCurrentLocation mUserCurrentLocation = Mockito.mock(UserCurrentLocation.class);
     static LocationManager mLocationManager;
 
@@ -22,11 +24,7 @@ public class DateHelperTest {
         mLocationManager = new LocationManager(mUserCurrentLocation, TIMEOUT);
     }
 
-    /**
-     * Only one save action should be call during the laps time * 3.
-     *
-     * @throws InterruptedException
-     */
+    @DisplayName("Only one save action should be call during the laps time * 3")
     @Test
     void test() throws InterruptedException {
         LocationDetails locationDetails1 = Mockito.mock(LocationDetails.class);
@@ -35,7 +33,28 @@ public class DateHelperTest {
         mLocationManager.updateLocation(locationDetails2);
         LocationDetails locationDetails3 = Mockito.mock(LocationDetails.class);
         mLocationManager.updateLocation(locationDetails3);
-        Thread.sleep(TIMEOUT * 4);
-        Mockito.verify(mUserCurrentLocation).save();
+
+        Mockito.verify(mUserCurrentLocation, Mockito
+                .after(TIMEOUT)
+                .times(1))
+                .save();
+    }
+
+    @DisplayName("Location with best accuracy are save")
+    @Test
+    void test2() throws InterruptedException {
+        LocationDetails locationDetails1 = Mockito.mock(LocationDetails.class);
+        Mockito.when(locationDetails1.getmAccuracy()).thenReturn(30.);
+        mLocationManager.updateLocation(locationDetails1);
+
+        LocationDetails locationDetails2 = Mockito.mock(LocationDetails.class);
+        Mockito.when(locationDetails2.getmAccuracy()).thenReturn(20.);
+        mLocationManager.updateLocation(locationDetails2);
+
+        LocationDetails locationDetails3 = Mockito.mock(LocationDetails.class);
+        Mockito.when(locationDetails3.getmAccuracy()).thenReturn(40.);
+        mLocationManager.updateLocation(locationDetails3);
+
+        Assertions.assertEquals((Double) 20., mLocationManager.getNextAvailableLocation().getmAccuracy());
     }
 }

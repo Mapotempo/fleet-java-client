@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class LocationDetails extends Location implements LocationDetailsInterface {
 
-    public static final String TIME = "time";
+    public static final String DATE = "date";
     public static final String ACCURACY = "accuracy";
     public static final String SPEED = "speed";
     public static final String BEARING = "bearing";
@@ -116,7 +116,7 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
     @Override
     public void fromMap(Map map) {
         super.fromMap(map);
-        String str = getProperty(TIME, String.class, "", map);
+        String str = getProperty(DATE, String.class, "", map);
         mDate = DateHelper.fromStringISO8601(str);
         mAccuracy = getProperty(ACCURACY, Double.class, 0., map);
         mSpeed = getProperty(SPEED, Double.class, 0., map);
@@ -132,7 +132,7 @@ public class LocationDetails extends Location implements LocationDetailsInterfac
     @Override
     public Map<String, Object> toMap() {
         Map res = super.toMap();
-        res.put(TIME, DateHelper.toStringISO8601(mDate));
+        res.put(DATE, DateHelper.toStringISO8601(mDate));
         res.put(ACCURACY, mAccuracy);
         res.put(SPEED, mSpeed);
         res.put(BEARING, mBearing);

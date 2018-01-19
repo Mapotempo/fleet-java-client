@@ -150,7 +150,7 @@ class SubmodelTest {
             Date d = new Date();
             mMap.put("lon", -0.53);
             mMap.put("lat", 45.);
-            mMap.put("time", DateHelper.toStringISO8601(d));
+            mMap.put("date", DateHelper.toStringISO8601(d));
             mMap.put("accuracy", 45.);
             mMap.put("speed", 0.1);
             mMap.put("bearing", 0.2);

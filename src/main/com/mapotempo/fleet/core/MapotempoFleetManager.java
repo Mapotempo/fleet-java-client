@@ -78,7 +78,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private UserCurrentLocationAccess mUserCurrentLocationAccess;
 
-    private static int LOCATION_TIMEOUT = 1000;
+    // Location timeout in ms
+    private static int LOCATION_TIMEOUT = 10000;
 
     private LocationManager mLocationManager = new LocationManager(null, LOCATION_TIMEOUT);
 
