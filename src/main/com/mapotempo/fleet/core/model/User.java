@@ -35,6 +35,8 @@ import java.util.List;
 public class User extends ModelBase implements UserInterface {
 
     // MAPOTEMPO KEY
+    public static final String NAME = "name";
+    public static final String EMAIL = "email";
     public static final String SYNC_USER = "sync_user";
     public static final String COMPANY_ID = "company_id";
     public static final String ROLES = "roles";
@@ -51,7 +53,7 @@ public class User extends ModelBase implements UserInterface {
      * {@inheritDoc}
      */
     @Override
-    public String getUser() {
+    public String getSyncUser() {
         return getProperty(SYNC_USER, String.class, "Unknow");
     }
 
@@ -70,4 +72,21 @@ public class User extends ModelBase implements UserInterface {
     public List<String> getRoles() {
         return (ArrayList<String>) getProperty(ROLES, ArrayList.class, new ArrayList<String>());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getUserName() {
+        return getProperty(NAME, String.class, "Unknow");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getUserEmail() {
+        return getProperty(EMAIL, String.class, "");
+    }
+
 }

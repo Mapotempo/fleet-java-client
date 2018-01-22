@@ -65,7 +65,7 @@ public class Main {
                 }
             } else if (nextLine.equals("user")) {
                 UserInterface u = mMapotempoFleetManager.getUser();
-                System.out.println(u.getUser());
+                System.out.println(u.getSyncUser());
             } else if (nextLine.equals("all")) {
                 //mapotempoFleetManager.mDatabaseHandler.printAllData();
             } else if (nextLine.equals("exit")) {

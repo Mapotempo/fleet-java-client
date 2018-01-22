@@ -27,11 +27,11 @@ import java.util.List;
 public interface UserInterface extends MapotempoModelBaseInterface {
 
     /**
-     * Get the user login/name.
+     * Get the user real sync user name.
      *
      * @return A {@link String}
      */
-    String getUser();
+    String getSyncUser();
 
     /**
      * Get the user company.
@@ -39,6 +39,20 @@ public interface UserInterface extends MapotempoModelBaseInterface {
      * @return A {@link String}
      */
     String getCompanyId();
+
+    /**
+     * Get the user name.
+     *
+     * @return A {@link String}
+     */
+    String getUserName();
+
+    /**
+     * Get the user mail.
+     *
+     * @return A {@link String}
+     */
+    String getUserEmail();
 
     /**
      * Get all the user roles.

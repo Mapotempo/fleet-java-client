@@ -266,20 +266,20 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     private void tryToInitchannels(User user) {
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(-1));
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(0));
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(1));
-        mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(2));
+        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(-1));
+        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(0));
+        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(1));
+        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(2));
         mDatabaseHandler.setCompanyChannel(user.getCompanyId());
         mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
         mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
-        mDatabaseHandler.setCurrentLocationChannel(user.getUser());
+        mDatabaseHandler.setCurrentLocationChannel(user.getSyncUser());
 
         // Synchronise all mission present in the database, use getAllWithoutFilter instead of getAll.
         List<Mission> missions = mMissionAccess.getAllWithoutFilter();
         // List<Mission> missions = mMissionAccess.getAll();
         for (Mission mission : missions) {
-            mDatabaseHandler.setMissionChannel(user.getUser(), DateHelper.dateForChannel(mission.getDate()));
+            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(mission.getDate()));
         }
 
         mChannelInit = true;
