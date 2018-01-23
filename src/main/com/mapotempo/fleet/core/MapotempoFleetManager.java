@@ -289,6 +289,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     @Override
     public void release() {
         // Release ask by user, we don't delete database
+        mLocationManager.releaseManager(); // Release location manager before all
         mDatabaseHandler.release(false);
     }
 

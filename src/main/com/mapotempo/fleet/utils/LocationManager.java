@@ -73,5 +73,10 @@ public class LocationManager {
 
     }
 
-
+    public void releaseManager() {
+        // Terminates this timer, discarding any currently scheduled tasks.
+        mTimer.cancel();
+        // Removes all cancelled tasks from this timer's task queue.
+        mTimer.purge();
+    }
 }
