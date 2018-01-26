@@ -225,25 +225,29 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mUserAccess.addChangeListener(new AccessInterface.ChangeListener<User>() {
             @Override
             public void changed(List<User> items) {
-                if (items.size() > 0) {
-                    if (items.size() > 1)
-                        System.err.println("Warning : " + getClass().getSimpleName() + " more than one user available, return the first");
+                try {
+                    if (items.size() > 0) {
+                        if (items.size() > 1)
+                            System.err.println("Warning : " + getClass().getSimpleName() + " more than one user available, return the first");
 
-                    // When user is received we can add channel
-                    if (!mChannelInit) {
-                        tryToInitchannels(items.get(0));
+                        // When user is received we can add channel
+                        if (!mChannelInit) {
+                            tryToInitchannels(items.get(0));
+                        }
+
+                    } else {
+                        System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
                     }
-
-                } else {
-                    System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
+                    verifyConnexion();
+                } catch (CoreException e) {
+                    e.printStackTrace();
                 }
-                verifyConnexion();
             }
         });
         verifyConnexion();
     }
 
-    private void verifyConnexion() {
+    private void verifyConnexion() throws CoreException {
         User user = getUser();
         UserCurrentLocation userCurrentLocation = getCurrentLocation();
         UserSettings userSettings = getUserPreference();
@@ -260,12 +264,13 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
             if (!mConnexionIsVerify) {
                 mConnexionIsVerify = true;
+                mMissionAccess.purgeOutdated();
                 mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY, this);
             }
         }
     }
 
-    private void tryToInitchannels(User user) {
+    private void tryToInitchannels(User user) throws CoreException {
         mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(-1));
         mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(0));
         mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(1));
@@ -277,7 +282,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
         // Synchronise all mission present in the database, use getAllWithoutFilter instead of getAll.
         List<Mission> missions = mMissionAccess.getAllWithoutFilter();
-        // List<Mission> missions = mMissionAccess.getAll();
         for (Mission mission : missions) {
             mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(mission.getDate()));
         }

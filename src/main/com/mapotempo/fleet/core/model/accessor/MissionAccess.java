@@ -28,6 +28,7 @@ import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
+import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.base.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Mission;
@@ -43,7 +44,11 @@ import java.util.List;
  */
 public class MissionAccess extends Access<Mission> implements MissionAccessInterface, AccessInterface<MissionInterface> {
 
-    static final int HOUR_OFFSET = -12;
+    // Query hour offset
+    private static final int HOUR_QUERY_OFFSET = -12;
+
+    // Purge hour offset.
+    private static final int HOUR_PURGE_OFFSET = -96;
 
     public MissionAccess(DatabaseHandler dbHandler) throws CoreException {
         super(Mission.class, dbHandler, "date");
@@ -54,13 +59,12 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
         Date date = new Date();
         final Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(calendar.HOUR, HOUR_OFFSET);
+        calendar.add(calendar.HOUR, HOUR_QUERY_OFFSET);
         Query query = mView.createQuery();
         query.setPostFilter(new Predicate<QueryRow>() {
             @Override
             public boolean apply(QueryRow queryRow) {
                 Mission mission = new Mission(queryRow.getDocument());
-                System.out.println(mission.getDate());
                 if (mission.getDate().after(calendar.getTime())) {
                     return true;
                 }
@@ -116,5 +120,24 @@ public class MissionAccess extends Access<Mission> implements MissionAccessInter
         } finally {
             return res;
         }
+    }
+
+    public void purgeOutdated() {
+        Date d = new Date();
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(d);
+        calendar.add(calendar.HOUR, HOUR_PURGE_OFFSET);
+        final Date date = calendar.getTime();
+
+        purges(new PurgeListener() {
+            @Override
+            public boolean doPurge(ModelBase data) {
+                Mission mission = (Mission) data;
+                if (mission.getDate().before(date))
+                    return true;
+                else
+                    return false;
+            }
+        });
     }
 }

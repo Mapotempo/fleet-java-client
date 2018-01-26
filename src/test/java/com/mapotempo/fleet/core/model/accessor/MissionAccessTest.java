@@ -12,6 +12,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class MissionAccessTest extends BaseTest {
     }
 
     @Test
-    @DisplayName("Mission access right order")
+    @DisplayName("Mission should be in right order")
     void testMissionAccess() throws Exception {
         List<Mission> missions = mMissionAccess.getAllWithoutFilter(); // Without filter, to avoid having to update the input data
         List<Mission> expectedMissions = new ArrayList<>();
@@ -40,4 +41,17 @@ public class MissionAccessTest extends BaseTest {
         expectedMissions.add(new Mission(doc));
         Assertions.assertTrue(missions.equals(expectedMissions));
     }
+
+    @Test
+    @DisplayName("Mission access should purge old mission")
+    void testMissionAccess2() throws Exception {
+        Mission m = mMissionAccess.getNew();
+        m.setDate(new Date());
+        m.save();
+        Assertions.assertEquals(3, mMissionAccess.getAllWithoutFilter().size());
+        mMissionAccess.purgeOutdated();
+        // Last created data should be always here.
+        Assertions.assertEquals(1, mMissionAccess.getAllWithoutFilter().size());
+    }
+
 }

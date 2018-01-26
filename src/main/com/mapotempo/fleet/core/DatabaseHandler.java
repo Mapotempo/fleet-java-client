@@ -88,8 +88,7 @@ public class DatabaseHandler {
             mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
         } catch (IOException e) {
             e.printStackTrace();
-            // TODO
-            throw new CoreException("TODO");
+            throw new CoreException("Error : Manager can't be created");
         }
         mDbname = "database_" + mUser;
 
@@ -100,31 +99,25 @@ public class DatabaseHandler {
             mDatabase = mManager.openDatabase(mDbname.toLowerCase(), passwordDatabaseOption);
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
-            // TODO
-            throw new CoreException("TODO");
+            throw new CoreException("Error : Can't open bdd");
         }
     }
 
-    final private String PASSWORD = "password";
-
+    // CONNEXION
     public void initConnexion(String syncGatewayUrl) throws CoreException {
-        // CONNEXION
         try {
             url = new URL(syncGatewayUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            // TODO
-            throw new CoreException("TODO");
+            throw new CoreException("Error : Invalide url connexion");
         }
 
         // TODO
-        /*
-        mDatabase.addChangeListener(new Database.ChangeListener() {
-            @Override
-            public void changed(Database.ChangeEvent event) {
-                List<DocumentChange> changes = event.getChanges();
-            }
-        });*/
+        // mDatabase.addChangeListener(new Database.ChangeListener() {
+        // @Override
+        // public void changed(Database.ChangeEvent event) {
+        //      }
+        // });
 
         // Pusher and Puller sync
         mPusher = mDatabase.createPushReplication(url);
@@ -226,34 +219,54 @@ public class DatabaseHandler {
         }
     }
 
-    public void setCompanyChannel(String companyId) {
-        List<String> channels = mPuller.getChannels();
-        channels.add("company:" + companyId);
-        mPuller.setChannels(channels);
+    public void setCompanyChannel(String companyId) throws CoreException {
+        if (mPuller != null) {
+            List<String> channels = mPuller.getChannels();
+            channels.add("company:" + companyId);
+            mPuller.setChannels(channels);
+        } else {
+            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
+        }
     }
 
-    public void setMissionChannel(String userName, String date) {
-        List<String> channels = mPuller.getChannels();
-        channels.add("mission:" + userName + ":" + date);
-        mPuller.setChannels(channels);
+    public void setMissionChannel(String userName, String date) throws CoreException {
+        if (mPuller != null) {
+            List<String> channels = mPuller.getChannels();
+            channels.add("mission:" + userName + ":" + date);
+            mPuller.setChannels(channels);
+        } else {
+            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
+        }
     }
 
-    public void setMissionStatusTypeChannel(String company_id) {
-        List<String> channels = mPuller.getChannels();
-        channels.add("mission_status_type:" + company_id);
-        mPuller.setChannels(channels);
+    public void setMissionStatusTypeChannel(String company_id) throws CoreException {
+        if (mPuller != null) {
+            List<String> channels = mPuller.getChannels();
+            channels.add("mission_status_type:" + company_id);
+            mPuller.setChannels(channels);
+        } else {
+            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
+        }
     }
 
-    public void setMissionStatusActionChannel(String company_id) {
-        List<String> channels = mPuller.getChannels();
-        channels.add("mission_status_action:" + company_id);
-        mPuller.setChannels(channels);
+    public void setMissionStatusActionChannel(String company_id) throws CoreException {
+        if (mPuller != null) {
+            List<String> channels = mPuller.getChannels();
+            channels.add("mission_status_action:" + company_id);
+            mPuller.setChannels(channels);
+        } else {
+            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
+        }
     }
 
-    public void setCurrentLocationChannel(String user) {
-        List<String> channels = mPuller.getChannels();
-        channels.add("user_current_location" + ":" + user);
-        mPuller.setChannels(channels);
+    public void setCurrentLocationChannel(String user) throws CoreException {
+        if (mPuller != null) {
+            List<String> channels = mPuller.getChannels();
+            channels.add("user_current_location" + ":" + user);
+            mPuller.setChannels(channels);
+        } else {
+            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
+        }
     }
 
     public void release(boolean delete_db) {
@@ -277,7 +290,8 @@ public class DatabaseHandler {
         // ## qui a reçu un 401 sur l'un de ses replicator (puller, pusher)
         // ## prend un timeout de 60s à la fermeture de celle ci. Pour ne
         // ## pas bloquer le thread ui de l'utilisateur nous déléguons donc
-        // ## cette tache à couchbase.
+        // ## cette tache à couchbase via la methode runAsync de Database.
+        // ## (cette methode n'est pas censé servir sur android, voir la doc ...)
         mDatabase.runAsync(new AsyncTask() {
             @Override
             public void run(Database database) {

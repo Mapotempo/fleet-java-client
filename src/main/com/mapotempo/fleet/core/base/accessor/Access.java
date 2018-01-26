@@ -228,4 +228,26 @@ public class Access<T extends ModelBase & MapotempoModelBaseInterface> {
             return res;
         }
     }
+
+    protected interface PurgeListener {
+        boolean doPurge(ModelBase data);
+    }
+
+    protected void purges(PurgeListener purgeListener) {
+        // Get all data
+        Query query = mView.createQuery();
+        try {
+            QueryEnumerator result = query.run();
+            for (Iterator<QueryRow> it = result; it.hasNext(); ) {
+                QueryRow row = it.next();
+                Document doc = row.getDocument();
+                T data = getInstance(doc);
+                if (purgeListener.doPurge(data)) {
+                    doc.purge();
+                }
+            }
+        } catch (CouchbaseLiteException e) {
+            e.printStackTrace();
+        }
+    }
 }
