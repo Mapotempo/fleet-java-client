@@ -19,12 +19,20 @@
 
 package com.mapotempo.fleet.core.base;
 
-import com.couchbase.lite.*;
+import com.couchbase.lite.Attachment;
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Database;
+import com.couchbase.lite.Document;
+import com.couchbase.lite.UnsavedRevision;
 import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * ModelBase.
@@ -43,30 +51,15 @@ abstract public class ModelBase implements MapotempoModelBaseInterface {
 
     protected Database mDatabase;
 
-    // TODO
-    private Document.ChangeListener mConflictSolver = new Document.ChangeListener() {
-        @Override
-        public void changed(Document.ChangeEvent event) {
-            System.out.println("isConflict           :" + event.getChange().isConflict());
-            System.out.println("getRevisionId        :" + event.getChange().getRevisionId());
-            System.out.println("isDeletion           :" + event.getChange().isDeletion());
-            System.out.println("isCurrentRevision    :" + event.getChange().isCurrentRevision());
-            System.out.println("getWinningRevisionID :" + event.getChange().getWinningRevisionID());
-            System.out.println("getAddedRevision     :" + event.getChange().getAddedRevision());
-            System.out.println("toString             :" + event.getChange().toString());
-            System.out.println("-----------------------------------------------------------------------");
-        }
-    };
-
     private Document.ChangeListener mDocumentChangeListener = new Document.ChangeListener() {
         @Override
         public void changed(Document.ChangeEvent event) {
+            updateDocument = mDocument.createRevision();
             for (ChangeListener changeListener : mChangeListenerList) {
                 changeListener.changed(INSTANCE, mDocument.isDeleted());
             }
         }
     };
-
 
     private List<ChangeListener> mChangeListenerList = new ArrayList<>();
 

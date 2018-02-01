@@ -20,16 +20,20 @@
 package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.AsyncTask;
+import com.couchbase.lite.Attachment;
 import com.couchbase.lite.Context;
 import com.couchbase.lite.CouchbaseLiteException;
 import com.couchbase.lite.Database;
 import com.couchbase.lite.DatabaseOptions;
 import com.couchbase.lite.Document;
+import com.couchbase.lite.LiveQuery;
 import com.couchbase.lite.Manager;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
 import com.couchbase.lite.SavedRevision;
+import com.couchbase.lite.TransactionalTask;
+import com.couchbase.lite.UnsavedRevision;
 import com.couchbase.lite.auth.Authenticator;
 import com.couchbase.lite.auth.AuthenticatorFactory;
 import com.couchbase.lite.replicator.RemoteRequestResponseException;
@@ -44,6 +48,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * DatabaseHandler.
@@ -128,6 +133,7 @@ public class DatabaseHandler {
                 System.out.println("pusher changed listener " + changeEvent.getStatus());
             }
         });
+
         mPuller = mDatabase.createPullReplication(url);
         mPuller.setContinuous(true); // Runs forever in the background
         mPuller.addChangeListener(new Replication.ChangeListener() {
@@ -163,6 +169,8 @@ public class DatabaseHandler {
         mPuller.start();
 
         onlineStatus(mConnexionStatus);
+
+        startConflictLiveQuery();
     }
 
     // FIXME replace goOnline/goOffline => start/stop
@@ -316,5 +324,63 @@ public class DatabaseHandler {
         mManager.close();
         mManager = null;
         mReleaseStatus = true;
+    }
+
+
+    private void startConflictLiveQuery() {
+        LiveQuery conflictsLiveQuery = mDatabase.createAllDocumentsQuery().toLiveQuery();
+        conflictsLiveQuery.setAllDocsMode(Query.AllDocsMode.ONLY_CONFLICTS);
+        conflictsLiveQuery.addChangeListener(new LiveQuery.ChangeListener() {
+            @Override
+            public void changed(LiveQuery.ChangeEvent event) {
+                resolveConflicts(event.getRows());
+            }
+        });
+        conflictsLiveQuery.start();
+    }
+
+    private void resolveConflicts(QueryEnumerator rows) {
+        for (QueryRow row : rows) {
+            List<SavedRevision> revs = row.getConflictingRevisions();
+            if (revs.size() > 1) {
+                SavedRevision defaultWinning = revs.get(0);
+                Map<String, Object> props = defaultWinning.getUserProperties();
+                Attachment image = defaultWinning.getAttachment("image");
+                resolveConflicts(revs, props, image);
+            }
+        }
+    }
+
+    private void resolveConflicts(final List<SavedRevision> revs, final Map<String, Object> desiredProps, final Attachment desiredImage) {
+        mDatabase.runInTransaction(new TransactionalTask() {
+            @Override
+            public boolean run() {
+                int i = 0;
+                for (SavedRevision rev : revs) {
+                    UnsavedRevision newRev = rev.createRevision(); // Create new revision
+                    if (i == 0) { // That's the current/winning revision
+                        newRev.setUserProperties(desiredProps);
+                        if (desiredImage != null) {
+                            try {
+                                newRev.setAttachment("image", "image/jpg", desiredImage.getContent());
+                            } catch (CouchbaseLiteException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    } else { // That's a conflicting revision, delete it
+                        newRev.setIsDeletion(true);
+                    }
+
+                    try {
+                        newRev.save(true); // Persist the new revision
+                    } catch (CouchbaseLiteException e) {
+                        e.printStackTrace();
+                        return false;
+                    }
+                    i++;
+                }
+                return true;
+            }
+        });
     }
 }
