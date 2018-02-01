@@ -39,14 +39,6 @@ public class LocationManager {
         }
     }
 
-    private LocationDetails selectBestLocation(@Nonnull LocationDetails locationDetails) {
-        if (mLastLocationDetails == null || mLastLocationDetails.getmAccuracy() > locationDetails.getmAccuracy()) {
-            return locationDetails;
-        } else {
-            return mLastLocationDetails;
-        }
-    }
-
     private void initTimerSave() {
         Date timerDate = new Date(mLastUpdate.getTime() + mTimeout);
         if (!lock) {
@@ -70,7 +62,6 @@ public class LocationManager {
 
     public LocationDetails getNextAvailableLocation() {
         return mLastLocationDetails;
-
     }
 
     public void releaseManager() {
@@ -78,5 +69,27 @@ public class LocationManager {
         mTimer.cancel();
         // Removes all cancelled tasks from this timer's task queue.
         mTimer.purge();
+    }
+
+
+    // This function select the best location
+    //  - Calcul distance between position
+    //  - If new position's accuracy include last point with it's accuracy new position is rejected
+    private LocationDetails selectBestLocation(@Nonnull LocationDetails locationDetails) {
+        if (mLastLocationDetails == null) {
+            return locationDetails;
+        } else if (accuracyTester(locationDetails, mLastLocationDetails)) {
+            return locationDetails;
+        } else {
+            return mLastLocationDetails;
+        }
+    }
+
+    private boolean accuracyTester(@Nonnull LocationDetails newLoc, @Nonnull LocationDetails oldLoc) {
+        Double dist = Haversine.distance(newLoc.getLat(), newLoc.getLon(), oldLoc.getLat(), oldLoc.getLon());
+        if (dist + oldLoc.getmAccuracy() > newLoc.getmAccuracy()) {
+            return true;
+        } else
+            return false;
     }
 }
