@@ -19,7 +19,11 @@
 
 package com.mapotempo.fleet.core.model.accessor;
 
-import com.couchbase.lite.*;
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Predicate;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.MissionStatusInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusAccessInterface;
