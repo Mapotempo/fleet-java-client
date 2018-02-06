@@ -1,5 +1,5 @@
 /*
- * Copyright © Mapotempo, 2017
+ * Copyright © Mapotempo, 2018
  *
  * This file is part of Mapotempo.
  *

@@ -1,5 +1,5 @@
 /*
- * Copyright © Mapotempo, 2017
+ * Copyright © Mapotempo, 2018
  *
  * This file is part of Mapotempo.
  *
@@ -19,7 +19,11 @@
 
 package com.mapotempo.fleet.core.model.accessor;
 
-import com.couchbase.lite.*;
+import com.couchbase.lite.CouchbaseLiteException;
+import com.couchbase.lite.Predicate;
+import com.couchbase.lite.Query;
+import com.couchbase.lite.QueryEnumerator;
+import com.couchbase.lite.QueryRow;
 import com.mapotempo.fleet.api.model.MissionStatusActionInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionStatusActionAccessInterface;
