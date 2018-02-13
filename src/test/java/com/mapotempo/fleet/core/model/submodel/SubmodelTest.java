@@ -36,7 +36,7 @@ class SubmodelTest {
     @BeforeAll
     static void BeforeAll() throws CoreException, CouchbaseLiteException, IOException {
         System.out.println("Create the data base");
-        mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", new JavaContext(), new DatabaseHandler.OnCatchLoginError() {
+        mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", new JavaContext(), "localhost", new DatabaseHandler.OnCatchLoginError() {
             @Override
             public void CatchLoginError() {
             }

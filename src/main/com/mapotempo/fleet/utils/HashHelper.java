@@ -26,16 +26,15 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashHelper {
 
-    public static String emailHasher(String email) throws CoreException {
+    public static String sha256(String string) throws CoreException {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
-            String test = printHexBinary(md.digest(email.getBytes()));
-            //return test.toLowerCase();
+            String test = printHexBinary(md.digest(string.getBytes()));
             return test.toLowerCase();
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-            throw new CoreException("ERROR in emailHasher");
+            throw new CoreException("ERROR in sha256");
         }
     }
 

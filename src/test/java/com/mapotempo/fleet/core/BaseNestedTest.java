@@ -5,6 +5,7 @@ import com.couchbase.lite.JavaContext;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -22,7 +23,7 @@ public abstract class BaseNestedTest {
     @BeforeAll
     void BeforeAll() throws CoreException, CouchbaseLiteException, IOException {
         System.out.println("Create the data base");
-        mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", new JavaContext(), new DatabaseHandler.OnCatchLoginError() {
+        mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", new JavaContext(), "localhost", new DatabaseHandler.OnCatchLoginError() {
             @Override
             public void CatchLoginError() {
             }

@@ -301,9 +301,9 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mContext = context;
         mOnServerConnexionVerify = onServerConnexionVerify;
         try {
-            mUser = HashHelper.emailHasher(user); // Hash user to cover email case, 'see HashHelper.emailHasher for more explication'.
+            mUser = HashHelper.sha256(user); // Hash user to cover email case, 'see HashHelper.sha256 for more explication'.
             mPassword = password;
-            mDatabaseHandler = new DatabaseHandler(mUser, password, mContext, onCatchLoginError);
+            mDatabaseHandler = new DatabaseHandler(mUser, password, mContext, url, onCatchLoginError);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
@@ -315,7 +315,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mUserCurrentLocationAccess = new UserCurrentLocationAccess(mDatabaseHandler);
 
             // Set channels
-            mDatabaseHandler.initConnexion(url);
+            mDatabaseHandler.initConnexion();
 
             initChannelsConfigurationSequence(mUser);
         } catch (CoreException e) {
@@ -350,7 +350,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     public MapotempoFleetManager(Context context) {
         mContext = context;
         try {
-            mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", mContext, onCatchLoginError);
+            mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", mContext, "localhost", onCatchLoginError);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);

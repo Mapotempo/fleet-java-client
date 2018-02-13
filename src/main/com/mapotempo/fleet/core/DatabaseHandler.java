@@ -1,6 +1,5 @@
 /*
  * Copyright © Mapotempo, 2018
- * Copyright © Mapotempo, 2017
  *
  * This file is part of Mapotempo.
  *
@@ -41,6 +40,7 @@ import com.couchbase.lite.replicator.RemoteRequestResponseException;
 import com.couchbase.lite.replicator.Replication;
 import com.couchbase.lite.support.FileDirUtils;
 import com.mapotempo.fleet.core.exception.CoreException;
+import com.mapotempo.fleet.utils.HashHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +66,7 @@ public class DatabaseHandler {
 
     public Database mDatabase;
 
-    private String mDbname = "mydbname";
+    private String mDbname;
 
     private URL url = null;
 
@@ -76,13 +76,15 @@ public class DatabaseHandler {
 
     private Replication mPusher, mPuller;
 
+    private String mSyncGatewayUrl;
+
     public interface OnCatchLoginError {
         void CatchLoginError();
     }
 
     private OnCatchLoginError mOnCatchLoginError;
 
-    public DatabaseHandler(String user, String password, Context context, OnCatchLoginError onCatchLoginError) throws CoreException {
+    public DatabaseHandler(String user, String password, Context context, String syncGatewayUrl, OnCatchLoginError onCatchLoginError) throws CoreException {
         mContext = context;
         mOnCatchLoginError = onCatchLoginError;
 
@@ -90,13 +92,16 @@ public class DatabaseHandler {
         mUser = user;
         mPassword = password;
 
+        mSyncGatewayUrl = syncGatewayUrl;
+
         try {
             mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
         } catch (IOException e) {
             e.printStackTrace();
             throw new CoreException("Error : Manager can't be created");
         }
-        mDbname = "database_" + mUser;
+
+        mDbname = databaseNameGenerator(mUser, mSyncGatewayUrl);
 
         try {
             DatabaseOptions passwordDatabaseOption = new DatabaseOptions();
@@ -110,20 +115,13 @@ public class DatabaseHandler {
     }
 
     // CONNEXION
-    public void initConnexion(String syncGatewayUrl) throws CoreException {
+    public void initConnexion() throws CoreException {
         try {
-            url = new URL(syncGatewayUrl);
+            url = new URL(mSyncGatewayUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
             throw new CoreException("Error : Invalide url connexion");
         }
-
-        // TODO
-        // mDatabase.addChangeListener(new Database.ChangeListener() {
-        // @Override
-        // public void changed(Database.ChangeEvent event) {
-        //      }
-        // });
 
         // Pusher and Puller sync
         mPusher = mDatabase.createPushReplication(url);
@@ -132,6 +130,24 @@ public class DatabaseHandler {
             @Override
             public void changed(Replication.ChangeEvent changeEvent) {
                 System.out.println("pusher changed listener " + changeEvent.getStatus());
+                Replication.ReplicationStatus a = changeEvent.getStatus();
+                if (changeEvent.getError() != null) {
+                    System.out.println("--------------------------------");
+                    System.out.println("changeEvent.toString() >>>>>>>>> " + changeEvent.toString());
+                    System.out.println("changeEvent.getError() >>>>>>>>> " + changeEvent.getError());
+
+                    if (changeEvent.getError() instanceof RemoteRequestResponseException) {
+                        RemoteRequestResponseException ex = (RemoteRequestResponseException) changeEvent.getError();
+                        System.out.println("HTTP Error: " + ex.getCode() + ": " + ex.getMessage());
+                        System.out.println("            " + ex.getUserInfo());
+                        System.out.println(" hash code  " + ex.hashCode());
+                        if (new Integer(403).equals(ex.getCode())) {
+                            System.out.println("403 !!");
+                            mOnCatchLoginError.CatchLoginError();
+                        }
+                    }
+                    System.out.println("--------------------------------");
+                }
             }
         });
 
@@ -327,8 +343,19 @@ public class DatabaseHandler {
         mReleaseStatus = true;
     }
 
+    private String databaseNameGenerator(String userName, String url) {
+        try {
+            // Database name must be unique for a username and specific url.
+            return "database_" + userName + HashHelper.sha256(url).substring(0, 10);
+        } catch (CoreException e) {
+            throw new RuntimeException("Error during databaseNameGenerator");
+        }
+    }
+
 
     private void startConflictLiveQuery() {
+        System.out.println(">>>>>>>>>>>>>>>>>> startConflictLiveQuery");
+
         LiveQuery conflictsLiveQuery = mDatabase.createAllDocumentsQuery().toLiveQuery();
         conflictsLiveQuery.setAllDocsMode(Query.AllDocsMode.ONLY_CONFLICTS);
         conflictsLiveQuery.addChangeListener(new LiveQuery.ChangeListener() {
