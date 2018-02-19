@@ -244,6 +244,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
                 }
             }
         });
+
+
         verifyConnexion();
     }
 
@@ -266,6 +268,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
                 mConnexionIsVerify = true;
                 mMissionAccess.purgeOutdated();
                 mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY, this);
+                mOnServerConnexionVerify = null;
             }
         }
     }
