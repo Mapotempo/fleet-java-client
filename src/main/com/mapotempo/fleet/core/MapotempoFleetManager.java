@@ -26,11 +26,13 @@ import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.Company;
+import com.mapotempo.fleet.core.model.MetaInfo;
 import com.mapotempo.fleet.core.model.Mission;
 import com.mapotempo.fleet.core.model.User;
 import com.mapotempo.fleet.core.model.UserCurrentLocation;
 import com.mapotempo.fleet.core.model.UserSettings;
 import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
+import com.mapotempo.fleet.core.model.accessor.MetaInfoAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusActionAccess;
@@ -46,11 +48,15 @@ import com.mapotempo.fleet.utils.HashHelper;
 import com.mapotempo.fleet.utils.LocationManager;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * {@inheritDoc}
  */
 public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
+
+    private MapotempoFleetManager INSTANCE = this;
 
     private String mUser;
 
@@ -59,6 +65,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private Context mContext;
 
     public DatabaseHandler mDatabaseHandler;
+
+    private MetaInfoAccess mMetaInfoAccess;
 
     private CompanyAccess mCompanyAccess;
 
@@ -90,6 +98,26 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private SubModelFactoryInterface mSubModelFactoryInterface;
 
     private OnServerConnexionVerify mOnServerConnexionVerify;
+
+    private Timer mVerifyTimer = new Timer();
+
+    private int mVerifyCounter = 0;
+
+    private final static int MAX_VERIFY = 5;
+
+    /**
+     * TODO
+     * {@inheritDoc}
+     */
+    // @Override
+    public MetaInfo getMetaInfo() {
+        List<MetaInfo> metaInfos = mMetaInfoAccess.getAll();
+        if (metaInfos.size() > 0)
+            return metaInfos.get(0);
+        else
+            return null;
+        // return mCompanyAccess.getNew();
+    }
 
     /**
      * {@inheritDoc}
@@ -218,79 +246,126 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     private void initChannelsConfigurationSequence(final String userName) throws CoreException {
-
+        // ==================================================================================================
+        // == 1) - Init public channel and user channel, other channel will be set on user document reception
+        // ==================================================================================================
+        mDatabaseHandler.setPublicChannel();
         mDatabaseHandler.setUserChannel(userName);
 
-        // Ecoute des Documents User
+        // ============================================================
+        // == 2) - Set listener on user access to be notified reception
+        // ============================================================
         mUserAccess.addChangeListener(new AccessInterface.ChangeListener<User>() {
             @Override
             public void changed(List<User> items) {
-                try {
-                    if (items.size() > 0) {
-                        if (items.size() > 1)
-                            System.err.println("Warning : " + getClass().getSimpleName() + " more than one user available, return the first");
+                if (items.size() > 0) {
+                    if (items.size() > 1)
+                        System.err.println("Warning : " + getClass().getSimpleName() + " more than one user available, return the first");
 
-                        // When user is received we can add channel
-                        if (!mChannelInit) {
-                            tryToInitchannels(items.get(0));
-                        }
-
-                    } else {
-                        System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
+                    // When user is received we can add channel
+                    if (!mChannelInit) {
+                        tryToInitchannels(items.get(0));
                     }
-                    verifyConnexion();
-                } catch (CoreException e) {
-                    e.printStackTrace();
+
+                } else {
+                    System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
                 }
+                verifyConnexion();
             }
         });
 
+        // ====================
+        // == 3) - Launch mVerifyTimer
+        // ====================
+        final TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                INSTANCE.verifyConnexion();
+            }
+        };
+        mVerifyTimer.schedule(timerTask, 2000, 2000);
 
+        // ================================================================
+        // == 4) - Verify connexion to ensure user document already present
+        // ================================================================
         verifyConnexion();
     }
 
-    private void verifyConnexion() throws CoreException {
-        User user = getUser();
-        UserCurrentLocation userCurrentLocation = getCurrentLocation();
-        UserSettings userSettings = getUserPreference();
+    private void verifyConnexion() {
+        mVerifyCounter++;
+        if (mVerifyCounter > MAX_VERIFY) {
+            verify(OnServerConnexionVerify.Status.LOGIN_ERROR);
+            mDatabaseHandler.release(false);
+        } else {
 
-        if (user != null
-                && userCurrentLocation != null
-                && userSettings != null) {
-            mLocationManager.setCurrentLocation(userCurrentLocation);
+            User user = getUser();
+            UserCurrentLocation userCurrentLocation = getCurrentLocation();
+            UserSettings userSettings = getUserPreference();
+            MetaInfo metaInfo = getMetaInfo();
 
-            if (!mChannelInit) {
-                tryToInitchannels(user);
+            if (user != null
+                    && userCurrentLocation != null
+                    && userSettings != null
+                    && metaInfo != null) {
+
                 // Set current location into location manager
-            }
+                mLocationManager.setCurrentLocation(userCurrentLocation);
 
-            if (!mConnexionIsVerify) {
-                mConnexionIsVerify = true;
-                mMissionAccess.purgeOutdated();
-                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY, this);
-                mOnServerConnexionVerify = null;
+                if (!mConnexionIsVerify) {
+                    mConnexionIsVerify = true;
+                    mMissionAccess.purgeOutdated();
+
+                    // Notify user
+                    verify(OnServerConnexionVerify.Status.VERIFY);
+                    mOnServerConnexionVerify = null;
+                }
+
+                System.out.println("MinimalClientVersion" + metaInfo.getMinimalClientVersion());
+            } else if (user != null && !mChannelInit) {
+                tryToInitchannels(user);
             }
         }
     }
 
-    private void tryToInitchannels(User user) throws CoreException {
-        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(-1));
-        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(0));
-        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(1));
-        mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(2));
-        mDatabaseHandler.setCompanyChannel(user.getCompanyId());
-        mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
-        mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
-        mDatabaseHandler.setCurrentLocationChannel(user.getSyncUser());
+    private void tryToInitchannels(User user) {
+        try {
+            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(-1));
+            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(0));
+            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(1));
+            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(2));
+            mDatabaseHandler.setCompanyChannel(user.getCompanyId());
+            mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
+            mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
+            mDatabaseHandler.setCurrentLocationChannel(user.getSyncUser());
 
-        // Synchronise all mission present in the database, use getAllWithoutFilter instead of getAll.
-        List<Mission> missions = mMissionAccess.getAllWithoutFilter();
-        for (Mission mission : missions) {
-            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(mission.getDate()));
+            // Synchronise all mission present in the database, use getAllWithoutFilter instead of getAll.
+            List<Mission> missions = mMissionAccess.getAllWithoutFilter();
+            for (Mission mission : missions) {
+                mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(mission.getDate()));
+            }
+
+            mChannelInit = true;
+            mDatabaseHandler.restartPuller();
+        } catch (CoreException e) {
+            e.printStackTrace();
+            verify(OnServerConnexionVerify.Status.LOGIN_ERROR);
+            mDatabaseHandler.release(false);
         }
+    }
 
-        mChannelInit = true;
-        mDatabaseHandler.restartPuller();
+    private void verify(OnServerConnexionVerify.Status status) {
+        mVerifyTimer.cancel();
+        mVerifyTimer.purge();
+
+        switch (status) {
+            case VERIFY:
+                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY, this);
+                break;
+            case LOGIN_ERROR:
+            default:
+                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
+                break;
+        }
     }
 
     @Override
@@ -308,6 +383,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mPassword = password;
             mDatabaseHandler = new DatabaseHandler(mUser, password, mContext, url, onCatchLoginError);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
+            mMetaInfoAccess = new MetaInfoAccess(mDatabaseHandler);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
@@ -322,7 +398,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
             initChannelsConfigurationSequence(mUser);
         } catch (CoreException e) {
-            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
+            verify(OnServerConnexionVerify.Status.LOGIN_ERROR);
             e.printStackTrace();
         }
     }
@@ -340,7 +416,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private DatabaseHandler.OnCatchLoginError onCatchLoginError = new DatabaseHandler.OnCatchLoginError() {
         @Override
         public void CatchLoginError() {
-            mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
+            verify(OnServerConnexionVerify.Status.LOGIN_ERROR);
             mDatabaseHandler.release(true);
         }
     };
@@ -356,6 +432,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", mContext, "localhost", onCatchLoginError);
             mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
             mMissionAccess = new MissionAccess(mDatabaseHandler);
+            mMetaInfoAccess = new MetaInfoAccess(mDatabaseHandler);
             mCompanyAccess = new CompanyAccess(mDatabaseHandler);
             mUserAccess = new UserAccess(mDatabaseHandler);
             mUserTrackAccess = new UserTrackAccess(mDatabaseHandler);
