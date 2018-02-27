@@ -33,17 +33,6 @@ import com.mapotempo.fleet.core.MapotempoFleetManager;
 public class ManagerFactory {
 
     /**
-     * Return a default none connected manager.
-     * This factory method is synchronous.
-     *
-     * @param context The application context
-     * @return return a {@link MapotempoFleetManagerInterface}
-     */
-    public static MapotempoFleetManagerInterface getDefaultManager(Context context) {
-        return new MapotempoFleetManager(context);
-    }
-
-    /**
      * Try to create a connected {@link MapotempoFleetManagerInterface} asynchronously.
      * This factory method is asynchronous, and the result is return in the
      * {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify} provides.

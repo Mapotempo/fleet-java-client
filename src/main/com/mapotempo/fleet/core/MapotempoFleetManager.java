@@ -245,6 +245,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         return mDatabaseHandler.isOnline();
     }
 
+    // Connexion sequence initialisation
+    //
     private void initChannelsConfigurationSequence(final String userName) throws CoreException {
         // ==================================================================================================
         // == 1) - Init public channel and user channel, other channel will be set on user document reception
@@ -359,11 +361,11 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
         switch (status) {
             case VERIFY:
-                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.VERIFY, this);
+                mOnServerConnexionVerify.connexion(status, this);
                 break;
             case LOGIN_ERROR:
             default:
-                mOnServerConnexionVerify.connexion(OnServerConnexionVerify.Status.LOGIN_ERROR, null);
+                mOnServerConnexionVerify.connexion(status, null);
                 break;
         }
     }
@@ -403,16 +405,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         }
     }
 
-    /**
-     * todo
-     *
-     * @param context
-     * @return return a {@link MapotempoFleetManagerInterface}
-     */
-    public static MapotempoFleetManagerInterface getDefaultManager(Context context) {
-        return new MapotempoFleetManager(context);
-    }
-
     private DatabaseHandler.OnCatchLoginError onCatchLoginError = new DatabaseHandler.OnCatchLoginError() {
         @Override
         public void CatchLoginError() {
@@ -420,30 +412,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mDatabaseHandler.release(true);
         }
     };
-
-    /**
-     * Default manager.
-     *
-     * @param context java context
-     */
-    public MapotempoFleetManager(Context context) {
-        mContext = context;
-        try {
-            mDatabaseHandler = new DatabaseHandler("default_abcde", "default_abcde", mContext, "localhost", onCatchLoginError);
-            mSubModelFactoryInterface = new SubModelFactory(mDatabaseHandler.mDatabase);
-            mMissionAccess = new MissionAccess(mDatabaseHandler);
-            mMetaInfoAccess = new MetaInfoAccess(mDatabaseHandler);
-            mCompanyAccess = new CompanyAccess(mDatabaseHandler);
-            mUserAccess = new UserAccess(mDatabaseHandler);
-            mUserTrackAccess = new UserTrackAccess(mDatabaseHandler);
-            mMissionStatusAccess = new MissionStatusAccess(mDatabaseHandler);
-            mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
-            mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
-            mUserCurrentLocationAccess = new UserCurrentLocationAccess(mDatabaseHandler);
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * TODO
@@ -458,7 +426,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     }
 
     /**
-     * TODO
+     * MappotempoFleetManager
      *
      * @param context                 context
      * @param user                    user login
