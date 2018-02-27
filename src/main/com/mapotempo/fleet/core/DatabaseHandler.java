@@ -234,6 +234,12 @@ public class DatabaseHandler {
         mPuller.restart();
     }
 
+    public void setPublicChannel() {
+        List<String> channels = mPuller.getChannels();
+        channels.add("!");
+        mPuller.setChannels(channels);
+    }
+
     public void setUserChannel(String userName) throws CoreException {
         if (mPuller != null) {
             List<String> channels = mPuller.getChannels();
