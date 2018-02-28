@@ -28,12 +28,21 @@ import com.mapotempo.fleet.api.model.accessor.MissionStatusActionAccessInterface
 import com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface;
 import com.mapotempo.fleet.api.model.accessor.TrackAccessInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
+import com.mapotempo.fleet.api.model.submodel.MetaInfoInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 
 /**
  * MapotempoFleetManagerInterface is a database model access and synchronisation server manager.
  */
 public interface MapotempoFleetManagerInterface {
+
+    /**
+     * MetaInfoInterface.
+     * Return the {@link MetaInfoInterface}
+     *
+     * @return {@link MetaInfoInterface}
+     */
+    MetaInfoInterface getMetaInfo();
 
     /**
      * Return the company associate to the user.
@@ -163,4 +172,26 @@ public interface MapotempoFleetManagerInterface {
      * Release connexion.
      */
     void release();
+
+    /**
+     * Return the client server compatibility.
+     * If compatibility is false the synchronisation switch off automatically
+     * User application need to update this library or use a lower server version
+     */
+    boolean serverCompatibility();
+
+    interface OnServerCompatibility {
+        /**
+         * Return the client server compatibility.
+         * If compatibility is false the synchronisation switch off automatically
+         * User application need to update this library or use a lower server version
+         */
+        void serverCompatibility(boolean compatibility);
+    }
+
+    /**
+     * Attache a callback to be notify if server version up during app running.
+     */
+    void addOnServerCompatibilityChange(OnServerCompatibility onServerCompatibility);
+
 }

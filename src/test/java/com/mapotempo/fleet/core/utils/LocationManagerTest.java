@@ -4,7 +4,7 @@ import com.couchbase.lite.CouchbaseLiteException;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.UserCurrentLocation;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
-import com.mapotempo.fleet.utils.LocationManager;
+import com.mapotempo.fleet.core.LocationManager;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

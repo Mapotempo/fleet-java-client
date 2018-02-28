@@ -21,11 +21,12 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
+import com.mapotempo.fleet.api.model.submodel.MetaInfoInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
 
 @DocumentBase(type = "meta_info")
-public class MetaInfo extends ModelBase {
+public class MetaInfo extends ModelBase implements MetaInfoInterface {
 
     private static final String SERVER_VERSION = "server_version";
     private static final String MINIMAL_CLIENT_VERSION = "minimal_client_version";

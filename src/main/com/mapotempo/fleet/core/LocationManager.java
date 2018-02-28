@@ -17,10 +17,11 @@
  * <http://www.gnu.org/licenses/agpl.html>
  */
 
-package com.mapotempo.fleet.utils;
+package com.mapotempo.fleet.core;
 
 import com.mapotempo.fleet.core.model.UserCurrentLocation;
 import com.mapotempo.fleet.core.model.submodel.LocationDetails;
+import com.mapotempo.fleet.utils.Haversine;
 
 import java.util.Date;
 import java.util.Timer;
