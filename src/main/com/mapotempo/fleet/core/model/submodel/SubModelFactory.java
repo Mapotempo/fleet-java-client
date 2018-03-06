@@ -42,7 +42,7 @@ public class SubModelFactory implements SubModelFactoryInterface {
      * {@inheritDoc}
      */
     @Override
-    public Location CreateNewLocation(double lat, double lon) {
+    public Location CreateNewLocation(Double lat, Double lon) {
         Location res = new Location(lat, lon, mDatabase);
         return res;
     }
@@ -51,7 +51,7 @@ public class SubModelFactory implements SubModelFactoryInterface {
      * {@inheritDoc}
      */
     @Override
-    public LocationDetailsInterface CreateNewLocationDetails(double lat, double lon,
+    public LocationDetailsInterface CreateNewLocationDetails(Double lat, Double lon,
                                                              Date date,
                                                              double accuracy,
                                                              double speed,

@@ -57,7 +57,7 @@ public class Company extends ModelBase implements CompanyInterface {
      * {@inheritDoc}
      */
     public Location getLocation() {
-        Location defaultLocation = new Location(0, 0, mDatabase);
+        Location defaultLocation = new Location(0., 0., mDatabase);
         Map dataType = getProperty(COMPANY_ID, Map.class, defaultLocation.toMap());
         Location res = new Location(dataType, mDatabase);
         return res;

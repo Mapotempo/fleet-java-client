@@ -53,7 +53,7 @@ public class Location extends SubModelBase implements LocationInterface {
      * @param lon      longitude
      * @param database database
      */
-    public Location(double lat, double lon, Database database) {
+    public Location(Double lat, Double lon, Database database) {
         super(database);
         mLat = lat;
         mLon = lon;

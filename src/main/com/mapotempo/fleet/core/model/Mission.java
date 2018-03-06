@@ -50,6 +50,7 @@ public class Mission extends ModelBase implements MissionInterface {
     private static final String COMPANY_ID = "company_id";
     private static final String DATE = "date";
     private static final String LOCATION = "location";
+    private static final String PICKED_LOCATION = "picked_location";
     private static final String ADDRESS = "address";
     private static final String SYNC_USER = "sync_user";
     private static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
@@ -127,7 +128,7 @@ public class Mission extends ModelBase implements MissionInterface {
      */
     @Override
     public Location getLocation() {
-        Location defaultLocation = new Location(0, 0, mDatabase);
+        Location defaultLocation = new Location(0., 0., mDatabase);
         Map dataType = getProperty(LOCATION, Map.class, defaultLocation.toMap());
         return new Location(dataType, mDatabase);
     }
@@ -138,6 +139,24 @@ public class Mission extends ModelBase implements MissionInterface {
     @Override
     public void setLocation(LocationInterface location) {
         setProperty(LOCATION, ((Location) location).toMap());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Location getPickedLocation() {
+        Location defaultLocation = new Location(null, null, mDatabase);
+        Map dataType = getProperty(PICKED_LOCATION, Map.class, defaultLocation.toMap());
+        return new Location(dataType, mDatabase);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setPickedLocation(LocationInterface location) {
+        setProperty(PICKED_LOCATION, ((Location) location).toMap());
     }
 
     /**

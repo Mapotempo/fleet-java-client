@@ -35,7 +35,7 @@ public interface SubModelFactoryInterface {
      * @param lon longitude
      * @return a new allocated Location
      */
-    LocationInterface CreateNewLocation(double lat, double lon);
+    LocationInterface CreateNewLocation(Double lat, Double lon);
 
     /**
      * Create a new allocated location.
@@ -53,8 +53,8 @@ public interface SubModelFactoryInterface {
      * @param mcc            mobile country code
      * @param mnc            mobile network code
      */
-    LocationDetailsInterface CreateNewLocationDetails(double lat,
-                                                      double lon,
+    LocationDetailsInterface CreateNewLocationDetails(Double lat,
+                                                      Double lon,
                                                       Date date,
                                                       double accuracy,
                                                       double speed,
