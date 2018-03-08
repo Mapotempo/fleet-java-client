@@ -21,14 +21,14 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
-import com.mapotempo.fleet.api.model.MissionStatusActionInterface;
+import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
 
 /**
- * MissionStatusAction.
+ * MissionActionType.
  * Read only class
  * <p>
  * <p>
@@ -43,23 +43,23 @@ import com.mapotempo.fleet.core.exception.CoreException;
  * "group": "default"
  * }
  */
-@DocumentBase(type = "mission_status_action")
-public class MissionStatusAction extends ModelBase implements MissionStatusActionInterface {
+@DocumentBase(type = "mission_action_type")
+public class MissionActionType extends ModelBase implements MissionActionTypeInterface {
     // MAPOTEMPO KEY
     public static final String LABEL = "label";
     public static final String GROUP = "group";
     public static final String PREVIOUS_STATUS_TYPE_ID = "previous_mission_status_type_id";
     public static final String NEXT_STATUS_TYPE_ID = "next_mission_status_type_id";
 
-    public MissionStatusAction(Database database) {
+    public MissionActionType(Database database) {
         super(database);
     }
 
-    public MissionStatusAction(Document document) {
+    public MissionActionType(Document document) {
         super(document);
     }
 
-    public MissionStatusAction(String id, Database database) throws CoreException {
+    public MissionActionType(String id, Database database) throws CoreException {
         super(id, database);
     }
 

@@ -20,5 +20,5 @@
 package com.mapotempo.fleet.core;
 
 public class Config {
-    static final int CLIENT_VERSION = 1;
+    static final int CLIENT_VERSION = 2;
 }

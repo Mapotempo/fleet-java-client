@@ -20,9 +20,9 @@
 package com.mapotempo.fleet.api.model;
 
 /**
- * MissionStatusActionInterface
+ * MissionActionTypeInterface
  */
-public interface MissionStatusActionInterface extends MapotempoModelBaseInterface {
+public interface MissionActionTypeInterface extends MapotempoModelBaseInterface {
 
     /**
      * Get the status label.

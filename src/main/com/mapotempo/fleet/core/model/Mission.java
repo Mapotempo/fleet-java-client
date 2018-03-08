@@ -314,4 +314,5 @@ public class Mission extends ModelBase implements MissionInterface {
     public void setCustomData(Map<String, String> data) {
         setProperty(CUSTOM_DATA, data);
     }
+
 }

@@ -1,9 +1,10 @@
 package com.mapotempo.fleet.core.model.accessor;
 
-import com.mapotempo.fleet.api.model.MissionStatusActionInterface;
+import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.core.BaseTest;
 import com.mapotempo.fleet.core.DatabaseFeeder;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * MissionAccessTest.
  */
-public class MissionStatusActionAccessTest extends BaseTest {
+public class MissionActionAccessTest extends BaseTest {
 
     @BeforeAll
     static void BeforeAll() throws Exception {
@@ -28,17 +29,17 @@ public class MissionStatusActionAccessTest extends BaseTest {
 
     @Test
     @DisplayName("Mission access right order")
-    void testMissionStatusActionAccess() throws Exception {
+    void testMissionActionTypeAccess() throws Exception {
         MissionStatusTypeInterface missionStatusType = mMissionStatusTypeAccess.get("status_completed:2ba5b8eadce2f0035adzadaz456456daz");
-        List<MissionStatusActionInterface> missionStatusActions = mMissionStatusActionAccess.getByPrevious(missionStatusType);
+        List<MissionActionTypeInterface> missionStatusActions = mMissionActionTypeAccess.getByPrevious(missionStatusType);
         // TODO
-        for (MissionStatusActionInterface action : missionStatusActions) {
+        for (MissionActionTypeInterface action : missionStatusActions) {
             System.out.println(action.getGroup());
             System.out.println(action.getLabel());
         }
         missionStatusType = mMissionStatusTypeAccess.get("status_pending:2ba5b8ea56d2dazadzadadza645dzadaz");
-        missionStatusActions = mMissionStatusActionAccess.getByPrevious(missionStatusType);
-        for (MissionStatusActionInterface action : missionStatusActions) {
+        missionStatusActions = mMissionActionTypeAccess.getByPrevious(missionStatusType);
+        for (MissionActionTypeInterface action : missionStatusActions) {
             System.out.println(action.getGroup());
             System.out.println(action.getLabel());
         }

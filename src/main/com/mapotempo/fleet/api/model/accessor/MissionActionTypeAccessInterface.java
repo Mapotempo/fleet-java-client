@@ -19,9 +19,7 @@
 
 package com.mapotempo.fleet.api.model.accessor;
 
-import com.mapotempo.fleet.api.model.MissionInterface;
-import com.mapotempo.fleet.api.model.MissionStatusActionInterface;
-import com.mapotempo.fleet.api.model.MissionStatusInterface;
+import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 
 import java.util.List;
@@ -30,39 +28,39 @@ import java.util.List;
  * The {@link MissionStatusTypeInterface} accessor.
  * An accessor provide actions on data as well as a notification mechanism.
  */
-public interface MissionStatusAccessInterface extends AccessInterface<MissionStatusInterface> {
+public interface MissionActionTypeAccessInterface extends AccessInterface<MissionActionTypeInterface> {
 
     /**
-     * @return The specific {@link MissionStatusInterface}
+     * @return The specific {@link MissionActionTypeInterface}
      */
     @Override
-    MissionStatusInterface get(String id);
+    MissionActionTypeInterface get(String id);
 
     /**
      * {@inheritDoc}
      *
-     * @return a new {@link MissionStatusInterface} unsaved
+     * @return a new {@link MissionActionTypeInterface} unsaved
      */
     @Override
-    MissionStatusInterface getNew();
+    MissionActionTypeInterface getNew();
 
     /**
-     * @return The list of all {@link MissionStatusActionInterface}
+     * @return The list of all {@link MissionActionTypeInterface}
      */
     @Override
-    List<MissionStatusInterface> getAll();
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    void addChangeListener(ChangeListener<MissionStatusInterface> changeListener);
+    List<MissionActionTypeInterface> getAll();
 
     /**
      * {@inheritDoc}
      */
     @Override
-    void removeChangeListener(ChangeListener<MissionStatusInterface> changeListener);
+    void addChangeListener(ChangeListener<MissionActionTypeInterface> changeListener);
 
-    List<MissionStatusInterface> getByMission(final MissionInterface mission);
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    void removeChangeListener(ChangeListener<MissionActionTypeInterface> changeListener);
+
+    List<MissionActionTypeInterface> getByPrevious(final MissionStatusTypeInterface missionStatusType);
 }

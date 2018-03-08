@@ -1,17 +1,22 @@
 package com.mapotempo.fleet.core.model.accessor;
 
+import com.mapotempo.fleet.api.model.MissionActionInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
-import com.mapotempo.fleet.api.model.MissionStatusInterface;
 import com.mapotempo.fleet.core.BaseTest;
 import com.mapotempo.fleet.core.DatabaseFeeder;
-import org.junit.jupiter.api.*;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 /**
  * MissionAccessTest.
  */
-public class MissionStatusAccessTest extends BaseTest {
+public class MissionActionTypeAccessTest extends BaseTest {
 
     @BeforeAll
     static void BeforeAll() throws Exception {
@@ -27,10 +32,10 @@ public class MissionStatusAccessTest extends BaseTest {
     @DisplayName("Mission access correct order")
     void testMissionStatusAccess() throws Exception {
         MissionInterface mission = mMissionAccess.get("mission_b89d5ag45h66c00fd4a56zda5z354be");
-        List<MissionStatusInterface> missionStatuses = mMissionStatusAccess.getByMission(mission);
+        List<MissionActionInterface> missionStatuses = mMissionActionAccess.getByMission(mission);
         Assertions.assertEquals(1, missionStatuses.size());
         mission = mMissionAccess.get("mission_de20ef854f96c00fe46089d16f0554be");
-        missionStatuses = mMissionStatusAccess.getByMission(mission);
+        missionStatuses = mMissionActionAccess.getByMission(mission);
         Assertions.assertEquals(2, missionStatuses.size());
     }
 }

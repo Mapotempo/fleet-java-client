@@ -23,9 +23,9 @@ import java.io.InputStream;
 import java.util.Date;
 
 /**
- * A MissionStatus link to a Mission with StatusType and date.
+ * A MissionAction link to a Mission with StatusType and date.
  */
-public interface MissionStatusInterface extends MapotempoModelBaseInterface {
+public interface MissionActionInterface extends MapotempoModelBaseInterface {
 
     /**
      * Get Mission Owner
@@ -38,14 +38,14 @@ public interface MissionStatusInterface extends MapotempoModelBaseInterface {
     void setMission(MissionInterface mission);
 
     /**
-     * Get Mission Status Type
+     * Get Mission Action Type
      */
-    MissionStatusTypeInterface getStatusType();
+    MissionActionTypeInterface getActionType();
 
     /**
-     * Set Mission Status Type
+     * Set Mission Action Type
      */
-    void setStatusType(MissionStatusTypeInterface statusType);
+    void setActionType(MissionActionTypeInterface statusType);
 
     /**
      * Get the mission date.

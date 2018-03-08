@@ -21,9 +21,10 @@ package com.mapotempo.fleet.core.model;
 
 import com.couchbase.lite.Database;
 import com.couchbase.lite.Document;
+import com.mapotempo.fleet.api.model.CompanyInterface;
+import com.mapotempo.fleet.api.model.MissionActionInterface;
+import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
-import com.mapotempo.fleet.api.model.MissionStatusInterface;
-import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -32,25 +33,48 @@ import com.mapotempo.fleet.utils.DateHelper;
 import java.util.Date;
 
 /**
- * MissionStatus.
+ * MissionAction.
  */
-@DocumentBase(type = "mission_status")
-public class MissionStatus extends ModelBase implements MissionStatusInterface {
+@DocumentBase(type = "mission_action")
+public class MissionAction extends ModelBase implements MissionActionInterface {
+
+    public Document getDocument() {
+        return mDocument;
+    }
+
     // MAPOTEMPO KEY
+    public static final String COMPANY_ID = "company_id";
     public static final String MISSION_ID = "mission_id";
-    public static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
+    public static final String MISSION_ACTION_TYPE_ID = "mission_action_type_id";
     private static final String DATE = "date";
 
-    public MissionStatus(Database database) {
+    public MissionAction(Database database) {
         super(database);
     }
 
-    public MissionStatus(Document document) {
+    public MissionAction(Document document) {
         super(document);
     }
 
-    public MissionStatus(String id, Database database) throws CoreException {
+    public MissionAction(String id, Database database) throws CoreException {
         super(id, database);
+    }
+
+    public void setCompany(CompanyInterface company) {
+        setProperty(COMPANY_ID, company.getId());
+    }
+
+    public CompanyInterface getCompany(CompanyInterface company) {
+        CompanyInterface res;
+        String company_id = getProperty(COMPANY_ID, String.class, "");
+        try {
+            res = new Company(company_id, mDatabase);
+        } catch (CoreException e) {
+            System.out.println("WARNING : return a non saved Mission");
+            Company missionStatus = new Company(mDatabase);
+            res = missionStatus;
+        }
+        return res;
     }
 
     /**
@@ -82,24 +106,23 @@ public class MissionStatus extends ModelBase implements MissionStatusInterface {
      * {@inheritDoc}
      */
     @Override
-    public void setStatusType(MissionStatusTypeInterface statusType) {
-        setProperty(MISSION_STATUS_TYPE_ID, statusType.getId());
+    public void setActionType(MissionActionTypeInterface statusType) {
+        setProperty(MISSION_ACTION_TYPE_ID, statusType.getId());
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public MissionStatusTypeInterface getStatusType() {
-        MissionStatusTypeInterface res;
-        String status_id = getProperty(MISSION_STATUS_TYPE_ID, String.class, "");
+    public MissionActionTypeInterface getActionType() {
+        MissionActionTypeInterface res;
+        String status_id = getProperty(MISSION_ACTION_TYPE_ID, String.class, "");
         try {
-            res = new MissionStatusType(status_id, mDatabase);
+            res = new MissionActionType(status_id, mDatabase);
         } catch (CoreException e) {
             System.out.println("WARNING : return a non saved MissionStatusType");
-            MissionStatusType missionStatus = new MissionStatusType(mDatabase);
-            missionStatus.setLabel(status_id);
-            res = missionStatus;
+            MissionActionType missionAction = new MissionActionType(mDatabase);
+            res = missionAction;
         }
         return res;
     }

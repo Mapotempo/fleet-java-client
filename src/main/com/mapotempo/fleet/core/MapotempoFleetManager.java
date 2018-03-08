@@ -35,8 +35,8 @@ import com.mapotempo.fleet.core.model.UserSettings;
 import com.mapotempo.fleet.core.model.accessor.CompanyAccess;
 import com.mapotempo.fleet.core.model.accessor.MetaInfoAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionAccess;
-import com.mapotempo.fleet.core.model.accessor.MissionStatusAccess;
-import com.mapotempo.fleet.core.model.accessor.MissionStatusActionAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionActionAccess;
+import com.mapotempo.fleet.core.model.accessor.MissionActionTypeAccess;
 import com.mapotempo.fleet.core.model.accessor.MissionStatusTypeAccess;
 import com.mapotempo.fleet.core.model.accessor.UserAccess;
 import com.mapotempo.fleet.core.model.accessor.UserCurrentLocationAccess;
@@ -82,11 +82,11 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private UserTrackAccess mUserTrackAccess;
 
-    private MissionStatusAccess mMissionStatusAccess;
+    private MissionActionAccess mMissionActionAccess;
 
     private MissionStatusTypeAccess mMissionStatusTypeAccess;
 
-    private MissionStatusActionAccess mMissionStatusActionAccess;
+    private MissionActionTypeAccess mMissionActionTypeAccess;
 
     private UserCurrentLocationAccess mUserCurrentLocationAccess;
 
@@ -202,8 +202,9 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mUserAccess = new UserAccess(mDatabaseHandler);
             mUserSettingsAccess = new UserSettingsAccess(mDatabaseHandler);
             mUserTrackAccess = new UserTrackAccess(mDatabaseHandler);
+            mMissionActionAccess = new MissionActionAccess(mDatabaseHandler);
             mMissionStatusTypeAccess = new MissionStatusTypeAccess(mDatabaseHandler);
-            mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
+            mMissionActionTypeAccess = new MissionActionTypeAccess(mDatabaseHandler);
             mUserCurrentLocationAccess = new UserCurrentLocationAccess(mDatabaseHandler);
 
             mConnectionRequirement = new ConnectionRequirement(mDatabaseHandler,
@@ -311,8 +312,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * {@inheritDoc}
      */
     @Override
-    public MissionStatusAccess getMissionStatusAccessInterface() {
-        return mMissionStatusAccess;
+    public MissionActionAccess getMissionActionAccessInterface() {
+        return mMissionActionAccess;
     }
 
     /**
@@ -327,8 +328,8 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      * {@inheritDoc}
      */
     @Override
-    public MissionStatusActionAccess getMissionStatusActionAccessInterface() {
-        return mMissionStatusActionAccess;
+    public MissionActionTypeAccess getMissionActionTypeAccessInterface() {
+        return mMissionActionTypeAccess;
     }
 
     /**

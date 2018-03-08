@@ -193,7 +193,7 @@ public class ConnectionRequirement {
             mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(2));
             mDatabaseHandler.setCompanyChannel(user.getCompanyId());
             mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
-            mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
+            mDatabaseHandler.setMissionActionTypeChannel(user.getCompanyId());
 
             mChannelInit = true;
             mDatabaseHandler.restartPuller();

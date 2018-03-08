@@ -1,5 +1,5 @@
 {
-  "type": "mission_status_action",
+  "type": "mission_action_type",
   "previous_mission_status_type_id": "status_pending:2ba5b8ea56d2dazadzadadza645dzadaz",
   "next_mission_status_type_id": "status_uncompleted:2ba5b8ed756az4d3azd4132az876j455d",
   "company_id": "company_dazd456dza456daz234d4a6daz",

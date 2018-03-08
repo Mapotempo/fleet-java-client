@@ -24,50 +24,53 @@ import com.couchbase.lite.Predicate;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
+import com.mapotempo.fleet.api.model.CompanyInterface;
+import com.mapotempo.fleet.api.model.MissionActionInterface;
+import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
-import com.mapotempo.fleet.api.model.MissionStatusInterface;
-import com.mapotempo.fleet.api.model.accessor.MissionStatusAccessInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionActionAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.core.model.Mission;
-import com.mapotempo.fleet.core.model.MissionStatus;
-import com.mapotempo.fleet.core.model.MissionStatusType;
+import com.mapotempo.fleet.core.model.MissionAction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MissionStatusAccess.
+ * MissionActionAccess.
  */
-public class MissionStatusAccess extends Access<MissionStatus> implements MissionStatusAccessInterface {
-    public MissionStatusAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(MissionStatus.class, dbHandler, "date");
+public class MissionActionAccess extends Access<MissionAction> implements MissionActionAccessInterface {
+    public MissionActionAccess(DatabaseHandler dbHandler) throws CoreException {
+        super(MissionAction.class, dbHandler, "date");
     }
 
-    public MissionStatus getNew(Mission mission, MissionStatusType statusType) {
-        MissionStatus res = getNew();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public MissionAction create(CompanyInterface company, MissionInterface mission, MissionActionTypeInterface actionType) {
+        MissionAction res = getNew();
         res = getNew();
+        res.setCompany(company);
         res.setMission(mission);
-        res.setStatusType(statusType);
+        res.setActionType(actionType);
+        res.save();
         return res;
     }
 
     /**
-     * Filter mission_status by mission_id
-     *
-     * @param mission
-     * @return List
+     * {@inheritDoc}
      */
     @Override
-    public List<MissionStatusInterface> getByMission(final MissionInterface mission) {
-        List<MissionStatusInterface> res = new ArrayList<>();
+    public List<MissionActionInterface> getByMission(final MissionInterface mission) {
+        List<MissionActionInterface> res = new ArrayList<>();
 
         Query query = mView.createQuery();
         query.setPostFilter(new Predicate<QueryRow>() {
             @Override
             public boolean apply(QueryRow queryRow) {
-                MissionStatus missionStatus = new MissionStatus(queryRow.getDocument());
+                MissionAction missionStatus = new MissionAction(queryRow.getDocument());
 
                 if (missionStatus.getMission().equals(mission)) {
                     return true;
@@ -79,7 +82,7 @@ public class MissionStatusAccess extends Access<MissionStatus> implements Missio
         QueryEnumerator queryEnumerator;
         try {
             queryEnumerator = query.run();
-            res = new ArrayList<MissionStatusInterface>(runQuery(queryEnumerator));
+            res = new ArrayList<MissionActionInterface>(runQuery(queryEnumerator));
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         } finally {

@@ -24,23 +24,23 @@ import com.couchbase.lite.Predicate;
 import com.couchbase.lite.Query;
 import com.couchbase.lite.QueryEnumerator;
 import com.couchbase.lite.QueryRow;
-import com.mapotempo.fleet.api.model.MissionStatusActionInterface;
+import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
-import com.mapotempo.fleet.api.model.accessor.MissionStatusActionAccessInterface;
+import com.mapotempo.fleet.api.model.accessor.MissionActionTypeAccessInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
-import com.mapotempo.fleet.core.model.MissionStatusAction;
+import com.mapotempo.fleet.core.model.MissionActionType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MissionStatusActionAccess.
+ * MissionActionTypeAccess.
  */
-public class MissionStatusActionAccess extends Access<MissionStatusAction> implements MissionStatusActionAccessInterface {
-    public MissionStatusActionAccess(DatabaseHandler dbHandler) throws CoreException {
-        super(MissionStatusAction.class, dbHandler, null);
+public class MissionActionTypeAccess extends Access<MissionActionType> implements MissionActionTypeAccessInterface {
+    public MissionActionTypeAccess(DatabaseHandler dbHandler) throws CoreException {
+        super(MissionActionType.class, dbHandler, null);
     }
 
     /**
@@ -50,14 +50,14 @@ public class MissionStatusActionAccess extends Access<MissionStatusAction> imple
      * @return List
      */
     @Override
-    public List<MissionStatusActionInterface> getByPrevious(final MissionStatusTypeInterface missionStatusType) {
-        List<MissionStatusActionInterface> res = new ArrayList<>();
+    public List<MissionActionTypeInterface> getByPrevious(final MissionStatusTypeInterface missionStatusType) {
+        List<MissionActionTypeInterface> res = new ArrayList<>();
 
         Query query = mView.createQuery();
         query.setPostFilter(new Predicate<QueryRow>() {
             @Override
             public boolean apply(QueryRow queryRow) {
-                MissionStatusAction action = new MissionStatusAction(queryRow.getDocument());
+                MissionActionType action = new MissionActionType(queryRow.getDocument());
 
                 if (action.getPreviousStatus().equals(missionStatusType)) {
                     return true;
@@ -69,7 +69,7 @@ public class MissionStatusActionAccess extends Access<MissionStatusAction> imple
         QueryEnumerator queryEnumerator;
         try {
             queryEnumerator = query.run();
-            res = new ArrayList<MissionStatusActionInterface>(runQuery(queryEnumerator));
+            res = new ArrayList<MissionActionTypeInterface>(runQuery(queryEnumerator));
         } catch (CouchbaseLiteException e) {
             e.printStackTrace();
         } finally {
