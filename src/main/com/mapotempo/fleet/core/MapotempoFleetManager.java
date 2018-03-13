@@ -20,9 +20,9 @@
 package com.mapotempo.fleet.core;
 
 import com.couchbase.lite.Context;
+import com.mapotempo.fleet.api.ConnectionVerifyStatus;
 import com.mapotempo.fleet.api.MapotempoFleetManagerInterface;
 import com.mapotempo.fleet.api.model.MapotempoModelBaseInterface;
-import com.mapotempo.fleet.api.model.accessor.AccessInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationDetailsInterface;
 import com.mapotempo.fleet.api.model.submodel.SubModelFactoryInterface;
 import com.mapotempo.fleet.core.exception.CoreException;
@@ -48,8 +48,6 @@ import com.mapotempo.fleet.utils.DateHelper;
 import com.mapotempo.fleet.utils.HashHelper;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.annotation.Nullable;
 
@@ -92,50 +90,57 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
 
     private UserCurrentLocationAccess mUserCurrentLocationAccess;
 
+    private SubModelFactoryInterface mSubModelFactoryInterface;
+
     // == Location ==========================================
 
     private static int LOCATION_TIMEOUT = 30000; // Location timeout in ms
 
     private LocationManager mLocationManager = new LocationManager(null, LOCATION_TIMEOUT);
 
-    // == Connexion sequence ================================
 
-    private boolean mConnexionIsVerify = false;
+    // == Connection sequence ================================
 
-    private boolean mChannelInit = false;
+    private ConnectionRequirement mConnectionRequirement;
 
-    private SubModelFactoryInterface mSubModelFactoryInterface;
 
-    private OnServerConnexionVerify mOnServerConnexionVerify;
-
-    private Timer mVerifyTimer = new Timer();
-
-    private int mVerifyCounter = 0;
-
-    private final static int MAX_VERIFY = 5;
-
-    private boolean lockOffline = false;
-
-    private OnServerCompatibility mOnServerCompatibility;
+    private boolean mLockOffline = false;
 
     // == Listener ==========================================
 
-    private final AccessInterface.ChangeListener<User> userAccessListener = new AccessInterface.ChangeListener<User>() {
-        @Override
-        public void changed(List<User> items) {
-            if (items.size() > 0) {
-                if (items.size() > 1)
-                    System.err.println("Warning : " + getClass().getSimpleName() + " more than one user available, return the first");
+    private ConnectionVerifyListener mOnServerConnectionVerify;
 
-                // When user is received we can add channel
-                if (!mChannelInit) {
-                    tryToInitchannels(items.get(0));
-                }
+    private OnServerCompatibility mOnServerCompatibility;
 
-            } else {
-                System.err.println("Warning : " + getClass().getSimpleName() + "no user found");
+    private ConnectionRequirement.ConnectionRequirementVerifyListener mConnectionRequirementVerifyListener = new ConnectionRequirement.ConnectionRequirementVerifyListener() {
+        public void onConnectionVerify(User user, UserCurrentLocation userCurrentLocation, UserSettings userSettings, Company company, MetaInfo metaInfo) {
+            // Set current location into location manager
+            mLocationManager.setCurrentLocation(userCurrentLocation);
+
+            // Set current location into location manager
+            metaInfo.addChangeListener(mMetaInfoListener);
+
+            mMissionAccess.purgeOutdated();
+
+            // Synchronise all mission present in the database, use getAllWithoutFilter instead of getAll.
+            List<Mission> missions = mMissionAccess.getAllWithoutFilter();
+            for (Mission mission : missions) {
+                mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(mission.getDate()));
+
             }
-            verifyConnexion();
+
+            // Call only one time
+            if (mOnServerConnectionVerify != null) {
+                mOnServerConnectionVerify.onServerConnectionVerify(ConnectionVerifyStatus.VERIFY, INSTANCE);
+                mOnServerConnectionVerify = null;
+            }
+        }
+
+        public void onConnectionFail(ConnectionVerifyStatus code) {
+            mConnectionRequirement.stopConnectionRequirementSequence();
+            mDatabaseHandler.onlineStatus(false);
+            mDatabaseHandler.release(true);
+            mOnServerConnectionVerify.onServerConnectionVerify(code, null);
         }
     };
 
@@ -149,8 +154,10 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private DatabaseHandler.OnCatchLoginError onCatchLoginError = new DatabaseHandler.OnCatchLoginError() {
         @Override
         public void CatchLoginError() {
-            finishConnexion(OnServerConnexionVerify.Status.LOGIN_ERROR);
+            mConnectionRequirement.stopConnectionRequirementSequence();
+            mDatabaseHandler.onlineStatus(false);
             mDatabaseHandler.release(true);
+            mOnServerConnectionVerify.onServerConnectionVerify(ConnectionVerifyStatus.LOGIN_ERROR, null);
         }
     };
 
@@ -159,31 +166,31 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     /**
      * TODO
      *
-     * @param context                 context
-     * @param user                    user login
-     * @param password                password
-     * @param onServerConnexionVerify callback
+     * @param context                  context
+     * @param user                     user login
+     * @param password                 password
+     * @param onServerConnectionVerify callback
      */
-    public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify) {
-        InitMapotempoFleetManager(context, user, password, onServerConnexionVerify, "http://localhost:4984/db");
+    public MapotempoFleetManager(Context context, String user, String password, ConnectionVerifyListener onServerConnectionVerify) {
+        InitMapotempoFleetManager(context, user, password, onServerConnectionVerify, "http://localhost:4984/db");
     }
 
     /**
      * TODO
      *
-     * @param context                 context
-     * @param user                    user login
-     * @param password                password
-     * @param onServerConnexionVerify callback
-     * @param url                     server
+     * @param context                  context
+     * @param user                     user login
+     * @param password                 password
+     * @param onServerConnectionVerify callback
+     * @param url                      server
      */
-    public MapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
-        InitMapotempoFleetManager(context, user, password, onServerConnexionVerify, url);
+    public MapotempoFleetManager(Context context, String user, String password, ConnectionVerifyListener onServerConnectionVerify, String url) {
+        InitMapotempoFleetManager(context, user, password, onServerConnectionVerify, url);
     }
 
-    private void InitMapotempoFleetManager(Context context, String user, String password, OnServerConnexionVerify onServerConnexionVerify, String url) {
+    private void InitMapotempoFleetManager(Context context, String user, String password, ConnectionVerifyListener onServerConnectionVerify, String url) {
         mContext = context;
-        mOnServerConnexionVerify = onServerConnexionVerify;
+        mOnServerConnectionVerify = onServerConnectionVerify;
         try {
             mUser = HashHelper.sha256(user); // Hash user to cover email case, 'see HashHelper.sha256 for more explication'.
             mPassword = password;
@@ -199,12 +206,20 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
             mMissionStatusActionAccess = new MissionStatusActionAccess(mDatabaseHandler);
             mUserCurrentLocationAccess = new UserCurrentLocationAccess(mDatabaseHandler);
 
-            // Set channels
-            mDatabaseHandler.initConnexion();
+            mConnectionRequirement = new ConnectionRequirement(mDatabaseHandler,
+                    mConnectionRequirementVerifyListener,
+                    mUserAccess,
+                    mUserSettingsAccess,
+                    mUserCurrentLocationAccess,
+                    mCompanyAccess,
+                    mMetaInfoAccess);
 
-            initChannelsConfigurationSequence(mUser);
+            mConnectionRequirement.InitConnectionRequirementSequence();
+
         } catch (CoreException e) {
-            finishConnexion(OnServerConnexionVerify.Status.LOGIN_ERROR);
+            if (mConnectionRequirement != null)
+                mConnectionRequirement.stopConnectionRequirementSequence();
+            mOnServerConnectionVerify.onServerConnectionVerify(ConnectionVerifyStatus.LOGIN_ERROR, null);
             e.printStackTrace();
         }
     }
@@ -337,7 +352,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
      */
     @Override
     public void onlineStatus(boolean status) {
-        if (!lockOffline) {
+        if (!mLockOffline) {
             mDatabaseHandler.onlineStatus(status);
         }
     }
@@ -376,121 +391,6 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
         mOnServerCompatibility = onServerCompatibility;
     }
 
-    // == Connexion sequence initialisation ==================
-
-    private void initChannelsConfigurationSequence(final String userName) throws CoreException {
-        // ==================================================================================================
-        // == 1) - Init public channel and user channel, other channel will be set on user document reception
-        // ==================================================================================================
-        mDatabaseHandler.setPublicChannel();
-        mDatabaseHandler.setUserChannel(userName);
-
-        // ============================================================
-        // == 2) - Set listener on user access to be notified reception
-        // ============================================================
-        mUserAccess.addChangeListener(userAccessListener);
-
-        // ====================
-        // == 3) - Launch timer
-        // ====================
-        final TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                INSTANCE.verifyConnexion();
-            }
-        };
-        mVerifyTimer.schedule(timerTask, 2000, 2000);
-
-        // ================================================================
-        // == 4) - Verify connexion to ensure user document already present
-        // ================================================================
-        verifyConnexion();
-    }
-
-    private void verifyConnexion() {
-        mVerifyCounter++;
-        if (mVerifyCounter > MAX_VERIFY) {
-            finishConnexion(OnServerConnexionVerify.Status.LOGIN_ERROR);
-            mDatabaseHandler.release(false);
-        } else {
-
-            User user = getUser();
-            UserCurrentLocation userCurrentLocation = getCurrentLocation();
-            UserSettings userSettings = getUserPreference();
-            MetaInfo metaInfo = getMetaInfo();
-
-            // The user document is present
-            if (user != null) {
-
-                if (!mChannelInit)
-                    tryToInitchannels(user);
-
-                // The others documents require are present
-                if (userCurrentLocation != null
-                        && userSettings != null
-                        && metaInfo != null) {
-
-                    // Set current location into location manager
-                    mLocationManager.setCurrentLocation(userCurrentLocation);
-
-                    // Set current location into location manager
-                    metaInfo.addChangeListener(mMetaInfoListener);
-
-                    if (!mConnexionIsVerify) {
-                        mConnexionIsVerify = true;
-                        mMissionAccess.purgeOutdated();
-
-                        // Notify user
-                        finishConnexion(OnServerConnexionVerify.Status.VERIFY);
-                        mOnServerConnexionVerify = null;
-                    }
-                }
-            }
-        }
-    }
-
-    private void tryToInitchannels(User user) {
-        try {
-            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(-1));
-            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(0));
-            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(1));
-            mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(2));
-            mDatabaseHandler.setCompanyChannel(user.getCompanyId());
-            mDatabaseHandler.setMissionStatusTypeChannel(user.getCompanyId());
-            mDatabaseHandler.setMissionStatusActionChannel(user.getCompanyId());
-            mDatabaseHandler.setCurrentLocationChannel(user.getSyncUser());
-
-            // Synchronise all mission present in the database, use getAllWithoutFilter instead of getAll.
-            List<Mission> missions = mMissionAccess.getAllWithoutFilter();
-            for (Mission mission : missions) {
-                mDatabaseHandler.setMissionChannel(user.getSyncUser(), DateHelper.dateForChannel(mission.getDate()));
-            }
-
-            mChannelInit = true;
-            mDatabaseHandler.restartPuller();
-        } catch (CoreException e) {
-            e.printStackTrace();
-            finishConnexion(OnServerConnexionVerify.Status.LOGIN_ERROR);
-            mDatabaseHandler.release(false);
-        }
-    }
-
-    private void finishConnexion(OnServerConnexionVerify.Status status) {
-        mVerifyTimer.cancel();
-        mVerifyTimer.purge();
-
-        switch (status) {
-            case VERIFY:
-                ensureServerCompatibility(getMetaInfo());
-                mOnServerConnexionVerify.connexion(status, this);
-                break;
-            case LOGIN_ERROR:
-            default:
-                mOnServerConnexionVerify.connexion(status, null);
-                break;
-        }
-    }
-
     // == Private method =====================================
 
     /* return true if server compatibility is ensure */
@@ -505,7 +405,7 @@ public class MapotempoFleetManager implements MapotempoFleetManagerInterface {
     private void ensureServerCompatibility(@Nullable MetaInfo metaInfo) {
         boolean status = serverCompatibility(metaInfo);
         mDatabaseHandler.onlineStatus(status);
-        lockOffline = !status;
+        mLockOffline = !status;
 
         // Notify user
         if (mOnServerCompatibility != null) {

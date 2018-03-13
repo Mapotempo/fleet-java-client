@@ -58,7 +58,7 @@ public class DatabaseHandler {
 
     private boolean mReleaseStatus = false;
 
-    private boolean mConnexionStatus = true;
+    private boolean mConnectionStatus = true;
 
     private Context mContext;
 
@@ -82,7 +82,7 @@ public class DatabaseHandler {
         void CatchLoginError();
     }
 
-    private OnCatchLoginError mOnCatchLoginError;
+    final private OnCatchLoginError mOnCatchLoginError;
 
     public DatabaseHandler(String user, String password, Context context, String syncGatewayUrl, OnCatchLoginError onCatchLoginError) throws CoreException {
         mContext = context;
@@ -112,15 +112,17 @@ public class DatabaseHandler {
             e.printStackTrace();
             throw new CoreException("Error : Can't open bdd");
         }
+
+        initConnection();
     }
 
-    // CONNEXION
-    public void initConnexion() throws CoreException {
+    // CONNECTION
+    public void initConnection() throws CoreException {
         try {
             url = new URL(mSyncGatewayUrl);
         } catch (MalformedURLException e) {
             e.printStackTrace();
-            throw new CoreException("Error : Invalide url connexion");
+            throw new CoreException("Error : Invalide url connection");
         }
 
         // Pusher and Puller sync
@@ -185,14 +187,20 @@ public class DatabaseHandler {
         mPusher.start();
         mPuller.start();
 
-        onlineStatus(mConnexionStatus);
+        onlineStatus(mConnectionStatus);
 
         startConflictLiveQuery();
+
+        setPublicChannel();
+
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        for (String c : mPuller.getChannels())
+            System.out.println(c);
     }
 
     // FIXME replace goOnline/goOffline => start/stop
     public void onlineStatus(boolean status) {
-        mConnexionStatus = status;
+        mConnectionStatus = status;
         if (status) {
             mPusher.start();
             mPuller.start();
@@ -203,7 +211,7 @@ public class DatabaseHandler {
     }
 
     public boolean isOnline() {
-        return mConnexionStatus;
+        return mConnectionStatus;
     }
 
     public void printAllData() {
@@ -240,64 +248,34 @@ public class DatabaseHandler {
         mPuller.setChannels(channels);
     }
 
-    public void setUserChannel(String userName) throws CoreException {
-        if (mPuller != null) {
-            List<String> channels = mPuller.getChannels();
-            channels.add("user:" + userName);
-            mPuller.setChannels(channels);
-        } else {
-            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
-        }
+    public void setUserChannel() {
+        List<String> channels = mPuller.getChannels();
+        channels.add("user:" + mUser);
+        mPuller.setChannels(channels);
     }
 
-    public void setCompanyChannel(String companyId) throws CoreException {
-        if (mPuller != null) {
-            List<String> channels = mPuller.getChannels();
-            channels.add("company:" + companyId);
-            mPuller.setChannels(channels);
-        } else {
-            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
-        }
+    public void setCompanyChannel(String companyId) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("company:" + companyId);
+        mPuller.setChannels(channels);
     }
 
-    public void setMissionChannel(String userName, String date) throws CoreException {
-        if (mPuller != null) {
-            List<String> channels = mPuller.getChannels();
-            channels.add("mission:" + userName + ":" + date);
-            mPuller.setChannels(channels);
-        } else {
-            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
-        }
+    public void setMissionChannel(String userName, String date) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("mission:" + userName + ":" + date);
+        mPuller.setChannels(channels);
     }
 
-    public void setMissionStatusTypeChannel(String company_id) throws CoreException {
-        if (mPuller != null) {
-            List<String> channels = mPuller.getChannels();
-            channels.add("mission_status_type:" + company_id);
-            mPuller.setChannels(channels);
-        } else {
-            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
-        }
+    public void setMissionStatusTypeChannel(String company_id) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("mission_status_type:" + company_id);
+        mPuller.setChannels(channels);
     }
 
-    public void setMissionStatusActionChannel(String company_id) throws CoreException {
-        if (mPuller != null) {
-            List<String> channels = mPuller.getChannels();
-            channels.add("mission_status_action:" + company_id);
-            mPuller.setChannels(channels);
-        } else {
-            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
-        }
-    }
-
-    public void setCurrentLocationChannel(String user) throws CoreException {
-        if (mPuller != null) {
-            List<String> channels = mPuller.getChannels();
-            channels.add("user_current_location" + ":" + user);
-            mPuller.setChannels(channels);
-        } else {
-            throw new CoreException("Warning : Connexion need to be configure with setConnexionParam method before channel setting");
-        }
+    public void setMissionStatusActionChannel(String company_id) {
+        List<String> channels = mPuller.getChannels();
+        channels.add("mission_status_action:" + company_id);
+        mPuller.setChannels(channels);
     }
 
     public void release(boolean delete_db) {

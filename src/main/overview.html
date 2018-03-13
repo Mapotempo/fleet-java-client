@@ -10,11 +10,14 @@
 </p>
 <h2>Description : </h2>
 <p>
-    The Mapotempo-Fleet-Java-Client is designed to synchronised create and update Mapotempo's Missions beetween a server
+    The Mapotempo-Fleet-Java-Client is designed to synchronised create and update Mapotempo's
+    Missions beetween a server
     database and a local storage.
 
-    The main problem solved by mapotempo-fleet-java-client is the offline managing datas. With this library you can
-    access at mapotempo data into a java application even havn't an available connexion. You can also create, update or
+    The main problem solved by mapotempo-fleet-java-client is the offline managing datas. With this
+    library you can
+    access at mapotempo data into a java application even havn't an available connection. You can
+    also create, update or
     delete data offline.
 </p>
 <ul>
@@ -24,22 +27,27 @@
     <li>{@link com.mapotempo.fleet.api.model.MissionInterface}</li>
     <li>{@link com.mapotempo.fleet.api.model.MissionStatusTypeInterface}</li>
 </ul>
-<h2>First connexion : </h2>
+<h2>First connection : </h2>
 <p>
-    A connexion is represented by {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface}.
-    You can establish a connexion with the {@link com.mapotempo.fleet.api.ManagerFactory}, this class provide methods to
-    try to get a {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface}. Instance will be return into the {@link
-    com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify} callback provide in the method.
-    The first connexion necessity an available connexion with the mapotempo server. This is necessary to synchronise
-    {@link com.mapotempo.fleet.api.model.UserInterface} and {@link com.mapotempo.fleet.api.model.CompanyInterface}
+    A connection is represented by {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface}.
+    You can establish a connection with the {@link com.mapotempo.fleet.api.ManagerFactory}, this
+    class provide methods to
+    try to get a {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface}. Instance will be
+    return into the {@link
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface.ConnectionVerifyListener callback provide
+    in the method.
+    The first connection necessity an available connection with the Mapotempo server. This is
+    necessary to synchronise
+    {@link com.mapotempo.fleet.api.model.UserInterface} and {@link
+    com.mapotempo.fleet.api.model.CompanyInterface}
     models.
 </p>
 <pre>
 <code>
 MapotempoFleetManagerInterface mMapotempoFleetManager = null;
-ManagerFactory.getManager(new JavaContext(), "my_user_name", "my_user_password", new MapotempoFleetManagerInterface.OnServerConnexionVerify() {
+ManagerFactory.getManager(new JavaContext(), "my_user_name", "my_user_password", new MapotempoFleetManagerInterface.ConnectionVerifyListener {
    {@literal @}Override
-    public void connexion(Status status, MapotempoFleetManagerInterface mapotempoFleetManager) {
+    void onServerConnectionVerify(ConnectionVerifyStatus status, MapotempoFleetManagerInterface mapotempoFleetManager);
         mapotempoFleetManager = mapotempoFleetManager;
     }
 });
@@ -47,8 +55,10 @@ ManagerFactory.getManager(new JavaContext(), "my_user_name", "my_user_password",
 </pre>
 <h2>User and Company : </h2>
 <p>
-    The {@link com.mapotempo.fleet.api.model.UserInterface} and {@link com.mapotempo.fleet.api.model.CompanyInterface}
-    are return respectively by the {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getUser} and {@link
+    The {@link com.mapotempo.fleet.api.model.UserInterface} and {@link
+    com.mapotempo.fleet.api.model.CompanyInterface}
+    are return respectively by the {@link
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getUser} and {@link
     com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getCompany} method.
 </p>
 <h2>Mission : </h2>
@@ -60,15 +70,19 @@ ManagerFactory.getManager(new JavaContext(), "my_user_name", "my_user_password",
 </p>
 <h2>MissionStatusType : </h2>
 <p>
-    To access at {@link com.mapotempo.fleet.api.model.MissionStatusTypeInterface} you need to get a {@link
+    To access at {@link com.mapotempo.fleet.api.model.MissionStatusTypeInterface} you need to get a
+    {@link
     com.mapotempo.fleet.api.model.accessor.MissionStatusTypeAccessInterface}. {@link
     com.mapotempo.fleet.api.MapotempoFleetManagerInterface} return it using the {@link
-    com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getMissionStatusTypeAccessInterface} method.
+    com.mapotempo.fleet.api.MapotempoFleetManagerInterface#getMissionStatusTypeAccessInterface}
+    method.
 </p>
 <h2>Synchronisation : </h2>
 <p>
-    When the library detecte an available connexion and the synchronisation is turn on, it will be synchronise his local
-    database with the mapotempo server database automatically.<br/>Synchronise actions can fail in several case :
+    When the library detecte an available connection and the synchronisation is turn on, it will be
+    synchronise his local
+    database with the mapotempo server database automatically.<br/>Synchronise actions can fail in
+    several case :
 </p>
 <ul>
     <li>channel autorisation</li>

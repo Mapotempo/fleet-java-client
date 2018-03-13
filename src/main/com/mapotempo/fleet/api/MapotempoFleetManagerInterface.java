@@ -83,27 +83,22 @@ public interface MapotempoFleetManagerInterface {
     void setCurrentLocationDetails(LocationDetailsInterface locationDetailsInterface);
 
     /**
-     * OnServerConnexionVerify.
-     * Interface use to call back when the connexion to the dabatase is ensure.
-     * Enumerator {@link Status} return the status connexion
+     * ConnectionVerifyListener.
+     * Interface use to call back when the connection to the dabatase is ensure.
+     * Enumerator {@link ConnectionVerifyStatus} return the status connection
      * <ul>
      * <li>VERIFY</li>
      * <li>LOGIN_ERROR</li>
      * </ul>
      */
-    interface OnServerConnexionVerify {
-        enum Status {
-            VERIFY,
-            LOGIN_ERROR
-        }
-
+    interface ConnectionVerifyListener {
         /**
-         * connexion.
+         * connection.
          *
-         * @param status                The connexion status
+         * @param status                The connection status
          * @param mapotempoFleetManager {@code null}
          */
-        void connexion(Status status, MapotempoFleetManagerInterface mapotempoFleetManager);
+        void onServerConnectionVerify(ConnectionVerifyStatus status, MapotempoFleetManagerInterface mapotempoFleetManager);
     }
 
     /**
@@ -169,7 +164,7 @@ public interface MapotempoFleetManagerInterface {
     boolean isOnline();
 
     /**
-     * Release connexion.
+     * Release connection.
      */
     void release();
 

@@ -28,36 +28,38 @@ import com.mapotempo.fleet.core.MapotempoFleetManager;
  * <p>This factory allow to get {@link MapotempoFleetManagerInterface} for the entire java application.</p>
  * <p>Three methods getManager are implemented. One synchronous method and two asynchronous methods.
  * The two asynchronous methods return the {@link MapotempoFleetManagerInterface} into
- * {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify} callback method.</p>
+ * {@link MapotempoFleetManagerInterface.ConnectionVerifyListener} callback method.</p>
  */
 public class ManagerFactory {
+
+    static private MapotempoFleetManager mMapotempoFleetManagerOwner;
 
     /**
      * Try to create a connected {@link MapotempoFleetManagerInterface} asynchronously.
      * This factory method is asynchronous, and the result is return in the
-     * {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify} provides.
+     * {@link MapotempoFleetManagerInterface.ConnectionVerifyListener} provides.
      *
-     * @param context                 The application context
-     * @param user                    The user name
-     * @param password                The user password
-     * @param onServerConnexionVerify A {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify}
+     * @param context                  The application context
+     * @param user                     The user name
+     * @param password                 The user password
+     * @param onServerConnectionVerify A {@link MapotempoFleetManagerInterface.ConnectionVerifyListener}
      */
-    public static void getManager(Context context, String user, String password, MapotempoFleetManagerInterface.OnServerConnexionVerify onServerConnexionVerify) {
-        MapotempoFleetManager mapotempoFleetManager = new MapotempoFleetManager(context, user, password, onServerConnexionVerify);
+    public static void getManager(Context context, String user, String password, MapotempoFleetManagerInterface.ConnectionVerifyListener onServerConnectionVerify) {
+        mMapotempoFleetManagerOwner = new MapotempoFleetManager(context, user, password, onServerConnectionVerify);
     }
 
     /**
      * Try to create a connected {@link MapotempoFleetManagerInterface} asynchronously.
      * This factory method is asynchronous, and the result is return in the
-     * {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify} provides.
+     * {@link MapotempoFleetManagerInterface.ConnectionVerifyListener} provides.
      *
-     * @param context                 The application context
-     * @param user                    The user name
-     * @param password                The user password
-     * @param onServerConnexionVerify A {@link com.mapotempo.fleet.api.MapotempoFleetManagerInterface.OnServerConnexionVerify}
-     * @param url                     A custom url for syncgateway
+     * @param context                  The application context
+     * @param user                     The user name
+     * @param password                 The user password
+     * @param onServerConnectionVerify A {@link MapotempoFleetManagerInterface.ConnectionVerifyListener}
+     * @param url                      A custom url for syncgateway
      */
-    public static void getManager(Context context, String user, String password, MapotempoFleetManagerInterface.OnServerConnexionVerify onServerConnexionVerify, String url) {
-        MapotempoFleetManager mapotempoFleetManager = new MapotempoFleetManager(context, user, password, onServerConnexionVerify, url);
+    public static void getManager(Context context, String user, String password, MapotempoFleetManagerInterface.ConnectionVerifyListener onServerConnectionVerify, String url) {
+        mMapotempoFleetManagerOwner = new MapotempoFleetManager(context, user, password, onServerConnectionVerify, url);
     }
 }
