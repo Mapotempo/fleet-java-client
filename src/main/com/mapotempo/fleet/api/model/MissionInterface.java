@@ -22,6 +22,7 @@ package com.mapotempo.fleet.api.model;
 import com.mapotempo.fleet.api.model.submodel.AddressInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
+import com.mapotempo.fleet.core.model.submodel.Address;
 import com.mapotempo.fleet.core.model.submodel.Location;
 
 import java.io.InputStream;
@@ -90,17 +91,6 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
      * @param location A {@link LocationInterface}
      */
     void setLocation(LocationInterface location);
-
-
-    /**
-     * Set picked the location.
-     */
-    Location getPickedLocation();
-
-    /**
-     * Get picked the location.
-     */
-    void setPickedLocation(LocationInterface location);
 
     /**
      * Get the mission address.
@@ -227,4 +217,31 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
      * @param inputStream
      */
     void setAttachment(String name, String contentType, InputStream inputStream);
+
+    // ##########################
+    // ##    Survey Section    ##
+    // ##########################
+
+    /**
+     * Set survey the location.
+     */
+    Location getSurveyLocation();
+
+    /**
+     * Get survey the location.
+     */
+    void setSurveyLocation(LocationInterface location);
+
+
+    /**
+     * Set survey the address.
+     */
+    Address getSurveyAddress();
+
+    /**
+     * Get survey the address.
+     */
+    void setSurveyAddress(Address location);
+
+
 }

@@ -50,7 +50,6 @@ public class Mission extends ModelBase implements MissionInterface {
     private static final String COMPANY_ID = "company_id";
     private static final String DATE = "date";
     private static final String LOCATION = "location";
-    private static final String PICKED_LOCATION = "picked_location";
     private static final String ADDRESS = "address";
     private static final String SYNC_USER = "sync_user";
     private static final String MISSION_STATUS_TYPE_ID = "mission_status_type_id";
@@ -60,6 +59,8 @@ public class Mission extends ModelBase implements MissionInterface {
     private static final String DURATION = "duration";
     private static final String TIME_WINDOWS = "time_windows";
     private static final String CUSTOM_DATA = "custom_data";
+    private static final String SURVEY_LOCATION = "survey_location";
+    private static final String SURVEY_ADDRESS = "survey_address";
 
     public Mission(Database database) {
         super(database);
@@ -139,24 +140,6 @@ public class Mission extends ModelBase implements MissionInterface {
     @Override
     public void setLocation(LocationInterface location) {
         setProperty(LOCATION, ((Location) location).toMap());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Location getPickedLocation() {
-        Location defaultLocation = new Location(null, null, mDatabase);
-        Map dataType = getProperty(PICKED_LOCATION, Map.class, defaultLocation.toMap());
-        return new Location(dataType, mDatabase);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setPickedLocation(LocationInterface location) {
-        setProperty(PICKED_LOCATION, ((Location) location).toMap());
     }
 
     /**
@@ -315,4 +298,43 @@ public class Mission extends ModelBase implements MissionInterface {
         setProperty(CUSTOM_DATA, data);
     }
 
+    // ##########################
+    // ##    Survey Section    ##
+    // ##########################
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Location getSurveyLocation() {
+        Location defaultLocation = new Location(null, null, mDatabase);
+        Map dataType = getProperty(SURVEY_LOCATION, Map.class, defaultLocation.toMap());
+        return new Location(dataType, mDatabase);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSurveyLocation(LocationInterface location) {
+        setProperty(SURVEY_LOCATION, ((Location) location).toMap());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Address getSurveyAddress() {
+        Location defaultLocation = new Location(null, null, mDatabase);
+        Map dataType = getProperty(SURVEY_ADDRESS, Map.class, defaultLocation.toMap());
+        return new Address(dataType, mDatabase);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setSurveyAddress(Address address) {
+        setProperty(SURVEY_ADDRESS, (address).toMap());
+    }
 }
