@@ -307,8 +307,7 @@ public class Mission extends ModelBase implements MissionInterface {
      */
     @Override
     public Location getSurveyLocation() {
-        Location defaultLocation = new Location(null, null, mDatabase);
-        Map dataType = getProperty(SURVEY_LOCATION, Map.class, defaultLocation.toMap());
+        Map dataType = getProperty(SURVEY_LOCATION, Map.class, new HashMap());
         return new Location(dataType, mDatabase);
     }
 
@@ -325,8 +324,7 @@ public class Mission extends ModelBase implements MissionInterface {
      */
     @Override
     public Address getSurveyAddress() {
-        Location defaultLocation = new Location(null, null, mDatabase);
-        Map dataType = getProperty(SURVEY_ADDRESS, Map.class, defaultLocation.toMap());
+        Map dataType = getProperty(SURVEY_ADDRESS, Map.class, new HashMap());
         return new Address(dataType, mDatabase);
     }
 
