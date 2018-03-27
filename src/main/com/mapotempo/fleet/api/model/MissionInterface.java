@@ -65,18 +65,16 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
     Date getDate();
 
     /**
-     * Set the mission date by iso8601 date {@link String}.
-     *
-     * @param isoDate An iso {@link String}
+     * Get the mission Eta date.
+     * @return
      */
-    void setDate(String isoDate);
+    Date getEta();
 
     /**
-     * Set the mission date.
-     *
-     * @param date A {@link Date}
+     * Get the mission Eta if found Or the mission date.
+     * @return
      */
-    void setDate(Date date);
+    Date getEtaOrDefault();
 
     /**
      * Get the mission location.

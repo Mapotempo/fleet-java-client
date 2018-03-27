@@ -49,6 +49,7 @@ public class Mission extends ModelBase implements MissionInterface {
     private static final String NAME = "name";
     private static final String COMPANY_ID = "company_id";
     private static final String DATE = "date";
+    private static final String ETA = "eta";
     private static final String LOCATION = "location";
     private static final String ADDRESS = "address";
     private static final String SYNC_USER = "sync_user";
@@ -111,17 +112,21 @@ public class Mission extends ModelBase implements MissionInterface {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void setDate(String isoDate) {
-        setProperty(DATE, isoDate);
+    public Date getEta() {
+        String eta = getProperty(ETA, String.class, "0");
+        return DateHelper.fromStringISO8601(eta);
     }
 
     /**
      * {@inheritDoc}
      */
-    @Override
-    public void setDate(Date date) {
-        setProperty(DATE, DateHelper.toStringISO8601(date));
+    public Date getEtaOrDefault() {
+        String eta = getProperty(ETA, String.class, null);
+        if (eta != null)
+            return DateHelper.fromStringISO8601(eta);
+
+        String dataType = getProperty(DATE, String.class, "0");
+        return DateHelper.fromStringISO8601(dataType);
     }
 
     /**
