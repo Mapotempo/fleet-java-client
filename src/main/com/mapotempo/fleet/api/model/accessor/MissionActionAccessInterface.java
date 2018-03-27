@@ -27,6 +27,7 @@ import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 
 import javax.annotation.Nullable;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -71,6 +72,7 @@ public interface MissionActionAccessInterface extends AccessInterface<MissionAct
     MissionActionInterface create(CompanyInterface company,
                                   MissionInterface mission,
                                   MissionActionTypeInterface actionType,
+                                  Date date,
                                   @Nullable LocationInterface location);
 
     /**

@@ -37,6 +37,7 @@ import com.mapotempo.fleet.core.model.MissionAction;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,11 +55,13 @@ public class MissionActionAccess extends Access<MissionAction> implements Missio
     public MissionAction create(CompanyInterface company,
                                 MissionInterface mission,
                                 MissionActionTypeInterface actionType,
+                                Date date,
                                 @Nullable LocationInterface location) {
         MissionAction res = getNew();
         res.setCompany(company);
         res.setMission(mission);
         res.setActionType(actionType);
+        res.setDate(date);
 
         if (location != null)
             res.setLocation(location);
