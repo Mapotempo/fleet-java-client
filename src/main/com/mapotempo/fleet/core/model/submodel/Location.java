@@ -95,17 +95,15 @@ public class Location extends SubModelBase implements LocationInterface {
      * {@inheritDoc}
      */
     @Override
-    public boolean isValide() {
+    public boolean isValid() {
         return (mLon != null && mLat != null);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj != null)
-            if (mLat.equals(((Location) obj).mLat))
-                if (mLon.equals(((Location) obj).mLon))
-                    return true;
-        return false;
+        return (obj != null &&
+                mLat.equals(((Location) obj).mLat) &&
+                mLon.equals(((Location) obj).mLon));
     }
 
     @Override

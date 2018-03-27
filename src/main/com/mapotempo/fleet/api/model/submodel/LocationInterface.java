@@ -44,6 +44,6 @@ public interface LocationInterface {
      *
      * @return boolean verity
      */
-    boolean isValide();
+    boolean isValid();
 
 }

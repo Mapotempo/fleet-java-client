@@ -65,4 +65,9 @@ public interface AddressInterface {
      * @return A {@link String}
      */
     String getDetail();
+
+    /**
+     * Address is valid.
+     */
+    boolean isValid();
 }

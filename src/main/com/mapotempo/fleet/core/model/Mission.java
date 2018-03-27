@@ -334,7 +334,7 @@ public class Mission extends ModelBase implements MissionInterface {
      * {@inheritDoc}
      */
     @Override
-    public void setSurveyAddress(Address address) {
-        setProperty(SURVEY_ADDRESS, (address).toMap());
+    public void setSurveyAddress(AddressInterface address) {
+        setProperty(SURVEY_ADDRESS, ((Address) address).toMap());
     }
 }

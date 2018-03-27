@@ -45,6 +45,15 @@ public abstract class SubModelBase {
 
     abstract public Map<String, Object> toMap();
 
+    /**
+     * Model is valid
+     * Check if SubModel is valid
+     * @return
+     */
+    public boolean isValid() {
+        return true;
+    }
+
     protected <T> T getProperty(String key, Class<T> clazz, T def, Map source) {
         Object data;
         data = source.get(key);

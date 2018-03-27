@@ -225,7 +225,7 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
     /**
      * Set survey the location.
      */
-    Location getSurveyLocation();
+    LocationInterface getSurveyLocation();
 
     /**
      * Get survey the location.
@@ -236,12 +236,12 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
     /**
      * Set survey the address.
      */
-    Address getSurveyAddress();
+    AddressInterface getSurveyAddress();
 
     /**
      * Get survey the address.
      */
-    void setSurveyAddress(Address location);
+    void setSurveyAddress(AddressInterface location);
 
 
 }

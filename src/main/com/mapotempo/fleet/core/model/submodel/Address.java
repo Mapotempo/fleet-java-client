@@ -147,17 +147,31 @@ public class Address extends SubModelBase implements AddressInterface {
         return mDetail;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isValid() {
+        Map<String, Object> myMap = toMap();
+
+        for (String element : myMap.keySet()) {
+            if (!((String) myMap.get(element)).isEmpty())
+                return true;
+        }
+
+        return false;
+    }
+
     public boolean equals(Object obj) {
         if (super.equals(obj))
             return true;
         Address cmp = (Address) obj;
-        if (mStreet.equals(cmp.mStreet))
-            if (mPostalCode.equals(cmp.mPostalCode))
-                if (mCity.equals(cmp.mCity))
-                    if (mState.equals(cmp.mState))
-                        if (mDetail.equals(cmp.mDetail))
-                            return true;
-        return false;
+
+        return (mStreet.equals(cmp.mStreet) &&
+                mPostalCode.equals(cmp.mPostalCode) &&
+                mCity.equals(cmp.mCity) &&
+                mState.equals(cmp.mState) &&
+                mDetail.equals(cmp.mDetail));
     }
 
     @Override
