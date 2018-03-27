@@ -19,6 +19,8 @@
 
 package com.mapotempo.fleet.api.model;
 
+import com.mapotempo.fleet.api.model.submodel.LocationInterface;
+
 import java.io.InputStream;
 import java.util.Date;
 
@@ -79,4 +81,14 @@ public interface MissionActionInterface extends MapotempoModelBaseInterface {
      * Get inputStream attachment
      */
     InputStream getAttachment(String name);
+
+    /**
+     * Get Location for the Mission Action
+     */
+    LocationInterface getLocation();
+
+    /**
+     * Set Location for the Mission Action
+     */
+    void setLocation(LocationInterface location);
 }

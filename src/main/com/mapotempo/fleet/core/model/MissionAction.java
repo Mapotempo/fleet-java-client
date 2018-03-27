@@ -25,12 +25,16 @@ import com.mapotempo.fleet.api.model.CompanyInterface;
 import com.mapotempo.fleet.api.model.MissionActionInterface;
 import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.core.base.DocumentBase;
 import com.mapotempo.fleet.core.base.ModelBase;
 import com.mapotempo.fleet.core.exception.CoreException;
+import com.mapotempo.fleet.core.model.submodel.Location;
 import com.mapotempo.fleet.utils.DateHelper;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * MissionAction.
@@ -46,6 +50,7 @@ public class MissionAction extends ModelBase implements MissionActionInterface {
     public static final String COMPANY_ID = "company_id";
     public static final String MISSION_ID = "mission_id";
     public static final String MISSION_ACTION_TYPE_ID = "mission_action_type_id";
+    public static final String ACTION_LOCATION = "action_location";
     private static final String DATE = "date";
 
     public MissionAction(Database database) {
@@ -150,5 +155,20 @@ public class MissionAction extends ModelBase implements MissionActionInterface {
     @Override
     public void setDate(Date date) {
         setProperty(DATE, DateHelper.toStringISO8601(date));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setLocation(LocationInterface location) {
+        setProperty(ACTION_LOCATION, location);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public Location getLocation() {
+        Map hashMap = getProperty(ACTION_LOCATION, Map.class, new HashMap());
+        return new Location(hashMap, mDatabase);
     }
 }

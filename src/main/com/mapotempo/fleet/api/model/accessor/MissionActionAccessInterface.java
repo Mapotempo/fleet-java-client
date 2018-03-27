@@ -24,7 +24,9 @@ import com.mapotempo.fleet.api.model.MissionActionInterface;
 import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.MissionStatusTypeInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -57,16 +59,19 @@ public interface MissionActionAccessInterface extends AccessInterface<MissionAct
     @Override
     void removeChangeListener(ChangeListener<MissionActionInterface> changeListener);
 
-
     /**
      * Create a new mission action
      *
      * @param company    The company owner
      * @param mission    The mission owner
      * @param actionType The action type
+     * @param location   The location of the action (Optional)
      * @return a new {@link MissionActionInterface} unsaved
      */
-    MissionActionInterface create(CompanyInterface company, MissionInterface mission, MissionActionTypeInterface actionType);
+    MissionActionInterface create(CompanyInterface company,
+                                  MissionInterface mission,
+                                  MissionActionTypeInterface actionType,
+                                  @Nullable LocationInterface location);
 
     /**
      * Filter mission_status by mission_id

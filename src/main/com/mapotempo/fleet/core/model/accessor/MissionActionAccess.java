@@ -29,11 +29,13 @@ import com.mapotempo.fleet.api.model.MissionActionInterface;
 import com.mapotempo.fleet.api.model.MissionActionTypeInterface;
 import com.mapotempo.fleet.api.model.MissionInterface;
 import com.mapotempo.fleet.api.model.accessor.MissionActionAccessInterface;
+import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.core.DatabaseHandler;
 import com.mapotempo.fleet.core.base.accessor.Access;
 import com.mapotempo.fleet.core.exception.CoreException;
 import com.mapotempo.fleet.core.model.MissionAction;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,12 +51,18 @@ public class MissionActionAccess extends Access<MissionAction> implements Missio
      * {@inheritDoc}
      */
     @Override
-    public MissionAction create(CompanyInterface company, MissionInterface mission, MissionActionTypeInterface actionType) {
+    public MissionAction create(CompanyInterface company,
+                                MissionInterface mission,
+                                MissionActionTypeInterface actionType,
+                                @Nullable LocationInterface location) {
         MissionAction res = getNew();
-        res = getNew();
         res.setCompany(company);
         res.setMission(mission);
         res.setActionType(actionType);
+
+        if (location != null)
+            res.setLocation(location);
+
         res.save();
         return res;
     }
