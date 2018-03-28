@@ -161,7 +161,7 @@ public class MissionAction extends ModelBase implements MissionActionInterface {
      * {@inheritDoc}
      */
     public void setLocation(LocationInterface location) {
-        setProperty(ACTION_LOCATION, location);
+        setProperty(ACTION_LOCATION, ((Location) location).toMap());
     }
 
     /**
