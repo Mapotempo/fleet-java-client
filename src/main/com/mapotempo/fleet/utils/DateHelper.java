@@ -42,10 +42,11 @@ public class DateHelper {
     // ####################################
     // ISO8601 date String
     // ####################################
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX");
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
 
     public static String toStringISO8601(Date value) {
-        return sdf.format(value);
+        long timeZoneMs = sdf.getTimeZone().getOffset(value.getTime());
+        return sdf.format(value) + "+" + String.format("%02d:%02d", timeZoneMs / 3600000, timeZoneMs % 3600000);
     }
 
     public static Date fromStringISO8601(String value) {
