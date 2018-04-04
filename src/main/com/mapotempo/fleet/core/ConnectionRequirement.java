@@ -128,26 +128,27 @@ public class ConnectionRequirement {
         mDatabaseHandler.setUserChannel();
         mDatabaseHandler.restartPuller();
 
-        // ============================================================
-        // == 2) - Set listener on user access to be notified reception
-        // ============================================================
-        mUserAccess.addChangeListener(mUserAccessListener);
-
-        // ====================
-        // == 3) - Launch timer
-        // ====================
-        final TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                INSTANCE.verifyConnection();
-            }
-        };
-        mVerifyTimer.schedule(timerTask, 2000, 2000);
-
         // ================================================================
-        // == 4) - Verify connection to ensure user document already present
+        // == 2) - Verify connection to ensure user document already present
         // ================================================================
-        verifyConnection();
+        if (!verifyConnection()) {
+
+            // ============================================================
+            // == 3) - Set listener on user access to be notified reception
+            // ============================================================
+            mUserAccess.addChangeListener(mUserAccessListener);
+
+            // ====================
+            // == 4) - Launch timer
+            // ====================
+            final TimerTask timerTask = new TimerTask() {
+                @Override
+                public void run() {
+                    INSTANCE.verifyConnection();
+                }
+            };
+            mVerifyTimer.schedule(timerTask, 2000, 2000);
+        }
     }
 
     public void stopConnectionRequirementSequence() {
@@ -155,7 +156,7 @@ public class ConnectionRequirement {
         mVerifyTimer.purge();
     }
 
-    private void verifyConnection() {
+    private boolean verifyConnection() {
         User user = mUserAccess.getAll().size() > 0 ? (User) mUserAccess.getAll().get(0) : null;
         UserCurrentLocation userCurrentLocation = mUserCurrentLocationAccess.getAll().size() > 0 ? (UserCurrentLocation) mUserCurrentLocationAccess.getAll().get(0) : null;
         UserSettings userSettings = mUserSettingsAccess.getAll().size() > 0 ? (UserSettings) mUserSettingsAccess.getAll().get(0) : null;
@@ -168,7 +169,6 @@ public class ConnectionRequirement {
             ConnectionVerifyStatus code_error = findMissing(user, userCurrentLocation, userSettings, company, metaInfo);
             mConnectionRequirementVerifyListener.onConnectionFail(code_error);
         } else {
-            // The user document is present
             if (user != null) {
 
                 initChannels(user);
@@ -180,9 +180,12 @@ public class ConnectionRequirement {
                         && company != null) {
                     stopConnectionRequirementSequence();
                     mConnectionRequirementVerifyListener.onConnectionVerify(user, userCurrentLocation, userSettings, company, metaInfo);
+                    mUserAccess.removeChangeListener(mUserAccessListener);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     private void initChannels(User user) {

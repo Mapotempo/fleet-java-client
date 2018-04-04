@@ -19,7 +19,6 @@
 
 package com.mapotempo.fleet.core;
 
-import com.couchbase.lite.AsyncTask;
 import com.couchbase.lite.Attachment;
 import com.couchbase.lite.Context;
 import com.couchbase.lite.CouchbaseLiteException;
@@ -93,7 +92,6 @@ public class DatabaseHandler {
         mPassword = password;
 
         mSyncGatewayUrl = syncGatewayUrl;
-
         try {
             mManager = new Manager(mContext, Manager.DEFAULT_OPTIONS);
         } catch (IOException e) {
@@ -112,6 +110,7 @@ public class DatabaseHandler {
             e.printStackTrace();
             throw new CoreException("Error : Can't open bdd");
         }
+
 
         initConnection();
     }
@@ -292,22 +291,7 @@ public class DatabaseHandler {
             mPuller = null;
         }
 
-        // ###############################################################
-        // ## FIXME Trick
-        // ## Ce 'trick' permet d'effectuer la fermeture de la base
-        // ## dans un autre thread. En effet la fermeture d'une base
-        // ## qui a reçu un 401 sur l'un de ses replicator (puller, pusher)
-        // ## prend un timeout de 60s à la fermeture de celle ci. Pour ne
-        // ## pas bloquer le thread ui de l'utilisateur nous déléguons donc
-        // ## cette tache à couchbase via la methode runAsync de Database.
-        // ## (cette methode n'est pas censé servir sur android, voir la doc ...)
-        mDatabase.runAsync(new AsyncTask() {
-            @Override
-            public void run(Database database) {
-                mDatabase.close();
-            }
-        });
-
+        mDatabase.close();
         if (delete_db) {
             File databaseDirectory = mManager.getDirectory();
             if (databaseDirectory != null) {
@@ -317,9 +301,6 @@ public class DatabaseHandler {
                 }
             }
         }
-        // # FIXME Trick
-        // ###############################################################
-
         mDatabase = null;
 
         mManager.close();
