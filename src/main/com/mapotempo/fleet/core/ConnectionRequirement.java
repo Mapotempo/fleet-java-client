@@ -76,7 +76,7 @@ public class ConnectionRequirement {
 
     private int mVerifyCounter = 0;
 
-    private final static int MAX_VERIFY = 5;
+    private final static int MAX_VERIFY = 15;
 
     private final AccessInterface.ChangeListener<User> mUserAccessListener = new AccessInterface.ChangeListener<User>() {
         @Override
