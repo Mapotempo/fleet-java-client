@@ -99,7 +99,7 @@ public class DatabaseHandler {
             throw new CoreException("Error : Manager can't be created");
         }
 
-        mDbname = databaseNameGenerator(mUser, mSyncGatewayUrl);
+        mDbname = databaseNameGenerator(mUser, mSyncGatewayUrl, password);
 
         try {
             DatabaseOptions passwordDatabaseOption = new DatabaseOptions();
@@ -308,10 +308,10 @@ public class DatabaseHandler {
         mReleaseStatus = true;
     }
 
-    private String databaseNameGenerator(String userName, String url) {
+    private String databaseNameGenerator(String userName, String url, String mPassword) {
         try {
-            // Database name must be unique for a username and specific url.
-            return "database_" + userName + HashHelper.sha256(url).substring(0, 10);
+            // Database name must be unique for a username, password and specific url.
+            return "database_" + HashHelper.sha256(userName).substring(0, 5) + HashHelper.sha256(url).substring(0, 5) + HashHelper.sha256(mPassword).substring(0, 5);
         } catch (CoreException e) {
             throw new RuntimeException("Error during databaseNameGenerator");
         }
