@@ -324,6 +324,11 @@ public class Mission extends ModelBase implements MissionInterface {
         setProperty(SURVEY_LOCATION, ((Location) location).toMap());
     }
 
+    @Override
+    public void deleteSurveyLocation() {
+        setProperty(SURVEY_LOCATION, null);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -339,5 +344,13 @@ public class Mission extends ModelBase implements MissionInterface {
     @Override
     public void setSurveyAddress(AddressInterface address) {
         setProperty(SURVEY_ADDRESS, ((Address) address).toMap());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteSurveyAddress() {
+        setProperty(SURVEY_ADDRESS, null);
     }
 }

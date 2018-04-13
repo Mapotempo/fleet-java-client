@@ -76,35 +76,40 @@ public class Address extends SubModelBase implements AddressInterface {
         mDetail = detail;
     }
 
+    private String stringPicker(String string) {
+        if (string == null)
+            return string;
+        return string.trim().isEmpty() ? null : string.trim();
+    }
+
     @Override
     public void fromMap(Map map) {
-        mStreet = getProperty(STREET, String.class, "", map);
-        mPostalCode = getProperty(POSTALCODE, String.class, "", map);
-        mCity = getProperty(CITY, String.class, "", map);
-        mState = getProperty(STATE, String.class, "", map);
-        mCountry = getProperty(COUNTRY, String.class, "", map);
-        mDetail = getProperty(DETAIL, String.class, "", map);
+        mStreet = getProperty(STREET, String.class, null, map);
+        mPostalCode = getProperty(POSTALCODE, String.class, null, map);
+        mCity = getProperty(CITY, String.class, null, map);
+        mState = getProperty(STATE, String.class, null, map);
+        mCountry = getProperty(COUNTRY, String.class, null, map);
+        mDetail = getProperty(DETAIL, String.class, null, map);
     }
 
     @Override
     public Map<String, Object> toMap() {
         HashMap<String, Object> res = new HashMap<>();
-        res.put(STREET, mStreet);
-        res.put(POSTALCODE, mPostalCode);
-        res.put(CITY, mCity);
-        res.put(STATE, mState);
-        res.put(COUNTRY, mCountry);
-        res.put(DETAIL, mDetail);
+        res.put(STREET, stringPicker(mStreet));
+        res.put(POSTALCODE, stringPicker(mPostalCode));
+        res.put(CITY, stringPicker(mCity));
+        res.put(STATE, stringPicker(mState));
+        res.put(COUNTRY, stringPicker(mCountry));
+        res.put(DETAIL, stringPicker(mDetail));
         return res;
     }
-
 
     /**
      * {@inheritDoc}
      */
     @Override
     public String getStreet() {
-        return mStreet;
+        return mStreet != null ? mStreet : "";
     }
 
     /**
@@ -112,7 +117,7 @@ public class Address extends SubModelBase implements AddressInterface {
      */
     @Override
     public String getPostalcode() {
-        return mPostalCode;
+        return mPostalCode != null ? mPostalCode : "";
     }
 
     /**
@@ -120,7 +125,7 @@ public class Address extends SubModelBase implements AddressInterface {
      */
     @Override
     public String getCity() {
-        return mCity;
+        return mCity != null ? mCity : "";
     }
 
     /**
@@ -128,7 +133,7 @@ public class Address extends SubModelBase implements AddressInterface {
      */
     @Override
     public String getState() {
-        return mState;
+        return mState != null ? mState : "";
     }
 
     /**
@@ -136,7 +141,7 @@ public class Address extends SubModelBase implements AddressInterface {
      */
     @Override
     public String getCountry() {
-        return mCountry;
+        return mCountry != null ? mCountry : "";
     }
 
     /**
@@ -144,7 +149,7 @@ public class Address extends SubModelBase implements AddressInterface {
      */
     @Override
     public String getDetail() {
-        return mDetail;
+        return mDetail != null ? mDetail : "";
     }
 
     /**
@@ -155,7 +160,7 @@ public class Address extends SubModelBase implements AddressInterface {
         Map<String, Object> myMap = toMap();
 
         for (String element : myMap.keySet()) {
-            if (!((String) myMap.get(element)).isEmpty())
+            if (myMap.get(element) != null && !((String) myMap.get(element)).isEmpty())
                 return true;
         }
 

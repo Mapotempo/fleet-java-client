@@ -22,8 +22,6 @@ package com.mapotempo.fleet.api.model;
 import com.mapotempo.fleet.api.model.submodel.AddressInterface;
 import com.mapotempo.fleet.api.model.submodel.LocationInterface;
 import com.mapotempo.fleet.api.model.submodel.TimeWindowsInterface;
-import com.mapotempo.fleet.core.model.submodel.Address;
-import com.mapotempo.fleet.core.model.submodel.Location;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -66,12 +64,14 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
 
     /**
      * Get the mission Eta date.
+     *
      * @return
      */
     Date getEta();
 
     /**
      * Get the mission Eta if found Or the mission date.
+     *
      * @return
      */
     Date getEtaOrDefault();
@@ -221,25 +221,33 @@ public interface MissionInterface extends MapotempoModelBaseInterface {
     // ##########################
 
     /**
-     * Set survey the location.
+     * Set the survey location.
      */
     LocationInterface getSurveyLocation();
 
     /**
-     * Get survey the location.
+     * Get the survey location.
      */
     void setSurveyLocation(LocationInterface location);
 
+    /**
+     * Delete the survey location.
+     */
+    void deleteSurveyLocation();
 
     /**
-     * Set survey the address.
+     * Set the survey address.
      */
     AddressInterface getSurveyAddress();
 
     /**
-     * Get survey the address.
+     * Get the survey address.
      */
     void setSurveyAddress(AddressInterface location);
 
+    /**
+     * Delete the survey address.
+     */
+    void deleteSurveyAddress();
 
 }
